@@ -5,7 +5,7 @@ import { db } from "@/lib/db"
 
 export async function PUT(
 	req: Request,
-	{ params }: { params: { courseId: string; chapterId: string } },
+	{ params }: { params: { courseId: string; chapterId: string } }
 ) {
 	try {
 		const { userId } = auth()
@@ -19,17 +19,17 @@ export async function PUT(
 			where: {
 				userId_chapterId: {
 					userId,
-					chapterId: params.chapterId,
-				},
+					chapterId: params.chapterId
+				}
 			},
 			update: {
-				isCompleted,
+				isCompleted
 			},
 			create: {
 				userId,
 				chapterId: params.chapterId,
-				isCompleted,
-			},
+				isCompleted
+			}
 		})
 
 		return NextResponse.json(userProgress)

@@ -13,7 +13,7 @@ export const InfoCard = ({
 	variant,
 	icon: Icon,
 	numberOfItems,
-	label,
+	label
 }: InfoCardProps) => {
 	return (
 		<div className="border rounded-md flex items-center gap-x-2 p-3">

@@ -9,7 +9,7 @@ import { CourseNavbar } from "./_components/course-navbar"
 
 const CourseLayout = async ({
 	children,
-	params,
+	params
 }: {
 	children: React.ReactNode
 	params: { courseId: string }
@@ -22,25 +22,25 @@ const CourseLayout = async ({
 
 	const course = await db.course.findUnique({
 		where: {
-			id: params.courseId,
+			id: params.courseId
 		},
 		include: {
 			chapters: {
 				where: {
-					isPublished: true,
+					isPublished: true
 				},
 				include: {
 					userProgress: {
 						where: {
-							userId,
-						},
-					},
+							userId
+						}
+					}
 				},
 				orderBy: {
-					position: "asc",
-				},
-			},
-		},
+					position: "asc"
+				}
+			}
+		}
 	})
 
 	if (!course) {

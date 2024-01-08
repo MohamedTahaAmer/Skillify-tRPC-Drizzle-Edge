@@ -7,7 +7,7 @@ import { stripe } from "@/lib/stripe"
 
 export async function POST(
 	req: Request,
-	{ params }: { params: { courseId: string } },
+	{ params }: { params: { courseId: string } }
 ) {
 	try {
 		const user = await currentUser()
@@ -19,17 +19,17 @@ export async function POST(
 		const course = await db.course.findUnique({
 			where: {
 				id: params.courseId,
-				isPublished: true,
-			},
+				isPublished: true
+			}
 		})
 
 		const purchase = await db.purchase.findUnique({
 			where: {
 				userId_courseId: {
 					userId: user.id,
-					courseId: params.courseId,
-				},
-			},
+					courseId: params.courseId
+				}
+			}
 		})
 
 		if (purchase) {
@@ -47,32 +47,32 @@ export async function POST(
 					currency: "USD",
 					product_data: {
 						name: course.title,
-						description: course.description!,
+						description: course.description!
 					},
-					unit_amount: Math.round(course.price! * 100),
-				},
-			},
+					unit_amount: Math.round(course.price! * 100)
+				}
+			}
 		]
 
 		let stripeCustomer = await db.stripeCustomer.findUnique({
 			where: {
-				userId: user.id,
+				userId: user.id
 			},
 			select: {
-				stripeCustomerId: true,
-			},
+				stripeCustomerId: true
+			}
 		})
 
 		if (!stripeCustomer) {
 			const customer = await stripe.customers.create({
-				email: user.emailAddresses[0].emailAddress,
+				email: user.emailAddresses[0].emailAddress
 			})
 
 			stripeCustomer = await db.stripeCustomer.create({
 				data: {
 					userId: user.id,
-					stripeCustomerId: customer.id,
-				},
+					stripeCustomerId: customer.id
+				}
 			})
 		}
 
@@ -84,8 +84,8 @@ export async function POST(
 			cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?canceled=1`,
 			metadata: {
 				courseId: course.id,
-				userId: user.id,
-			},
+				userId: user.id
+			}
 		})
 
 		return NextResponse.json({ url: session.url })

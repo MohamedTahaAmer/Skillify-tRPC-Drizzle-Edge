@@ -18,7 +18,7 @@ interface CourseSidebarProps {
 
 export const CourseSidebar = async ({
 	course,
-	progressCount,
+	progressCount
 }: CourseSidebarProps) => {
 	const { userId } = auth()
 
@@ -30,9 +30,9 @@ export const CourseSidebar = async ({
 		where: {
 			userId_courseId: {
 				userId,
-				courseId: course.id,
-			},
-		},
+				courseId: course.id
+			}
+		}
 	})
 
 	return (

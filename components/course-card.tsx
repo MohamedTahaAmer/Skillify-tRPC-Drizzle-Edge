@@ -23,7 +23,7 @@ export const CourseCard = ({
 	chaptersLength,
 	price,
 	progress,
-	category,
+	category
 }: CourseCardProps) => {
 	return (
 		<Link href={`/courses/${id}`}>

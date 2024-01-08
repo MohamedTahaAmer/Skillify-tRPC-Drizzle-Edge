@@ -20,7 +20,7 @@ export const ChapterActions = ({
 	disabled,
 	courseId,
 	chapterId,
-	isPublished,
+	isPublished
 }: ChapterActionsProps) => {
 	const router = useRouter()
 	const [isLoading, setIsLoading] = useState(false)
@@ -31,12 +31,12 @@ export const ChapterActions = ({
 
 			if (isPublished) {
 				await axios.patch(
-					`/api/courses/${courseId}/chapters/${chapterId}/unpublish`,
+					`/api/courses/${courseId}/chapters/${chapterId}/unpublish`
 				)
 				toast.success("Chapter unpublished")
 			} else {
 				await axios.patch(
-					`/api/courses/${courseId}/chapters/${chapterId}/publish`,
+					`/api/courses/${courseId}/chapters/${chapterId}/publish`
 				)
 				toast.success("Chapter published")
 			}

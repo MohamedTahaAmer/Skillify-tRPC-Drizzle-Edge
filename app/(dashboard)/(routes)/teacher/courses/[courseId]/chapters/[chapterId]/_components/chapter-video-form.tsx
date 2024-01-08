@@ -20,13 +20,13 @@ interface ChapterVideoFormProps {
 }
 
 const formSchema = z.object({
-	videoUrl: z.string().min(1),
+	videoUrl: z.string().min(1)
 })
 
 export const ChapterVideoForm = ({
 	initialData,
 	courseId,
-	chapterId,
+	chapterId
 }: ChapterVideoFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 
@@ -38,7 +38,7 @@ export const ChapterVideoForm = ({
 		try {
 			await axios.patch(
 				`/api/courses/${courseId}/chapters/${chapterId}`,
-				values,
+				values
 			)
 			toast.success("Chapter updated")
 			toggleEdit()

@@ -14,7 +14,7 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormMessage,
+	FormMessage
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -28,8 +28,8 @@ interface TitleFormProps {
 
 const formSchema = z.object({
 	title: z.string().min(1, {
-		message: "Title is required",
-	}),
+		message: "Title is required"
+	})
 })
 
 export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
@@ -41,7 +41,7 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
-		defaultValues: initialData,
+		defaultValues: initialData
 	})
 
 	const { isSubmitting, isValid } = form.formState

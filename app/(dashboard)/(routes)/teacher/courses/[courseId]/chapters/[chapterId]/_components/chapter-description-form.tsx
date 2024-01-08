@@ -15,7 +15,7 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormMessage,
+	FormMessage
 } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -29,13 +29,13 @@ interface ChapterDescriptionFormProps {
 }
 
 const formSchema = z.object({
-	description: z.string().min(1),
+	description: z.string().min(1)
 })
 
 export const ChapterDescriptionForm = ({
 	initialData,
 	courseId,
-	chapterId,
+	chapterId
 }: ChapterDescriptionFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 
@@ -46,8 +46,8 @@ export const ChapterDescriptionForm = ({
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			description: initialData?.description || "",
-		},
+			description: initialData?.description || ""
+		}
 	})
 
 	const { isSubmitting, isValid } = form.formState
@@ -56,7 +56,7 @@ export const ChapterDescriptionForm = ({
 		try {
 			await axios.patch(
 				`/api/courses/${courseId}/chapters/${chapterId}`,
-				values,
+				values
 			)
 			toast.success("Chapter updated")
 			toggleEdit()
@@ -85,7 +85,7 @@ export const ChapterDescriptionForm = ({
 				<div
 					className={cn(
 						"text-sm mt-2",
-						!initialData.description && "text-slate-500 italic",
+						!initialData.description && "text-slate-500 italic"
 					)}
 				>
 					{!initialData.description && "No description"}

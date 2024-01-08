@@ -24,20 +24,20 @@ export const getAnalytics = async (userId: string) => {
 		const purchases = await db.purchase.findMany({
 			where: {
 				course: {
-					userId: userId,
-				},
+					userId: userId
+				}
 			},
 			include: {
-				course: true,
-			},
+				course: true
+			}
 		})
 
 		const groupedEarnings = groupByCourse(purchases)
 		const data = Object.entries(groupedEarnings).map(
 			([courseTitle, total]) => ({
 				name: courseTitle,
-				total: total,
-			}),
+				total: total
+			})
 		)
 
 		const totalRevenue = data.reduce((acc, curr) => acc + curr.total, 0)
@@ -46,14 +46,14 @@ export const getAnalytics = async (userId: string) => {
 		return {
 			data,
 			totalRevenue,
-			totalSales,
+			totalSales
 		}
 	} catch (error) {
 		console.log("[GET_ANALYTICS]", error)
 		return {
 			data: [],
 			totalRevenue: 0,
-			totalSales: 0,
+			totalSales: 0
 		}
 	}
 }

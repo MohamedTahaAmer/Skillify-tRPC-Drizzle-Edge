@@ -16,7 +16,7 @@ interface CourseMobileSidebarProps {
 
 export const CourseMobileSidebar = ({
 	course,
-	progressCount,
+	progressCount
 }: CourseMobileSidebarProps) => {
 	return (
 		<Sheet>

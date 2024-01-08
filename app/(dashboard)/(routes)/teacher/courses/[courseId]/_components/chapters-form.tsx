@@ -15,7 +15,7 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormMessage,
+	FormMessage
 } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -29,7 +29,7 @@ interface ChaptersFormProps {
 }
 
 const formSchema = z.object({
-	title: z.string().min(1),
+	title: z.string().min(1)
 })
 
 export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
@@ -45,8 +45,8 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: "",
-		},
+			title: ""
+		}
 	})
 
 	const { isSubmitting, isValid } = form.formState
@@ -67,7 +67,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 			setIsUpdating(true)
 
 			await axios.put(`/api/courses/${courseId}/chapters/reorder`, {
-				list: updateData,
+				list: updateData
 			})
 			toast.success("Chapters reordered")
 			router.refresh()
@@ -134,7 +134,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 				<div
 					className={cn(
 						"text-sm mt-2",
-						!initialData.chapters.length && "text-slate-500 italic",
+						!initialData.chapters.length && "text-slate-500 italic"
 					)}
 				>
 					{!initialData.chapters.length && "No chapters"}

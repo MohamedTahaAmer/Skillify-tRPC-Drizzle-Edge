@@ -6,12 +6,12 @@ import { db } from "@/lib/db"
 
 const { Video } = new Mux(
 	process.env.MUX_TOKEN_ID!,
-	process.env.MUX_TOKEN_SECRET!,
+	process.env.MUX_TOKEN_SECRET!
 )
 
 export async function DELETE(
 	req: Request,
-	{ params }: { params: { courseId: string } },
+	{ params }: { params: { courseId: string } }
 ) {
 	try {
 		const { userId } = auth()
@@ -23,15 +23,15 @@ export async function DELETE(
 		const course = await db.course.findUnique({
 			where: {
 				id: params.courseId,
-				userId: userId,
+				userId: userId
 			},
 			include: {
 				chapters: {
 					include: {
-						muxData: true,
-					},
-				},
-			},
+						muxData: true
+					}
+				}
+			}
 		})
 
 		if (!course) {
@@ -46,8 +46,8 @@ export async function DELETE(
 
 		const deletedCourse = await db.course.delete({
 			where: {
-				id: params.courseId,
-			},
+				id: params.courseId
+			}
 		})
 
 		return NextResponse.json(deletedCourse)
@@ -59,7 +59,7 @@ export async function DELETE(
 
 export async function PATCH(
 	req: Request,
-	{ params }: { params: { courseId: string } },
+	{ params }: { params: { courseId: string } }
 ) {
 	try {
 		const { userId } = auth()
@@ -73,11 +73,11 @@ export async function PATCH(
 		const course = await db.course.update({
 			where: {
 				id: courseId,
-				userId,
+				userId
 			},
 			data: {
-				...values,
-			},
+				...values
+			}
 		})
 
 		return NextResponse.json(course)

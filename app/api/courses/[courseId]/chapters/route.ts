@@ -5,7 +5,7 @@ import { db } from "@/lib/db"
 
 export async function POST(
 	req: Request,
-	{ params }: { params: { courseId: string } },
+	{ params }: { params: { courseId: string } }
 ) {
 	try {
 		const { userId } = auth()
@@ -18,8 +18,8 @@ export async function POST(
 		const courseOwner = await db.course.findUnique({
 			where: {
 				id: params.courseId,
-				userId: userId,
-			},
+				userId: userId
+			}
 		})
 
 		if (!courseOwner) {
@@ -28,11 +28,11 @@ export async function POST(
 
 		const lastChapter = await db.chapter.findFirst({
 			where: {
-				courseId: params.courseId,
+				courseId: params.courseId
 			},
 			orderBy: {
-				position: "desc",
-			},
+				position: "desc"
+			}
 		})
 
 		const newPosition = lastChapter ? lastChapter.position + 1 : 1
@@ -41,8 +41,8 @@ export async function POST(
 			data: {
 				title,
 				courseId: params.courseId,
-				position: newPosition,
-			},
+				position: newPosition
+			}
 		})
 
 		return NextResponse.json(chapter)

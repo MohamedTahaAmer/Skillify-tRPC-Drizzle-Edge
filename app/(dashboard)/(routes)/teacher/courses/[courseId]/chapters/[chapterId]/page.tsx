@@ -14,7 +14,7 @@ import { ChapterVideoForm } from "./_components/chapter-video-form"
 import { ChapterActions } from "./_components/chapter-actions"
 
 const ChapterIdPage = async ({
-	params,
+	params
 }: {
 	params: { courseId: string; chapterId: string }
 }) => {
@@ -27,11 +27,11 @@ const ChapterIdPage = async ({
 	const chapter = await db.chapter.findUnique({
 		where: {
 			id: params.chapterId,
-			courseId: params.courseId,
+			courseId: params.courseId
 		},
 		include: {
-			muxData: true,
-		},
+			muxData: true
+		}
 	})
 
 	if (!chapter) {

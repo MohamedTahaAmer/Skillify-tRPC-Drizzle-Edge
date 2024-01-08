@@ -18,36 +18,36 @@ type GetCourses = {
 export const getCourses = async ({
 	userId,
 	title,
-	categoryId,
+	categoryId
 }: GetCourses): Promise<CourseWithProgressWithCategory[]> => {
 	try {
 		const courses = await db.course.findMany({
 			where: {
 				isPublished: true,
 				title: {
-					contains: title,
+					contains: title
 				},
-				categoryId,
+				categoryId
 			},
 			include: {
 				category: true,
 				chapters: {
 					where: {
-						isPublished: true,
+						isPublished: true
 					},
 					select: {
-						id: true,
-					},
+						id: true
+					}
 				},
 				purchases: {
 					where: {
-						userId,
-					},
-				},
+						userId
+					}
+				}
 			},
 			orderBy: {
-				createdAt: "desc",
-			},
+				createdAt: "desc"
+			}
 		})
 
 		const coursesWithProgress: CourseWithProgressWithCategory[] =
@@ -56,7 +56,7 @@ export const getCourses = async ({
 					if (course.purchases.length === 0) {
 						return {
 							...course,
-							progress: null,
+							progress: null
 						}
 					}
 
@@ -64,9 +64,9 @@ export const getCourses = async ({
 
 					return {
 						...course,
-						progress: progressPercentage,
+						progress: progressPercentage
 					}
-				}),
+				})
 			)
 
 		return coursesWithProgress

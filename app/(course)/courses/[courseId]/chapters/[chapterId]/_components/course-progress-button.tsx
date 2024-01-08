@@ -20,7 +20,7 @@ export const CourseProgressButton = ({
 	chapterId,
 	courseId,
 	isCompleted,
-	nextChapterId,
+	nextChapterId
 }: CourseProgressButtonProps) => {
 	const router = useRouter()
 	const confetti = useConfettiStore()
@@ -33,8 +33,8 @@ export const CourseProgressButton = ({
 			await axios.put(
 				`/api/courses/${courseId}/chapters/${chapterId}/progress`,
 				{
-					isCompleted: !isCompleted,
-				},
+					isCompleted: !isCompleted
+				}
 			)
 
 			if (!isCompleted && !nextChapterId) {

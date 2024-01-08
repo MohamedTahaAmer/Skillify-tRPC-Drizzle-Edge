@@ -10,12 +10,12 @@ const progressVariants = cva("h-full w-full flex-1 bg-primary transition-all", {
 	variants: {
 		variant: {
 			default: "bg-sky-600",
-			success: "bg-emerald-700",
-		},
+			success: "bg-emerald-700"
+		}
 	},
 	defaultVariants: {
-		variant: "default",
-	},
+		variant: "default"
+	}
 })
 
 export interface ProgressProps
@@ -33,7 +33,7 @@ const Progress = React.forwardRef<
 		ref={ref}
 		className={cn(
 			"relative h-4 w-full overflow-hidden rounded-full bg-secondary",
-			className,
+			className
 		)}
 		{...props}
 	>

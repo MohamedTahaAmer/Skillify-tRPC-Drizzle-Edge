@@ -15,7 +15,7 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormMessage,
+	FormMessage
 } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -28,7 +28,7 @@ interface PriceFormProps {
 }
 
 const formSchema = z.object({
-	price: z.coerce.number(),
+	price: z.coerce.number()
 })
 
 export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
@@ -41,8 +41,8 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			price: initialData?.price || undefined,
-		},
+			price: initialData?.price || undefined
+		}
 	})
 
 	const { isSubmitting, isValid } = form.formState
@@ -77,7 +77,7 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
 				<p
 					className={cn(
 						"text-sm mt-2",
-						!initialData.price && "text-slate-500 italic",
+						!initialData.price && "text-slate-500 italic"
 					)}
 				>
 					{initialData.price ? formatPrice(initialData.price) : "No price"}

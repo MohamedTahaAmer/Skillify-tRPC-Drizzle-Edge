@@ -4,7 +4,7 @@ import {
 	CircleDollarSign,
 	File,
 	LayoutDashboard,
-	ListChecks,
+	ListChecks
 } from "lucide-react"
 
 import { db } from "@/lib/db"
@@ -30,26 +30,26 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
 	const course = await db.course.findUnique({
 		where: {
 			id: params.courseId,
-			userId,
+			userId
 		},
 		include: {
 			chapters: {
 				orderBy: {
-					position: "asc",
-				},
+					position: "asc"
+				}
 			},
 			attachments: {
 				orderBy: {
-					createdAt: "desc",
-				},
-			},
-		},
+					createdAt: "desc"
+				}
+			}
+		}
 	})
 
 	const categories = await db.category.findMany({
 		orderBy: {
-			name: "asc",
-		},
+			name: "asc"
+		}
 	})
 
 	if (!course) {
@@ -62,7 +62,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
 		course.imageUrl,
 		course.price,
 		course.categoryId,
-		course.chapters.some((chapter) => chapter.isPublished),
+		course.chapters.some((chapter) => chapter.isPublished)
 	]
 
 	const totalFields = requiredFields.length
@@ -105,7 +105,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
 							courseId={course.id}
 							options={categories.map((category) => ({
 								label: category.name,
-								value: category.id,
+								value: category.id
 							}))}
 						/>
 					</div>

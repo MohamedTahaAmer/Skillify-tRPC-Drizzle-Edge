@@ -24,10 +24,10 @@ export const SearchInput = () => {
 				url: pathname,
 				query: {
 					categoryId: currentCategoryId,
-					title: debouncedValue,
-				},
+					title: debouncedValue
+				}
 			},
-			{ skipEmptyString: true, skipNull: true },
+			{ skipEmptyString: true, skipNull: true }
 		)
 
 		router.push(url)

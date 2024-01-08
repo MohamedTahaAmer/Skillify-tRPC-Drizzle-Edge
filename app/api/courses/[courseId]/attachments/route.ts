@@ -5,7 +5,7 @@ import { db } from "@/lib/db"
 
 export async function POST(
 	req: Request,
-	{ params }: { params: { courseId: string } },
+	{ params }: { params: { courseId: string } }
 ) {
 	try {
 		const { userId } = auth()
@@ -18,8 +18,8 @@ export async function POST(
 		const courseOwner = await db.course.findUnique({
 			where: {
 				id: params.courseId,
-				userId: userId,
-			},
+				userId: userId
+			}
 		})
 
 		if (!courseOwner) {
@@ -30,8 +30,8 @@ export async function POST(
 			data: {
 				url,
 				name: url.split("/").pop(),
-				courseId: params.courseId,
-			},
+				courseId: params.courseId
+			}
 		})
 
 		return NextResponse.json(attachment)

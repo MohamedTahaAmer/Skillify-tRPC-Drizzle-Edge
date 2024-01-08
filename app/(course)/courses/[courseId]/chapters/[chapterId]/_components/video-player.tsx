@@ -27,7 +27,7 @@ export const VideoPlayer = ({
 	nextChapterId,
 	isLocked,
 	completeOnEnd,
-	title,
+	title
 }: VideoPlayerProps) => {
 	const [isReady, setIsReady] = useState(false)
 	const router = useRouter()
@@ -39,8 +39,8 @@ export const VideoPlayer = ({
 				await axios.put(
 					`/api/courses/${courseId}/chapters/${chapterId}/progress`,
 					{
-						isCompleted: true,
-					},
+						isCompleted: true
+					}
 				)
 
 				if (!nextChapterId) {

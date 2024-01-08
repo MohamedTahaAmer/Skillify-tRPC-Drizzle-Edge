@@ -15,7 +15,7 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormMessage,
+	FormMessage
 } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -28,13 +28,13 @@ interface DescriptionFormProps {
 
 const formSchema = z.object({
 	description: z.string().min(1, {
-		message: "Description is required",
-	}),
+		message: "Description is required"
+	})
 })
 
 export const DescriptionForm = ({
 	initialData,
-	courseId,
+	courseId
 }: DescriptionFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 
@@ -45,8 +45,8 @@ export const DescriptionForm = ({
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			description: initialData?.description || "",
-		},
+			description: initialData?.description || ""
+		}
 	})
 
 	const { isSubmitting, isValid } = form.formState
@@ -81,7 +81,7 @@ export const DescriptionForm = ({
 				<p
 					className={cn(
 						"text-sm mt-2",
-						!initialData.description && "text-slate-500 italic",
+						!initialData.description && "text-slate-500 italic"
 					)}
 				>
 					{initialData.description || "No description"}

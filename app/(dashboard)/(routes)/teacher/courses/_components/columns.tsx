@@ -10,7 +10,7 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuTrigger,
+	DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
@@ -28,7 +28,7 @@ export const columns: ColumnDef<Course>[] = [
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</Button>
 			)
-		},
+		}
 	},
 	{
 		accessorKey: "price",
@@ -47,11 +47,11 @@ export const columns: ColumnDef<Course>[] = [
 			const price = parseFloat(row.getValue("price") || "0")
 			const formatted = new Intl.NumberFormat("en-US", {
 				style: "currency",
-				currency: "USD",
+				currency: "USD"
 			}).format(price)
 
 			return <div>{formatted}</div>
-		},
+		}
 	},
 	{
 		accessorKey: "isPublished",
@@ -74,7 +74,7 @@ export const columns: ColumnDef<Course>[] = [
 					{isPublished ? "Published" : "Draft"}
 				</Badge>
 			)
-		},
+		}
 	},
 	{
 		id: "actions",
@@ -99,6 +99,6 @@ export const columns: ColumnDef<Course>[] = [
 					</DropdownMenuContent>
 				</DropdownMenu>
 			)
-		},
-	},
+		}
+	}
 ]

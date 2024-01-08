@@ -5,7 +5,7 @@ import { db } from "@/lib/db"
 
 export async function PATCH(
 	req: Request,
-	{ params }: { params: { courseId: string } },
+	{ params }: { params: { courseId: string } }
 ) {
 	try {
 		const { userId } = auth()
@@ -17,8 +17,8 @@ export async function PATCH(
 		const course = await db.course.findUnique({
 			where: {
 				id: params.courseId,
-				userId,
-			},
+				userId
+			}
 		})
 
 		if (!course) {
@@ -28,11 +28,11 @@ export async function PATCH(
 		const unpublishedCourse = await db.course.update({
 			where: {
 				id: params.courseId,
-				userId,
+				userId
 			},
 			data: {
-				isPublished: false,
-			},
+				isPublished: false
+			}
 		})
 
 		return NextResponse.json(unpublishedCourse)

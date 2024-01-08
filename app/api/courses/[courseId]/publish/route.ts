@@ -5,7 +5,7 @@ import { db } from "@/lib/db"
 
 export async function PATCH(
 	req: Request,
-	{ params }: { params: { courseId: string } },
+	{ params }: { params: { courseId: string } }
 ) {
 	try {
 		const { userId } = auth()
@@ -17,15 +17,15 @@ export async function PATCH(
 		const course = await db.course.findUnique({
 			where: {
 				id: params.courseId,
-				userId,
+				userId
 			},
 			include: {
 				chapters: {
 					include: {
-						muxData: true,
-					},
-				},
-			},
+						muxData: true
+					}
+				}
+			}
 		})
 
 		if (!course) {
@@ -33,7 +33,7 @@ export async function PATCH(
 		}
 
 		const hasPublishedChapter = course.chapters.some(
-			(chapter) => chapter.isPublished,
+			(chapter) => chapter.isPublished
 		)
 
 		if (
@@ -49,11 +49,11 @@ export async function PATCH(
 		const publishedCourse = await db.course.update({
 			where: {
 				id: params.courseId,
-				userId,
+				userId
 			},
 			data: {
-				isPublished: true,
-			},
+				isPublished: true
+			}
 		})
 
 		return NextResponse.json(publishedCourse)

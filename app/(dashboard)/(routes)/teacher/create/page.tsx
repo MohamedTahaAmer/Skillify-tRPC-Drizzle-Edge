@@ -15,15 +15,15 @@ import {
 	FormField,
 	FormLabel,
 	FormMessage,
-	FormItem,
+	FormItem
 } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 const formSchema = z.object({
 	title: z.string().min(1, {
-		message: "Title is required",
-	}),
+		message: "Title is required"
+	})
 })
 
 const CreatePage = () => {
@@ -31,8 +31,8 @@ const CreatePage = () => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: "",
-		},
+			title: ""
+		}
 	})
 
 	const { isSubmitting, isValid } = form.formState

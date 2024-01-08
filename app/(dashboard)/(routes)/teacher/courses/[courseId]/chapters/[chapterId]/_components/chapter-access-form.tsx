@@ -16,7 +16,7 @@ import {
 	FormDescription,
 	FormField,
 	FormItem,
-	FormMessage,
+	FormMessage
 } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -31,13 +31,13 @@ interface ChapterAccessFormProps {
 }
 
 const formSchema = z.object({
-	isFree: z.boolean().default(false),
+	isFree: z.boolean().default(false)
 })
 
 export const ChapterAccessForm = ({
 	initialData,
 	courseId,
-	chapterId,
+	chapterId
 }: ChapterAccessFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 
@@ -48,8 +48,8 @@ export const ChapterAccessForm = ({
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			isFree: !!initialData.isFree,
-		},
+			isFree: !!initialData.isFree
+		}
 	})
 
 	const { isSubmitting, isValid } = form.formState
@@ -58,7 +58,7 @@ export const ChapterAccessForm = ({
 		try {
 			await axios.patch(
 				`/api/courses/${courseId}/chapters/${chapterId}`,
-				values,
+				values
 			)
 			toast.success("Chapter updated")
 			toggleEdit()
@@ -87,7 +87,7 @@ export const ChapterAccessForm = ({
 				<p
 					className={cn(
 						"text-sm mt-2",
-						!initialData.isFree && "text-slate-500 italic",
+						!initialData.isFree && "text-slate-500 italic"
 					)}
 				>
 					{initialData.isFree ? (

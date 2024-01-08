@@ -16,8 +16,8 @@ export async function POST(req: Request) {
 		const course = await db.course.create({
 			data: {
 				userId,
-				title,
-			},
+				title
+			}
 		})
 
 		return NextResponse.json(course)

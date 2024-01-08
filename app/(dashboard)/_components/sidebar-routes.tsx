@@ -9,26 +9,26 @@ const guestRoutes = [
 	{
 		icon: Layout,
 		label: "Dashboard",
-		href: "/",
+		href: "/"
 	},
 	{
 		icon: Compass,
 		label: "Browse",
-		href: "/search",
-	},
+		href: "/search"
+	}
 ]
 
 const teacherRoutes = [
 	{
 		icon: List,
 		label: "Courses",
-		href: "/teacher/courses",
+		href: "/teacher/courses"
 	},
 	{
 		icon: BarChart,
 		label: "Analytics",
-		href: "/teacher/analytics",
-	},
+		href: "/teacher/analytics"
+	}
 ]
 
 export const SidebarRoutes = () => {

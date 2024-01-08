@@ -18,12 +18,12 @@ interface AttachmentFormProps {
 }
 
 const formSchema = z.object({
-	url: z.string().min(1),
+	url: z.string().min(1)
 })
 
 export const AttachmentForm = ({
 	initialData,
-	courseId,
+	courseId
 }: AttachmentFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 	const [deletingId, setDeletingId] = useState<string | null>(null)
