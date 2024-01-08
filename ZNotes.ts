@@ -9,5 +9,12 @@
 7- rich text editor
 8- multi step form
 9- image upload with upload thing, also these is video and files upload
+0- clerk auth
+*/
+//#endregion
+//#region // < 0- clerk auth
+/*
+1- follow the docs
+  https://clerk.com/docs/quickstarts/nextjs
 */
 //#endregion
