@@ -29,6 +29,8 @@
 //#region // < 9-1-2024
 /*
 1- if you wanna consistency between all of the childs of a container, use grid. If you wanna the childs to take only the space they need, use flex
+  no this is wrong, flex should be able to stretch it's child even if we didn't specify the height explicitly
+    this is a css mestery, envolving, fixed 'change in the context flow' and other stuff
 2- in radixUI adding asChild on the parent will pass both the aria-labels and the styles to the child
 */
 //#endregion
