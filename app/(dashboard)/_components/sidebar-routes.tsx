@@ -9,12 +9,12 @@ const guestRoutes = [
 	{
 		icon: Layout,
 		label: "Dashboard",
-		href: "/"
+		activePath: "/"
 	},
 	{
 		icon: Compass,
 		label: "Browse",
-		href: "/search"
+		activePath: "/search"
 	}
 ]
 
@@ -22,12 +22,12 @@ const teacherRoutes = [
 	{
 		icon: List,
 		label: "Courses",
-		href: "/teacher/courses"
+		activePath: "/teacher/courses"
 	},
 	{
 		icon: BarChart,
 		label: "Analytics",
-		href: "/teacher/analytics"
+		activePath: "/teacher/analytics"
 	}
 ]
 
@@ -42,10 +42,10 @@ export const SidebarRoutes = () => {
 		<div className="flex flex-col w-full">
 			{routes.map((route) => (
 				<SidebarItem
-					key={route.href}
+					key={route.activePath}
 					icon={route.icon}
 					label={route.label}
-					href={route.href}
+					activePath={route.activePath}
 				/>
 			))}
 		</div>
