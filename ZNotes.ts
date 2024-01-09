@@ -32,6 +32,8 @@
   no this is wrong, flex should be able to stretch it's child even if we didn't specify the height explicitly
     this is a css mestery, envolving, fixed 'change in the context flow' and other stuff
 2- in radixUI adding asChild on the parent will pass both the aria-labels and the styles to the child
+3- you should be carful with ignored files while moving arround in git history
+  I ignored 2 files then I chicked out an old commit, did some changes that I didn't wanna save, so to be able to git back, I had to discard these changes, while doing that I deleted the 2 ignored files, as they weren't ignored in the old commit, so git removed them while discarding the changes, as they were considered as new files, then when I came back to the latest commit, I found that the 2 files are gone, and there is no way to get them back, as they were never tracked by git
 */
 //#endregion
 //#endregion
