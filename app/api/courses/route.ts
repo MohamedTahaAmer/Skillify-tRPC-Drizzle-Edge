@@ -3,6 +3,7 @@ import { NextResponse } from "next/server"
 
 import { db } from "@/lib/db"
 import { isTeacher } from "@/lib/teacher"
+import { revalidatePath } from "next/cache"
 
 export async function POST(req: Request) {
 	try {
@@ -19,6 +20,7 @@ export async function POST(req: Request) {
 				title
 			}
 		})
+		revalidatePath("/teacher/courses")
 
 		return NextResponse.json(course)
 	} catch (error) {

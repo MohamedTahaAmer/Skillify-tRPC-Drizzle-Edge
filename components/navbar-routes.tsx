@@ -1,17 +1,16 @@
 "use client"
 
-import { UserButton, useAuth } from "@clerk/nextjs"
-import { usePathname } from "next/navigation"
+import { UserButton } from "@clerk/nextjs"
 import { LogOut } from "lucide-react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { isTeacher } from "@/lib/teacher"
 
 import { SearchInput } from "./search-input"
 
-export const NavbarRoutes = () => {
-	const { userId } = useAuth()
+export const NavbarRoutes = ({ userId }: { userId: string | null }) => {
 	const pathname = usePathname()
 
 	const isTeacherPage = pathname?.startsWith("/teacher")
@@ -27,20 +26,20 @@ export const NavbarRoutes = () => {
 			)}
 			<div className="flex gap-x-2 ml-auto">
 				{isTeacherPage || isCoursePage ? (
-					<Link href="/">
-						<Button size="sm" variant="ghost">
-							<LogOut className="h-4 w-4 mr-2" />
-							Exit
-						</Button>
+					<Link className={buttonVariants({ variant: "ghost" })} href="/">
+						<LogOut className="h-4 w-4 mr-2" />
+						Exit
 					</Link>
 				) : isTeacher(userId) ? (
 					<Link href="/teacher/courses">
-						<Button size="sm" variant="ghost">
+						<Button size="sm" variant="secondary">
 							Teacher mode
 						</Button>
 					</Link>
 				) : null}
-				<UserButton afterSignOutUrl="/" />
+				<div className="w-8 aspect-square">
+					<UserButton afterSignOutUrl="/" />
+				</div>
 			</div>
 		</>
 	)
