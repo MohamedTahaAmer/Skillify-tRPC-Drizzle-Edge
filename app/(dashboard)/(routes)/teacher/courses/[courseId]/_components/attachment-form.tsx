@@ -109,7 +109,7 @@ export const AttachmentForm = ({
 				<div>
 					<FileUpload
 						endpoint="courseAttachment"
-						onChange={(url) => {
+						onUploadComplete={(url) => {
 							if (url) {
 								onSubmit({ url: url })
 							}

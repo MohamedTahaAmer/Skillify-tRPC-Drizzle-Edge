@@ -9,8 +9,8 @@
 6- drag and drop reordering
 7- rich text editor
 8- multi step form
-9- image upload with upload thing, also these is video and files upload
-0- clerk auth
+9- image upload with upload thing, also there are video and files upload
+. 0- clerk auth
 */
 //#endregion
 //#region // < 0- clerk auth
@@ -39,6 +39,7 @@
 //#region // < 10-1-2024
 /*
 1- never use the UserButton from clerk, as it makes two http requests on the client to get the user data, and each request takes at leas 250ms, the http request also returns a huge payload full of unneeded data
+2- This is the best setup for file uploades I have looked at so far, looks like I'll be sticking to uploadthing instead of cloudinary, 'I never used the other options cloudinary provides anyway'
 */
 //#endregion
 //#endregion

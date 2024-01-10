@@ -1,16 +1,15 @@
 "use client"
 
-import * as z from "zod"
+import { Course } from "@prisma/client"
 import axios from "axios"
-import { Pencil, PlusCircle, ImageIcon } from "lucide-react"
+import { ImageIcon, Pencil, PlusCircle } from "lucide-react"
+import Image from "next/image"
 import { useState } from "react"
 import toast from "react-hot-toast"
-import { useRouter } from "next/navigation"
-import { Course } from "@prisma/client"
-import Image from "next/image"
+import * as z from "zod"
 
-import { Button } from "@/components/ui/button"
 import { FileUpload } from "@/components/file-upload"
+import { Button } from "@/components/ui/button"
 
 interface ImageFormProps {
 	initialData: Course
@@ -25,35 +24,32 @@ const formSchema = z.object({
 
 export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
+	const [img, setImg] = useState(initialData.imageUrl)
 
 	const toggleEdit = () => setIsEditing((current) => !current)
-
-	const router = useRouter()
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		try {
 			await axios.patch(`/api/courses/${courseId}`, values)
 			toast.success("Course updated")
-			toggleEdit()
-			router.refresh()
 		} catch {
 			toast.error("Something went wrong")
 		}
 	}
 
 	return (
-		<div className="mt-6 border bg-slate-100 rounded-md p-4">
+		<div className="mt-6 border h-[347px] flex flex-col justify-center bg-slate-100 rounded-md p-4">
 			<div className="font-medium flex items-center justify-between">
 				Course image
 				<Button onClick={toggleEdit} variant="ghost">
 					{isEditing && <>Cancel</>}
-					{!isEditing && !initialData.imageUrl && (
+					{!isEditing && !img && (
 						<>
 							<PlusCircle className="h-4 w-4 mr-2" />
 							Add an image
 						</>
 					)}
-					{!isEditing && initialData.imageUrl && (
+					{!isEditing && img && (
 						<>
 							<Pencil className="h-4 w-4 mr-2" />
 							Edit image
@@ -62,8 +58,8 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 				</Button>
 			</div>
 			{!isEditing &&
-				(!initialData.imageUrl ? (
-					<div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
+				(!img ? (
+					<div className="flex items-center justify-center grow bg-slate-200 rounded-md">
 						<ImageIcon className="h-10 w-10 text-slate-500" />
 					</div>
 				) : (
@@ -72,16 +68,19 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 							alt="Upload"
 							fill
 							className="object-cover rounded-md"
-							src={initialData.imageUrl}
+							src={img}
 						/>
 					</div>
 				))}
 			{isEditing && (
 				<div>
 					<FileUpload
+						className="m-0 h-[241.6px]"
 						endpoint="courseImage"
-						onChange={(url) => {
+						onUploadComplete={(url) => {
 							if (url) {
+								setImg(url)
+								setIsEditing(false)
 								onSubmit({ imageUrl: url })
 							}
 						}}
