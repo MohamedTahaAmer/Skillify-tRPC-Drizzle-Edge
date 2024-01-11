@@ -3,14 +3,16 @@
 /*
 1- the prgress bar
 . 2- the navigation side bar with background and an indicator stripe
-3- the alart banner
-4- how to track the video watch time progress
-5- confitty animation
+. 3- the alart banner
+. 4- how to track the video watch time progress
+. 5- confitty animation
 . 6- drag and drop reordering
 . 7- rich text editor
 . 8- multi step form, 
 . 9- image upload with upload thing, also there are video and files upload
 . 0- clerk auth
+. 1- How to create an alert modal without using a global state
+. 2- Search box using the URL query params
 */
 //#endregion
 //#region // < Daily Notes
@@ -82,6 +84,52 @@
     MUX should be storing the video and creating the different qualities for us
 
     using the free teer with no credit card, you are limited to 10sec videos and a huge watermark, you can enter your credit card and get a generous much more free teer, but you will be charged if you exceed the free teer limits
+
+4- the banner 
+  it's just a div that's rendered condionally at the top of the page, 
+
+5- Alert Modal
+  you can use the alert modal from shadcn, you pass it a button as a trigger, and if that button is clicked, the modal will be shown, and inside the content of the modal, you have a dialog cancel, and a dialog action buttons
+
+6- the confitty animation
+  it's just a component that you get from an npm library called 'react-confetti' and you control it's apperance by a global state
+    you create a provider for it on the root layout, and if it's state is null, it displayes no thing, and you can open this state from any where to show the animation
+
+7- the Search Box
+  1- to Search on input change with debounce
+	  const debouncedValue = useDebounce(value)
+      - this is our own useDebounce hook, and it's default debounce time is 500ms
+    useEffect(() => {
+      const url = qs.stringifyUrl(
+        - this qs is an npm library that makes it easier to work with query params
+        {
+          url: pathname,
+          query: {
+            categoryId: currentCategoryId,
+            title: debouncedValue
+          }
+        },
+        { skipEmptyString: true, skipNull: true }
+      )
+
+      router.push(url)
+    }, [debouncedValue, currentCategoryId, router, pathname])
+
+  2- to Search on input submit
+    const onClick = () => {
+      const url = qs.stringifyUrl(
+        {
+          url: pathname,
+          query: {
+            title: currentTitle,
+            categoryId: isSelected ? null : value
+          }
+        },
+        { skipNull: true, skipEmptyString: true }
+      )
+
+      router.push(url)
+    }
 
 */
 //#endregion
