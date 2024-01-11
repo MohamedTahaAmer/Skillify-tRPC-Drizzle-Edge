@@ -7,16 +7,10 @@
 4- how to track the video watch time progress
 5- confitty animation
 . 6- drag and drop reordering
-7- rich text editor
+. 7- rich text editor
 . 8- multi step form, 
 . 9- image upload with upload thing, also there are video and files upload
 . 0- clerk auth
-*/
-//#endregion
-//#region // < 0- clerk auth
-/*
-1- follow the docs
-  https://clerk.com/docs/quickstarts/nextjs
 */
 //#endregion
 //#region // < Daily Notes
@@ -24,6 +18,9 @@
 /*
 1- In tailwind you can control both the ring and ring-offset colors and widths
 2- while doing the active href track, manage both exact match and nested child routes
+3- clerk auth
+  - follow the docs
+  https://clerk.com/docs/quickstarts/nextjs
 */
 //#endregion
 //#region // < 9-1-2024
@@ -57,6 +54,18 @@
   Now we need to update the list order state, and also if we need to persist the order, we need to send a request to the server to update the position of the changed items, 
     and we don't make a request for all the list, we wanna just send a request for the itmes that changed position only
       this may be a bit complicated, but just grap the logic from this project, it's working fine
+
+2- the rich text editor
+  - using what quill provides out of the box is enough for text editing, and setting it up was pretty easy
+  - if you wanna add images and links preview, you need to use Editor.JS from the Rooms Project
+    to set it up
+      1- we prevent it from rendering on the server 'ssr: false'
+      2- we have to components, one for editing 'Editor' and one for previewing 'Preview'
+      3- note that we import some CSS files during the setup
+
+  - Notes
+    1- rendering it with no ssr, we had to calculate the epected height of the text preview, and assign a space for it, so the page doesn't jump when the editor is rendered 'cumulative layout shift'
+    2- rendering it with ssr, will cause an error that will cause the hole page to be rendered on the client only, 'the ssr will be a blank page'
 */
 //#endregion
 //#endregion

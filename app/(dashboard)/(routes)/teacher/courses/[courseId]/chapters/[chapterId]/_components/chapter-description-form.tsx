@@ -1,15 +1,18 @@
 "use client"
 
-import * as z from "zod"
-import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { Pencil } from "lucide-react"
-import { useState } from "react"
-import toast from "react-hot-toast"
-import { useRouter } from "next/navigation"
 import { Chapter } from "@prisma/client"
+import axios from "axios"
+import { Pencil } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import toast from "react-hot-toast"
+import * as z from "zod"
 
+import { Editor } from "@/components/editor"
+import { Preview } from "@/components/preview"
+import { Button } from "@/components/ui/button"
 import {
 	Form,
 	FormControl,
@@ -17,10 +20,8 @@ import {
 	FormItem,
 	FormMessage
 } from "@/components/ui/form"
-import { Button } from "@/components/ui/button"
+import { quillHeightCalculator } from "@/lib/quill-height-calculator"
 import { cn } from "@/lib/utils"
-import { Editor } from "@/components/editor"
-import { Preview } from "@/components/preview"
 
 interface ChapterDescriptionFormProps {
 	initialData: Chapter
@@ -66,6 +67,10 @@ export const ChapterDescriptionForm = ({
 		}
 	}
 
+	let { previewHeight, editorHeight } = quillHeightCalculator(
+		initialData.description
+	)
+
 	return (
 		<div className="mt-6 border bg-slate-100 rounded-md p-4">
 			<div className="font-medium flex items-center justify-between">
@@ -90,7 +95,11 @@ export const ChapterDescriptionForm = ({
 				>
 					{!initialData.description && "No description"}
 					{initialData.description && (
-						<Preview value={initialData.description} />
+						<>
+							<div style={{ height: previewHeight }}>
+								<Preview value={initialData.description} />
+							</div>
+						</>
 					)}
 				</div>
 			)}
@@ -106,7 +115,9 @@ export const ChapterDescriptionForm = ({
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
-										<Editor {...field} />
+										<div style={{ height: editorHeight }}>
+											<Editor {...field} />
+										</div>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
