@@ -66,6 +66,23 @@
   - Notes
     1- rendering it with no ssr, we had to calculate the epected height of the text preview, and assign a space for it, so the page doesn't jump when the editor is rendered 'cumulative layout shift'
     2- rendering it with ssr, will cause an error that will cause the hole page to be rendered on the client only, 'the ssr will be a blank page'
+    3- we can customize some of the styles using the css classes provided by quill
+      .ql-container {
+        font-size: 16px !important;
+      }
+
+3- Video Uploading
+  1- we upload the video to uploadthing and get the URL
+  2- we create a new MUX Video.Asset using the URL
+  3- we store the assetId and playbackId in the database
+    assetId is used to delete the video if needed, and playbackId is used to play the video using the MUXPlayer component
+  4- we use the MUXPlayer component to play the video
+    this component have alot of events, like onEnded, and I think we can track the watch time using these events
+  5- I think after we create the Video.Assets on MUX we can delete the video from uploadthing, as we don't need it anymore
+    MUX should be storing the video and creating the different qualities for us
+
+    using the free teer with no credit card, you are limited to 10sec videos and a huge watermark, you can enter your credit card and get a generous much more free teer, but you will be charged if you exceed the free teer limits
+
 */
 //#endregion
 //#endregion

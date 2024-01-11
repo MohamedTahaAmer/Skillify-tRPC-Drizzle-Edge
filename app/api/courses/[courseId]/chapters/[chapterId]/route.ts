@@ -9,10 +9,11 @@ const { Video } = new Mux(
 	process.env.MUX_TOKEN_SECRET!
 )
 
-export async function DELETE(
-	req: Request,
-	{ params }: { params: { courseId: string; chapterId: string } }
-) {
+export async function DELETE({
+	params
+}: {
+	params: { courseId: string; chapterId: string }
+}) {
 	try {
 		const { userId } = auth()
 
@@ -50,6 +51,7 @@ export async function DELETE(
 			})
 
 			if (existingMuxData) {
+				// >(11-1-2024:3)
 				await Video.Assets.del(existingMuxData.assetId)
 				await db.muxData.delete({
 					where: {
@@ -139,6 +141,7 @@ export async function PATCH(
 				})
 			}
 
+			// >(11-1-2024:3)
 			const asset = await Video.Assets.create({
 				input: values.videoUrl,
 				playback_policy: "public",
@@ -148,7 +151,10 @@ export async function PATCH(
 			await db.muxData.create({
 				data: {
 					chapterId: params.chapterId,
+					// >(11-1-2024:3)
+					// - assetId is id of your video on MUX platform, we use it incase we need to delete the video
 					assetId: asset.id,
+					// - the playbackId is the id of the video on MUX platform, we use it to play the video using the MUXPlayer component
 					playbackId: asset.playback_ids?.[0]?.id
 				}
 			})

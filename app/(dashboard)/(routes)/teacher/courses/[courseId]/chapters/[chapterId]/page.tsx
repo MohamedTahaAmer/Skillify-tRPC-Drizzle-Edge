@@ -116,11 +116,11 @@ const ChapterIdPage = async ({
 							<IconBadge icon={Video} />
 							<h2 className="text-xl">Add a video</h2>
 						</div>
-						{/* <ChapterVideoForm
+						<ChapterVideoForm
 							initialData={chapter}
 							chapterId={params.chapterId}
 							courseId={params.courseId}
-						/> */}
+						/>
 					</div>
 				</div>
 			</div>
