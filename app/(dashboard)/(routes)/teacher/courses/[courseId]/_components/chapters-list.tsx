@@ -31,11 +31,17 @@ export const ChaptersList = ({
 		setIsMounted(true)
 	}, [])
 
-	useEffect(() => {
-		setChapters(items)
-	}, [items])
+	// - I'm Commenting this out, cause I haven't been able to test the benefit of it, tell now it seems to work fine without it
+	// useEffect(() => {
+	// 	setChapters(items)
+	// }, [items])
+
+	if (!isMounted) {
+		return null
+	}
 
 	const onDragEnd = (result: DropResult) => {
+		console.log("Expression")
 		if (!result.destination) return
 
 		const items = Array.from(chapters)
@@ -57,30 +63,27 @@ export const ChaptersList = ({
 		onReorder(bulkUpdateData)
 	}
 
-	if (!isMounted) {
-		return null
-	}
-
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
 			<Droppable droppableId="chapters">
-				{(provided) => (
-					<div {...provided.droppableProps} ref={provided.innerRef}>
+				{(droppable) => (
+					<div {...droppable.droppableProps} ref={droppable.innerRef}>
 						{chapters.map((chapter, index) => (
 							<Draggable
+								// - this Draggable needs a children of type function not of type JSX like the usuall children are,
 								key={chapter.id}
 								draggableId={chapter.id}
 								index={index}
 							>
-								{(provided) => (
+								{(draggable) => (
 									<div
 										className={cn(
 											"flex items-center gap-x-2 bg-slate-200 border-slate-200 border text-slate-700 rounded-md mb-4 text-sm",
 											chapter.isPublished &&
 												"bg-sky-100 border-sky-200 text-sky-700"
 										)}
-										ref={provided.innerRef}
-										{...provided.draggableProps}
+										ref={draggable.innerRef}
+										{...draggable.draggableProps}
 									>
 										<div
 											className={cn(
@@ -88,7 +91,7 @@ export const ChaptersList = ({
 												chapter.isPublished &&
 													"border-r-sky-200 hover:bg-sky-200"
 											)}
-											{...provided.dragHandleProps}
+											{...draggable.dragHandleProps}
 										>
 											<Grip className="h-5 w-5" />
 										</div>
@@ -112,7 +115,7 @@ export const ChaptersList = ({
 								)}
 							</Draggable>
 						))}
-						{provided.placeholder}
+						{droppable.placeholder}
 					</div>
 				)}
 			</Droppable>

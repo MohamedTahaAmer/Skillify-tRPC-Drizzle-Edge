@@ -1,10 +1,8 @@
 "use client"
-
 import toast from "react-hot-toast"
 
 import { UploadDropzone } from "@/lib/uploadthing"
 import { ourFileRouter } from "@/app/api/uploadthing/core"
-import { on } from "events"
 
 interface FileUploadProps {
 	onUploadComplete: (url?: string) => void

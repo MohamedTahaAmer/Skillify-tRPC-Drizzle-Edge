@@ -6,10 +6,10 @@
 3- the alart banner
 4- how to track the video watch time progress
 5- confitty animation
-6- drag and drop reordering
+. 6- drag and drop reordering
 7- rich text editor
-8- multi step form
-9- image upload with upload thing, also there are video and files upload
+. 8- multi step form, 
+. 9- image upload with upload thing, also there are video and files upload
 . 0- clerk auth
 */
 //#endregion
@@ -40,6 +40,23 @@
 /*
 1- never use the UserButton from clerk, as it makes two http requests on the client to get the user data, and each request takes at leas 250ms, the http request also returns a huge payload full of unneeded data
 2- This is the best setup for file uploades I have looked at so far, looks like I'll be sticking to uploadthing instead of cloudinary, 'I never used the other options cloudinary provides anyway'
+3- multi step form, It's actually a set of separate forms, each one is calling it's own endpoint
+*/
+//#endregion
+//#region // < 11-1-2024
+/*
+1- react-beautify-dnd is no longer maintained, so we used '@hello-pangea/dnd'
+  the way it works is like this
+    - you create a dnd context that will wrap what can be dragged and where it can be dropped
+    - inside you create a droppable zone
+    - inside you create a draggable item
+    - inside you create a handle for the draggable item 'this handle will be used to drag the item arround'
+      along side the drag handle you can have normal elements
+        > this is How the functionality works
+
+  Now we need to update the list order state, and also if we need to persist the order, we need to send a request to the server to update the position of the changed items, 
+    and we don't make a request for all the list, we wanna just send a request for the itmes that changed position only
+      this may be a bit complicated, but just grap the logic from this project, it's working fine
 */
 //#endregion
 //#endregion
