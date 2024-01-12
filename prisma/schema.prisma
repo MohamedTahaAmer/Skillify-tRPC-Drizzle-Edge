@@ -90,7 +90,7 @@ model Purchase {
 model StripeCustomer {
   id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId           String   @unique
-  stripeCustomerId String   @unique @db.Uuid
+  stripeCustomerId String   @unique
   createdAt        DateTime @default(dbgenerated("now()"))
   updatedAt        DateTime @default(dbgenerated("now()")) @updatedAt
 }

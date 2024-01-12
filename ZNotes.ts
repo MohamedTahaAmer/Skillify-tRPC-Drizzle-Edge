@@ -1,7 +1,7 @@
 // prettier-ignore
 //#region // < LMS Platform: Next 13, React, Stripe, Mux, Prisma, Tailwind, MySQL | Udemy Clone
 /*
-1- the prgress bar
+. 1- the prgress bar
 . 2- the navigation side bar with background and an indicator stripe
 . 3- the alart banner
 . 4- how to track the video watch time progress
@@ -131,6 +131,14 @@
       router.push(url)
     }
 
+*/
+//#endregion
+//#region // < 12-1-2024
+/*
+1- the progress bar
+  it's a shadcn component, that you just pass the value to as presentage
+    the shadcn version doesn't have variants, but Antonio has added some variants to it
+      I don't like this way of adding variants for each color change, I should just pass the color I want in a class name, and tailwind merge will make sure that the last class is the one being applied
 */
 //#endregion
 //#endregion

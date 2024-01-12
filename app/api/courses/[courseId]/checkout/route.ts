@@ -40,20 +40,6 @@ export async function POST(
 			return new NextResponse("Not found", { status: 404 })
 		}
 
-		const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [
-			{
-				quantity: 1,
-				price_data: {
-					currency: "USD",
-					product_data: {
-						name: course.title,
-						description: course.description!
-					},
-					unit_amount: Math.round(course.price! * 100)
-				}
-			}
-		]
-
 		let stripeCustomer = await db.stripeCustomer.findUnique({
 			where: {
 				userId: user.id
@@ -76,6 +62,21 @@ export async function POST(
 			})
 		}
 
+		const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [
+			{
+				quantity: 1,
+				price_data: {
+					currency: "USD",
+					product_data: {
+						name: course.title,
+						description: course.description || ""
+					},
+					unit_amount: Math.round(course.price! * 100)
+				}
+			}
+		]
+
+		// >(10-1-2024) creating a checkout session on the fly
 		const session = await stripe.checkout.sessions.create({
 			customer: stripeCustomer.stripeCustomerId,
 			line_items,

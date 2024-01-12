@@ -6,6 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+// >(12-1-2024:1)
 const progressVariants = cva("h-full w-full flex-1 bg-primary transition-all", {
 	variants: {
 		variant: {

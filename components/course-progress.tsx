@@ -24,6 +24,7 @@ export const CourseProgress = ({
 }: CourseProgressProps) => {
 	return (
 		<div>
+			{/* // >(12-1-2024:1) */}
 			<Progress className="h-2" value={value} variant={variant} />
 			<p
 				className={cn(
