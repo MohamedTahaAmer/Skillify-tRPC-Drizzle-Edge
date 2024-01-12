@@ -154,6 +154,8 @@
       when the page refreshes, it will get the new list and pass it to the chapters component 'itmes', but it's already mounted, so changing the 'itmes' passed to it, will trigger a re-render, but hence we are displaying the chapter list from a state 'chapters', the re-render won't update the state, henve the component is already mounted, the only thing that will update the state is calling 'setChapters', and we can't call it in the main body, so inside a useEffect that will listen to 'itmes' changes we will call 'setChapters' this way we make sure that our component is synced with the data that comes from the server 'the parent server component'
         I'd like to call this useEffect 'the sync useEffect'
           note all of that is because router.refresh() doesn't unmount the page, it keeps it and just re-execute the parent server component, then if the client components gets new props, they will be re-rendered too.
+4- Bar chart using recharts
+  it's a bunch components that you import and just pass the data in the correct format to the wrapper
 */
 //#endregion
 //#endregion
