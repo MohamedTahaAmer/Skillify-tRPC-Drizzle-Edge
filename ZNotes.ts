@@ -13,6 +13,8 @@
 . 0- clerk auth
 . 1- How to create an alert modal without using a global state
 . 2- Search box using the URL query params
+. 3- simple table with client side sorting in all the fields
+. 4- Simple bar chart using recharts
 */
 //#endregion
 //#region // < Daily Notes
@@ -139,6 +141,19 @@
   it's a shadcn component, that you just pass the value to as presentage
     the shadcn version doesn't have variants, but Antonio has added some variants to it
       I don't like this way of adding variants for each color change, I should just pass the color I want in a class name, and tailwind merge will make sure that the last class is the one being applied
+
+2- Table
+  this table is just using JS to do the sorting, no params are added to the url to track the current sorting state, and there is no Icon change with each different serting order
+
+3- useEffect to Sync with the server
+  - in // >(12-1-2024:3.1) i'm 
+    1- making a request to the server to add a new chapter to the list of chapters
+    2- toggling the create boolean, so the chapters list will be mounted again, 
+      this will mount the chapters with the old chapter list,
+    3- refreshing the current page, so the page will make a new request to get the updated list of chapters
+      when the page refreshes, it will get the new list and pass it to the chapters component 'itmes', but it's already mounted, so changing the 'itmes' passed to it, will trigger a re-render, but hence we are displaying the chapter list from a state 'chapters', the re-render won't update the state, henve the component is already mounted, the only thing that will update the state is calling 'setChapters', and we can't call it in the main body, so inside a useEffect that will listen to 'itmes' changes we will call 'setChapters' this way we make sure that our component is synced with the data that comes from the server 'the parent server component'
+        I'd like to call this useEffect 'the sync useEffect'
+          note all of that is because router.refresh() doesn't unmount the page, it keeps it and just re-execute the parent server component, then if the client components gets new props, they will be re-rendered too.
 */
 //#endregion
 //#endregion

@@ -1,17 +1,17 @@
 "use client"
 
-import { Chapter } from "@prisma/client"
-import { useEffect, useState } from "react"
 import {
 	DragDropContext,
-	Droppable,
 	Draggable,
-	DropResult
+	DropResult,
+	Droppable
 } from "@hello-pangea/dnd"
+import { Chapter } from "@prisma/client"
 import { Grip, Pencil } from "lucide-react"
+import { useEffect, useState } from "react"
 
-import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
+import { cn } from "@/lib/utils"
 
 interface ChaptersListProps {
 	items: Chapter[]
@@ -31,10 +31,9 @@ export const ChaptersList = ({
 		setIsMounted(true)
 	}, [])
 
-	// - I'm Commenting this out, cause I haven't been able to test the benefit of it, tell now it seems to work fine without it
-	// useEffect(() => {
-	// 	setChapters(items)
-	// }, [items])
+	useEffect(() => {
+		setChapters(items)
+	}, [items])
 
 	if (!isMounted) {
 		return (

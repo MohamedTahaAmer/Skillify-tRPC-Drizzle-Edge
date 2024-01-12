@@ -1,5 +1,5 @@
-import Mux from "@mux/mux-node"
 import { auth } from "@clerk/nextjs"
+import Mux from "@mux/mux-node"
 import { NextResponse } from "next/server"
 
 import { db } from "@/lib/db"
@@ -9,11 +9,14 @@ const { Video } = new Mux(
 	process.env.MUX_TOKEN_SECRET!
 )
 
-export async function DELETE({
-	params
-}: {
-	params: { courseId: string; chapterId: string }
-}) {
+export async function DELETE(
+	req: Request,
+	{
+		params
+	}: {
+		params: { courseId: string; chapterId: string }
+	}
+) {
 	try {
 		const { userId } = auth()
 

@@ -1,24 +1,24 @@
 import { auth } from "@clerk/nextjs"
-import { redirect } from "next/navigation"
 import {
 	CircleDollarSign,
 	File,
 	LayoutDashboard,
 	ListChecks
 } from "lucide-react"
+import { redirect } from "next/navigation"
 
-import { db } from "@/lib/db"
-import { IconBadge } from "@/components/icon-badge"
 import { Banner } from "@/components/banner"
+import { IconBadge } from "@/components/icon-badge"
+import { db } from "@/lib/db"
 
-import { TitleForm } from "./_components/title-form"
+import { Actions } from "./_components/actions"
+import { AttachmentForm } from "./_components/attachment-form"
+import { CategoryForm } from "./_components/category-form"
+import { ChaptersForm } from "./_components/chapters-form"
 import { DescriptionForm } from "./_components/description-form"
 import { ImageForm } from "./_components/image-form"
-import { CategoryForm } from "./_components/category-form"
 import { PriceForm } from "./_components/price-form"
-import { AttachmentForm } from "./_components/attachment-form"
-import { ChaptersForm } from "./_components/chapters-form"
-import { Actions } from "./_components/actions"
+import { TitleForm } from "./_components/title-form"
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
 	const { userId } = auth()
