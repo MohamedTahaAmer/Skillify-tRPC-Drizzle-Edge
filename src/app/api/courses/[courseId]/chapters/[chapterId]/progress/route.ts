@@ -9,7 +9,7 @@ export async function PUT(
 ) {
 	try {
 		const { userId } = auth()
-		const { isCompleted } = await req.json()
+		const { isCompleted } = (await req.json()) as { isCompleted: boolean }
 
 		if (!userId) {
 			return new NextResponse("Unauthorized", { status: 401 })

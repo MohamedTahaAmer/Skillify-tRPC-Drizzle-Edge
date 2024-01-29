@@ -20,24 +20,18 @@ export const CourseEnrollButton = ({
 	let checkout = api.courses.checkout.useMutation({
 		onSuccess(data, _variables, _context) {
 			window.location.assign(data.url ?? "")
+		},
+		onError(error, _variables, _context) {
+			toast.error(error.message)
+		},
+		onSettled(_data, _error, _variables, _context) {
+			setIsLoading(false)
 		}
 	})
 
-	const onClick = async () => {
-		try {
-			setIsLoading(true)
-
-			checkout.mutate({ courseId })
-		} catch {
-			toast.error("Something went wrong")
-		} finally {
-			setIsLoading(false)
-		}
-	}
-
 	return (
 		<Button
-			onClick={onClick}
+			onClick={() => checkout.mutate({ courseId })}
 			disabled={isLoading}
 			size="sm"
 			className="w-full md:w-auto"
