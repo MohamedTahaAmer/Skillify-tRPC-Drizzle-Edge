@@ -3,10 +3,12 @@ import Mux from "@mux/mux-node"
 import { NextResponse } from "next/server"
 
 import { db } from "@/lib/db"
+import { env } from "@/env"
 
 const { Video } = new Mux(
-	process.env.MUX_TOKEN_ID!,
-	process.env.MUX_TOKEN_SECRET!
+	env.MUX_TOKEN_ID,
+
+	env.MUX_TOKEN_SECRET
 )
 
 export async function DELETE(

@@ -1,6 +1,5 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { seedCategories } from "@/scripts/Mine/seed-categories"
 import toast from "react-hot-toast"
 
 const Run = () => {
@@ -12,7 +11,7 @@ const Run = () => {
 		<>
 			<Button
 				onClick={onClick}
-				className="fixed top-0 left-48 z-[51]"
+				className="fixed left-48 top-0 z-[51]"
 				variant="ghost"
 			>
 				Run

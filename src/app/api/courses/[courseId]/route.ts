@@ -3,11 +3,10 @@ import { auth } from "@clerk/nextjs"
 import { NextResponse } from "next/server"
 
 import { db } from "@/lib/db"
+import { env } from "@/env"
+import type { Course } from "@prisma/client"
 
-const { Video } = new Mux(
-	process.env.MUX_TOKEN_ID!,
-	process.env.MUX_TOKEN_SECRET!
-)
+const { Video } = new Mux(env.MUX_TOKEN_ID, env.MUX_TOKEN_SECRET)
 
 export async function DELETE(
 	req: Request,
@@ -66,7 +65,7 @@ export async function PATCH(
 	try {
 		const { userId } = auth()
 		const { courseId } = params
-		const values = await req.json()
+		const values = (await req.json()) as Course
 
 		if (!userId) {
 			return new NextResponse("Unauthorized", { status: 401 })

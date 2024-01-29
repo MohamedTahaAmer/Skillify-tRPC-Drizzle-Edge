@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 
 import { db } from "@/lib/db"
 import { stripe } from "@/lib/stripe"
+import { env } from "@/env"
 
 export async function POST(
 	req: Request,
@@ -81,8 +82,8 @@ export async function POST(
 			customer: stripeCustomer.stripeCustomerId,
 			line_items,
 			mode: "payment",
-			success_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?success=1`,
-			cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?canceled=1`,
+			success_url: `${env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?success=1`,
+			cancel_url: `${env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?canceled=1`,
 			metadata: {
 				courseId: course.id,
 				userId: user.id

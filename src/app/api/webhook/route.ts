@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 
 import { stripe } from "@/lib/stripe"
 import { db } from "@/lib/db"
+import { env } from "@/env"
 
 export async function POST(req: Request) {
 	const body = await req.text()
@@ -15,7 +16,7 @@ export async function POST(req: Request) {
 		event = stripe.webhooks.constructEvent(
 			body,
 			signature,
-			process.env.STRIPE_WEBHOOK_SECRET!
+			env.STRIPE_WEBHOOK_SECRET!
 		)
 	} catch (error: any) {
 		return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 })

@@ -1,7 +1,6 @@
-const { withUt } = require("uploadthing/tw")
+import { type Config } from "tailwindcss"
 
-/** @type {import('tailwindcss').Config} */
-module.exports = withUt({
+export default {
 	darkMode: ["class"],
 	content: [
 		"./pages/**/*.{ts,tsx}",
@@ -60,12 +59,12 @@ module.exports = withUt({
 			},
 			keyframes: {
 				"accordion-down": {
-					from: { height: 0 },
+					from: { height: "0" },
 					to: { height: "var(--radix-accordion-content-height)" }
 				},
 				"accordion-up": {
 					from: { height: "var(--radix-accordion-content-height)" },
-					to: { height: 0 }
+					to: { height: "0" }
 				}
 			},
 			animation: {
@@ -75,4 +74,4 @@ module.exports = withUt({
 		}
 	},
 	plugins: [require("tailwindcss-animate")]
-})
+} satisfies Config

@@ -1,24 +1,36 @@
 import { createEnv } from "@t3-oss/env-nextjs"
 import { z } from "zod"
-
 export const env = createEnv({
 	/**
 	 * Specify your server-side environment variables schema here. This way you can ensure the app
 	 * isn't built with invalid env vars.
 	 */
 	server: {
-		DATABASE_URL: z
-			.string()
-			.url()
-			.refine(
-				(str) => !str.includes("YOUR_MYSQL_URL_HERE"),
-				"You forgot to change the default URL"
-			),
+		DATABASE_URL:
+			process.env.NODE_ENV === "production"
+				? z
+						.string()
+						.url()
+						.refine(
+							(str) => !str.includes("YOUR_MYSQL_URL_HERE"),
+							"You forgot to change the default URL"
+						)
+				: z
+						.string()
+						.refine(
+							(str) => !str.includes("YOUR_MYSQL_URL_HERE"),
+							"You forgot to change the default URL"
+						),
 		NODE_ENV: z
 			.enum(["development", "test", "production"])
 			.default("development"),
-
-		CLERK_SECRET_KEY: z.string()
+		CLERK_SECRET_KEY: z.string(),
+		MUX_TOKEN_ID: z.string(),
+		MUX_TOKEN_SECRET: z.string(),
+		UPLOADTHING_SECRET: z.string(),
+		UPLOADTHING_APP_ID: z.string(),
+		STRIPE_API_KEY: z.string(),
+		STRIPE_WEBHOOK_SECRET: z.string()
 	},
 
 	/**
@@ -32,7 +44,8 @@ export const env = createEnv({
 		NEXT_PUBLIC_CLERK_SIGN_UP_URL: z.string(),
 		NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: z.string(),
 		NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: z.string(),
-		NEXT_PUBLIC_APP_URL: z.string()
+		NEXT_PUBLIC_APP_URL: z.string(),
+		NEXT_PUBLIC_TEACHER_ID: z.string()
 	},
 
 	/**
@@ -40,9 +53,6 @@ export const env = createEnv({
 	 * middlewares) or client-side so we need to destruct manually.
 	 */
 	runtimeEnv: {
-		DATABASE_URL: process.env.DATABASE_URL,
-		NODE_ENV: process.env.NODE_ENV,
-		CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
 		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
 			process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
 		NEXT_PUBLIC_CLERK_SIGN_IN_URL: process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL,
@@ -51,7 +61,17 @@ export const env = createEnv({
 			process.env.NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL,
 		NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL:
 			process.env.NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL,
-		NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL
+		NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+		NEXT_PUBLIC_TEACHER_ID: process.env.NEXT_PUBLIC_TEACHER_ID,
+		CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+		MUX_TOKEN_ID: process.env.MUX_TOKEN_ID,
+		MUX_TOKEN_SECRET: process.env.MUX_TOKEN_SECRET,
+		UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
+		UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
+		STRIPE_API_KEY: process.env.STRIPE_API_KEY,
+		STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+		DATABASE_URL: process.env.DATABASE_URL,
+		NODE_ENV: process.env.NODE_ENV
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
