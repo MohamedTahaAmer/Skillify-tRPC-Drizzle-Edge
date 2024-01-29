@@ -161,8 +161,8 @@
 //#endregion
 //#region // < 29-1-2024
 /*
-0- use the src directory
-1- use the t3 env
+= 0- use the src directory
+= 1- use the t3 env
 2- use drizzle instead of prisma
 3- use trpc instead of api
 */
