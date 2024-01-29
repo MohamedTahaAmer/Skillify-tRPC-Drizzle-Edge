@@ -38,20 +38,20 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 	}
 
 	return (
-		<div className="mt-6 border h-[347px] flex flex-col justify-center bg-slate-100 rounded-md p-4">
-			<div className="font-medium flex items-center justify-between">
+		<div className="mt-6 flex h-[347px] flex-col justify-center rounded-md border bg-slate-100 p-4">
+			<div className="flex items-center justify-between font-medium">
 				Course image
 				<Button onClick={toggleEdit} variant="ghost">
 					{isEditing && <>Cancel</>}
 					{!isEditing && !img && (
 						<>
-							<PlusCircle className="h-4 w-4 mr-2" />
+							<PlusCircle className="mr-2 h-4 w-4" />
 							Add an image
 						</>
 					)}
 					{!isEditing && img && (
 						<>
-							<Pencil className="h-4 w-4 mr-2" />
+							<Pencil className="mr-2 h-4 w-4" />
 							Edit image
 						</>
 					)}
@@ -59,15 +59,15 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 			</div>
 			{!isEditing &&
 				(!img ? (
-					<div className="flex items-center justify-center grow bg-slate-200 rounded-md">
+					<div className="flex grow items-center justify-center rounded-md bg-slate-200">
 						<ImageIcon className="h-10 w-10 text-slate-500" />
 					</div>
 				) : (
-					<div className="relative aspect-video mt-2">
+					<div className="relative mt-2 aspect-video">
 						<Image
 							alt="Upload"
 							fill
-							className="object-cover rounded-md"
+							className="rounded-md object-cover"
 							src={img}
 						/>
 					</div>
@@ -85,7 +85,7 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 							}
 						}}
 					/>
-					<div className="text-xs text-muted-foreground mt-4">
+					<div className="mt-4 text-xs text-muted-foreground">
 						16:9 aspect ratio recommended
 					</div>
 				</div>

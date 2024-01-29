@@ -91,7 +91,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
 						isPublished={course.isPublished}
 					/>
 				</div>
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+				<div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">
 					<div>
 						<div className="flex items-center gap-x-2">
 							<IconBadge icon={LayoutDashboard} />

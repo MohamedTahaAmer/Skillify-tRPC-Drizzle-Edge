@@ -8,7 +8,7 @@ import { Pencil } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Course } from "@prisma/client";
+import type { Course } from "@prisma/client";
 
 import {
   Form,
@@ -46,7 +46,7 @@ export const CategoryForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      categoryId: initialData?.categoryId || ""
+      categoryId: initialData?.categoryId ?? ""
     },
   });
 
@@ -85,7 +85,7 @@ export const CategoryForm = ({
           "text-sm mt-2",
           !initialData.categoryId && "text-slate-500 italic"
         )}>
-          {selectedOption?.label || "No category"}
+          {selectedOption?.label ?? "No category"}
         </p>
       )}
       {isEditing && (
@@ -111,7 +111,7 @@ export const CategoryForm = ({
             />
             <div className="flex items-center gap-x-2">
               <Button
-                disabled={!isValid || isSubmitting}
+                disabled={!isValid ?? isSubmitting}
                 type="submit"
               >
                 Save

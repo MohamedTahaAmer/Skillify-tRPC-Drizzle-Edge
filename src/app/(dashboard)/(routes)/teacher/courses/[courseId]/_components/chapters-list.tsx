@@ -42,20 +42,20 @@ export const ChaptersList = ({
 					<div
 						key={chapter.id}
 						className={cn(
-							"flex items-center gap-x-2 bg-slate-200 border-slate-200 border text-slate-700 rounded-md mb-4 text-sm",
-							chapter.isPublished && "bg-sky-100 border-sky-200 text-sky-700"
+							"mb-4 flex items-center gap-x-2 rounded-md border border-slate-200 bg-slate-200 text-sm text-slate-700",
+							chapter.isPublished && "border-sky-200 bg-sky-100 text-sky-700"
 						)}
 					>
 						<div
 							className={cn(
-								"px-2 py-3 border-r border-r-slate-200 hover:bg-slate-300 rounded-l-md transition",
+								"rounded-l-md border-r border-r-slate-200 px-2 py-3 transition hover:bg-slate-300",
 								chapter.isPublished && "border-r-sky-200 hover:bg-sky-200"
 							)}
 						>
 							<Grip className="h-5 w-5" />
 						</div>
 						{chapter.title}
-						<div className="ml-auto pr-2 flex items-center gap-x-2">
+						<div className="ml-auto flex items-center gap-x-2 pr-2">
 							{chapter.isFree && <Badge>Free</Badge>}
 							<Badge
 								className={cn(
@@ -67,7 +67,7 @@ export const ChaptersList = ({
 							</Badge>
 							<Pencil
 								onClick={() => onEdit(chapter.id)}
-								className="w-4 h-4 cursor-pointer hover:opacity-75 transition"
+								className="h-4 w-4 cursor-pointer transition hover:opacity-75"
 							/>
 						</div>
 					</div>
@@ -113,16 +113,16 @@ export const ChaptersList = ({
 								{(draggable) => (
 									<div
 										className={cn(
-											"flex items-center gap-x-2 bg-slate-200 border-slate-200 border text-slate-700 rounded-md mb-4 text-sm",
+											"mb-4 flex items-center gap-x-2 rounded-md border border-slate-200 bg-slate-200 text-sm text-slate-700",
 											chapter.isPublished &&
-												"bg-sky-100 border-sky-200 text-sky-700"
+												"border-sky-200 bg-sky-100 text-sky-700"
 										)}
 										ref={draggable.innerRef}
 										{...draggable.draggableProps}
 									>
 										<div
 											className={cn(
-												"px-2 py-3 border-r border-r-slate-200 hover:bg-slate-300 rounded-l-md transition",
+												"rounded-l-md border-r border-r-slate-200 px-2 py-3 transition hover:bg-slate-300",
 												chapter.isPublished &&
 													"border-r-sky-200 hover:bg-sky-200"
 											)}
@@ -131,7 +131,7 @@ export const ChaptersList = ({
 											<Grip className="h-5 w-5" />
 										</div>
 										{chapter.title}
-										<div className="ml-auto pr-2 flex items-center gap-x-2">
+										<div className="ml-auto flex items-center gap-x-2 pr-2">
 											{chapter.isFree && <Badge>Free</Badge>}
 											<Badge
 												className={cn(
@@ -143,7 +143,7 @@ export const ChaptersList = ({
 											</Badge>
 											<Pencil
 												onClick={() => onEdit(chapter.id)}
-												className="w-4 h-4 cursor-pointer hover:opacity-75 transition"
+												className="h-4 w-4 cursor-pointer transition hover:opacity-75"
 											/>
 										</div>
 									</div>

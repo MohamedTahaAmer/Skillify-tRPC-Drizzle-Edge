@@ -37,10 +37,10 @@ export async function PATCH(
 		)
 
 		if (
-			!course.title ||
-			!course.description ||
-			!course.imageUrl ||
-			!course.categoryId ||
+			!course.title ??
+			!course.description ??
+			!course.imageUrl ??
+			!course.categoryId ??
 			!hasPublishedChapter
 		) {
 			return new NextResponse("Missing required fields", { status: 401 })

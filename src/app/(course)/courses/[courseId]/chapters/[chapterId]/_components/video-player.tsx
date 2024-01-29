@@ -67,7 +67,7 @@ export const VideoPlayer = ({
 				</div>
 			)}
 			{isLocked && (
-				<div className="absolute inset-0 flex items-center justify-center bg-slate-800 flex-col gap-y-2 text-secondary">
+				<div className="absolute inset-0 flex flex-col items-center justify-center gap-y-2 bg-slate-800 text-secondary">
 					<Lock className="h-8 w-8" />
 					<p className="text-sm">This chapter is locked</p>
 				</div>

@@ -22,7 +22,7 @@ export const SidebarItem = ({
 	// >(8-1-2024:2)
 	let exactMatch = pathname === activePath
 	let isNestedChild = pathname.startsWith(`${activePath}/`)
-	const isActive = exactMatch || isNestedChild
+	const isActive = exactMatch ?? isNestedChild
 
 	const onClick = () => {
 		router.push(activePath)
@@ -37,9 +37,9 @@ export const SidebarItem = ({
 			// - so use flex if you don't wanna control the size of any child, as flex will grow to take the height of it's tallest child, but using self-stretch on the other child won't work, as for the child it's parent 'the flex' is of height 0 as we didn't explicitly set it's height
 			// - but with grid, we don't have to set the height explicitly, and self-stretch on the other child will stretch him to match his tallest sibling
 			className={cn(
-				"grid-cols-2 grid items-center gap-x-2 text-slate-500 text-sm font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-slate-300/20",
+				"grid grid-cols-2 items-center gap-x-2 pl-6 text-sm font-[500] text-slate-500 transition-all hover:bg-slate-300/20 hover:text-slate-600",
 				isActive &&
-					"text-sky-700 bg-sky-200/20 hover:bg-sky-200/40 hover:text-sky-700"
+					"bg-sky-200/20 text-sky-700 hover:bg-sky-200/40 hover:text-sky-700"
 			)}
 		>
 			<div className="flex items-center gap-x-2 py-4">
@@ -51,7 +51,7 @@ export const SidebarItem = ({
 			</div>
 			<div
 				className={cn(
-					" opacity-0 border-2 border-sky-700 self-stretch justify-self-end w-0 transition-all",
+					" w-0 self-stretch justify-self-end border-2 border-sky-700 opacity-0 transition-all",
 					isActive && "opacity-100"
 				)}
 			/>

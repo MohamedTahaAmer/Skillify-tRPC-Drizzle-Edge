@@ -39,10 +39,10 @@ export async function PATCH(
 		})
 
 		if (
-			!chapter ||
-			!muxData ||
-			!chapter.title ||
-			!chapter.description ||
+			!chapter ??
+			!muxData ??
+			!chapter.title ??
+			!chapter.description ??
 			!chapter.videoUrl
 		) {
 			return new NextResponse("Missing required fields", { status: 400 })

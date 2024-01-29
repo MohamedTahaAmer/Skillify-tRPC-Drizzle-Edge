@@ -84,20 +84,20 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 	}
 
 	return (
-		<div className="relative mt-6 border bg-slate-100 rounded-md p-4">
+		<div className="relative mt-6 rounded-md border bg-slate-100 p-4">
 			{isUpdating && (
-				<div className="absolute h-full w-full bg-slate-500/20 top-0 right-0 rounded-m flex items-center justify-center">
-					<Loader2 className="animate-spin h-6 w-6 text-sky-700" />
+				<div className="rounded-m absolute right-0 top-0 flex h-full w-full items-center justify-center bg-slate-500/20">
+					<Loader2 className="h-6 w-6 animate-spin text-sky-700" />
 				</div>
 			)}
-			<div className="font-medium flex items-center justify-between">
+			<div className="flex items-center justify-between font-medium">
 				Course chapters
 				<Button onClick={toggleCreating} variant="ghost">
 					{isCreating ? (
 						<>Cancel</>
 					) : (
 						<>
-							<PlusCircle className="h-4 w-4 mr-2" />
+							<PlusCircle className="mr-2 h-4 w-4" />
 							Add a chapter
 						</>
 					)}
@@ -107,7 +107,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
-						className="space-y-4 mt-4"
+						className="mt-4 space-y-4"
 					>
 						<FormField
 							control={form.control}
@@ -125,7 +125,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 								</FormItem>
 							)}
 						/>
-						<Button disabled={!isValid || isSubmitting} type="submit">
+						<Button disabled={!isValid ?? isSubmitting} type="submit">
 							Create
 						</Button>
 					</form>
@@ -134,20 +134,20 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 			{!isCreating && (
 				<div
 					className={cn(
-						"text-sm mt-2",
-						!initialData.chapters.length && "text-slate-500 italic"
+						"mt-2 text-sm",
+						!initialData.chapters.length && "italic text-slate-500"
 					)}
 				>
 					{!initialData.chapters.length && "No chapters"}
 					<ChaptersList
 						onEdit={onEdit}
 						onReorder={onReorder}
-						items={initialData.chapters || []}
+						items={initialData.chapters ?? []}
 					/>
 				</div>
 			)}
 			{!isCreating && (
-				<p className="text-xs text-muted-foreground mt-4">
+				<p className="mt-4 text-xs text-muted-foreground">
 					Drag and drop to reorder the chapters
 				</p>
 			)}

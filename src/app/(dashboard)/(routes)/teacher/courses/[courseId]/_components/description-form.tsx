@@ -45,7 +45,7 @@ export const DescriptionForm = ({
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			description: initialData?.description || ""
+			description: initialData?.description ?? ""
 		}
 	})
 
@@ -84,7 +84,7 @@ export const DescriptionForm = ({
 						!initialData.description && "italic text-slate-500"
 					)}
 				>
-					{initialData.description || "No description"}
+					{initialData.description ?? "No description"}
 				</p>
 			)}
 			{isEditing && (
@@ -110,7 +110,7 @@ export const DescriptionForm = ({
 							)}
 						/>
 						<div className="flex items-center gap-x-2">
-							<Button disabled={!isValid || isSubmitting} type="submit">
+							<Button disabled={!isValid ?? isSubmitting} type="submit">
 								Save
 							</Button>
 						</div>

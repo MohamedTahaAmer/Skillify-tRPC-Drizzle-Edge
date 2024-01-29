@@ -13,10 +13,10 @@ export const MobileSidebar = () => {
 		<Sheet>
 			{/* // >(9-1-2024:2)  */}
 			{/* <SheetTrigger asChild className="md:hidden pr-4 hover:opacity-75 transition"> */}
-			<SheetTrigger className="md:hidden pr-4 hover:opacity-75 transition">
-				<Menu className="w-6 h-6" />
+			<SheetTrigger className="pr-4 transition hover:opacity-75 md:hidden">
+				<Menu className="h-6 w-6" />
 			</SheetTrigger>
-			<SheetContent side="left" className="p-0 bg-white">
+			<SheetContent side="left" className="bg-white p-0">
 				<SheetClose asChild>
 					<Sidebar />
 				</SheetClose>

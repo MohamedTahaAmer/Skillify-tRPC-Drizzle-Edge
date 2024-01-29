@@ -36,7 +36,7 @@ const ChapterIdPage = async ({
 		courseId: params.courseId
 	})
 
-	if (!chapter || !course) {
+	if (!chapter ?? !course) {
 		return redirect("/")
 	}
 
@@ -54,7 +54,7 @@ const ChapterIdPage = async ({
 					label="You need to purchase this course to watch this chapter."
 				/>
 			)}
-			<div className="flex flex-col max-w-4xl mx-auto pb-20">
+			<div className="mx-auto flex max-w-4xl flex-col pb-20">
 				<div className="p-4">
 					<VideoPlayer
 						chapterId={params.chapterId}
@@ -68,8 +68,8 @@ const ChapterIdPage = async ({
 					/>
 				</div>
 				<div>
-					<div className="p-4 flex flex-col md:flex-row items-center justify-between">
-						<h2 className="text-2xl font-semibold mb-2">{chapter.title}</h2>
+					<div className="flex flex-col items-center justify-between p-4 md:flex-row">
+						<h2 className="mb-2 text-2xl font-semibold">{chapter.title}</h2>
 						{purchase ? (
 							<CourseProgressButton
 								chapterId={params.chapterId}
@@ -97,7 +97,7 @@ const ChapterIdPage = async ({
 										href={attachment.url}
 										target="_blank"
 										key={attachment.id}
-										className="flex items-center p-3 w-full bg-sky-200 border text-sky-700 rounded-md hover:underline"
+										className="flex w-full items-center rounded-md border bg-sky-200 p-3 text-sky-700 hover:underline"
 									>
 										<File />
 										<p className="line-clamp-1">{attachment.name}</p>

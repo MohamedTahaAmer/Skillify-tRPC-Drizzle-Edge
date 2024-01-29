@@ -39,7 +39,7 @@ export const getChapter = async ({
 			}
 		})
 
-		if (!chapter || !course) {
+		if (!chapter ?? !course) {
 			throw new Error("Chapter or course not found")
 		}
 
@@ -55,7 +55,7 @@ export const getChapter = async ({
 			})
 		}
 
-		if (chapter.isFree || purchase) {
+		if (chapter.isFree ?? purchase) {
 			muxData = await db.muxData.findUnique({
 				where: {
 					chapterId: chapterId

@@ -44,7 +44,7 @@ export const columns: ColumnDef<Course>[] = [
 			)
 		},
 		cell: ({ row }) => {
-			const price = parseFloat(row.getValue("price") || "0")
+			const price = parseFloat(row.getValue("price") ?? "0")
 			const formatted = new Intl.NumberFormat("en-US", {
 				style: "currency",
 				currency: "USD"
@@ -67,7 +67,7 @@ export const columns: ColumnDef<Course>[] = [
 			)
 		},
 		cell: ({ row }) => {
-			const isPublished = row.getValue("isPublished") || false
+			const isPublished = row.getValue("isPublished") ?? false
 
 			return (
 				<Badge className={cn("bg-slate-500", isPublished && "bg-sky-700")}>
@@ -92,7 +92,7 @@ export const columns: ColumnDef<Course>[] = [
 					<DropdownMenuContent align="end">
 						<Link href={`/teacher/courses/${id}`}>
 							<DropdownMenuItem>
-								<Pencil className="h-4 w-4 mr-2" />
+								<Pencil className="mr-2 h-4 w-4" />
 								Edit
 							</DropdownMenuItem>
 						</Link>

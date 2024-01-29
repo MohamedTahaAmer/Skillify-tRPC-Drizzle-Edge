@@ -24,10 +24,10 @@ export const NavbarRoutes = ({ userId }: { userId: string | null }) => {
 					<SearchInput />
 				</div>
 			)}
-			<div className="flex gap-x-2 ml-auto">
-				{isTeacherPage || isCoursePage ? (
+			<div className="ml-auto flex gap-x-2">
+				{isTeacherPage ?? isCoursePage ? (
 					<Link className={buttonVariants({ variant: "ghost" })} href="/">
-						<LogOut className="h-4 w-4 mr-2" />
+						<LogOut className="mr-2 size-4" />
 						Exit
 					</Link>
 				) : isTeacher(userId) ? (
@@ -37,7 +37,7 @@ export const NavbarRoutes = ({ userId }: { userId: string | null }) => {
 						</Button>
 					</Link>
 				) : null}
-				<div className="w-8 aspect-square">
+				<div className="aspect-square w-8">
 					<UserButton afterSignOutUrl="/" />
 				</div>
 			</div>

@@ -13,7 +13,7 @@ export async function POST(
 	try {
 		const user = await currentUser()
 
-		if (!user || !user.id || !user.emailAddresses?.[0]?.emailAddress) {
+		if (!user ?? !user.id ?? !user.emailAddresses?.[0]?.emailAddress) {
 			return new NextResponse("Unauthorized", { status: 401 })
 		}
 
@@ -70,7 +70,7 @@ export async function POST(
 					currency: "USD",
 					product_data: {
 						name: course.title,
-						description: course.description || ""
+						description: course.description ?? ""
 					},
 					unit_amount: Math.round(course.price! * 100)
 				}

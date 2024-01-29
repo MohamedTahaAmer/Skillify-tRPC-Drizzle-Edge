@@ -37,7 +37,7 @@ export const SidebarRoutes = () => {
 	const routes = pathname?.includes("/teacher") ? teacherRoutes : guestRoutes
 
 	return (
-		<div className="flex flex-col w-full">
+		<div className="flex w-full flex-col">
 			{routes.map((route) => (
 				<SidebarItem
 					key={route.activePath}

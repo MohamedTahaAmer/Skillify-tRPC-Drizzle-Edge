@@ -32,9 +32,9 @@ export const Chart = ({ data }: ChartProps) => {
 	// 	)
 	// 	.flat()
 	return (
-		<Card className="p-6 pl-0 pb-2">
+		<Card className="p-6 pb-2 pl-0">
 			<ResponsiveContainer width="100%" height={350}>
-				<BarChart data={randData || data}>
+				<BarChart data={randData ?? data}>
 					<Tooltip trigger="hover" />
 
 					<XAxis

@@ -66,15 +66,15 @@ export const ChapterAccessForm = ({
 	}
 
 	return (
-		<div className="mt-6 border bg-slate-100 rounded-md p-4">
-			<div className="font-medium flex items-center justify-between">
+		<div className="mt-6 rounded-md border bg-slate-100 p-4">
+			<div className="flex items-center justify-between font-medium">
 				Chapter access
 				<Button onClick={toggleEdit} variant="ghost">
 					{isEditing ? (
 						<>Cancel</>
 					) : (
 						<>
-							<Pencil className="h-4 w-4 mr-2" />
+							<Pencil className="mr-2 h-4 w-4" />
 							Edit access
 						</>
 					)}
@@ -83,8 +83,8 @@ export const ChapterAccessForm = ({
 			{!isEditing && (
 				<p
 					className={cn(
-						"text-sm mt-2",
-						!initialData.isFree && "text-slate-500 italic"
+						"mt-2 text-sm",
+						!initialData.isFree && "italic text-slate-500"
 					)}
 				>
 					{initialData.isFree ? (
@@ -98,7 +98,7 @@ export const ChapterAccessForm = ({
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
-						className="space-y-4 mt-4"
+						className="mt-4 space-y-4"
 					>
 						<FormField
 							control={form.control}
@@ -121,7 +121,7 @@ export const ChapterAccessForm = ({
 							)}
 						/>
 						<div className="flex items-center gap-x-2">
-							<Button disabled={!isValid || isSubmitting} type="submit">
+							<Button disabled={!isValid ?? isSubmitting} type="submit">
 								Save
 							</Button>
 						</div>
