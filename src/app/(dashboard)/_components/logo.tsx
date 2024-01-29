@@ -1,5 +1,5 @@
 import Image from "next/image"
-import ImageLogo from "@/public/logo.svg"
+import ImageLogo from "/public/logo.svg"
 export const Logo = () => {
 	// >(10-1-2024)
 	// - hence this is a static image, I can leave the width and height to be the original size and set the display size via CSS on the parent element
