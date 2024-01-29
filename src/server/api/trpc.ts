@@ -11,7 +11,7 @@ import { initTRPC, TRPCError } from "@trpc/server"
 import superjson from "superjson"
 import { ZodError } from "zod"
 import { db } from "src/lib/db"
-import { auth } from "@clerk/nextjs"
+import { currentUser } from "@clerk/nextjs"
 
 /**
  * 1. CONTEXT
@@ -26,11 +26,11 @@ import { auth } from "@clerk/nextjs"
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-	let { userId } = auth()
+	let user = await currentUser()
 
 	return {
 		db,
-		userId,
+		user,
 		...opts
 	}
 }
@@ -87,13 +87,13 @@ export const publicProcedure = t.procedure
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
-	if (!ctx.userId) {
+	if (!ctx.user) {
 		throw new TRPCError({ code: "UNAUTHORIZED" })
 	}
 	return next({
 		ctx: {
 			// infers the `session` as non-nullable
-			userId: ctx.userId
+			user: ctx.user
 		}
 	})
 })

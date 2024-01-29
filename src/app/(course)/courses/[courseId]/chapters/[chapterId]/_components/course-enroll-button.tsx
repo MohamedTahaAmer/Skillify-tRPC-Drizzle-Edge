@@ -1,11 +1,11 @@
 "use client"
 
-import axios from "axios"
 import { useState } from "react"
 import toast from "react-hot-toast"
 
 import { Button } from "@/components/ui/button"
 import { formatPrice } from "@/lib/format"
+import { api } from "@/trpc/react"
 
 interface CourseEnrollButtonProps {
 	price: number
@@ -17,14 +17,17 @@ export const CourseEnrollButton = ({
 	courseId
 }: CourseEnrollButtonProps) => {
 	const [isLoading, setIsLoading] = useState(false)
+	let checkout = api.courses.checkout.useMutation({
+		onSuccess(data, _variables, _context) {
+			window.location.assign(data.url ?? "")
+		}
+	})
 
 	const onClick = async () => {
 		try {
 			setIsLoading(true)
 
-			const response = await axios.post(`/api/courses/${courseId}/checkout`)
-
-			window.location.assign(response.data.url)
+			checkout.mutate({ courseId })
 		} catch {
 			toast.error("Something went wrong")
 		} finally {
