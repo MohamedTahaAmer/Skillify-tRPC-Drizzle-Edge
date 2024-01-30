@@ -9,6 +9,10 @@ import {
 	deleteCourse,
 	patchCourse
 } from "./courses-helpers/delete-patch-course"
+import {
+	addAttachment,
+	deleteAttachment
+} from "./courses-helpers/add-delete-attachment"
 
 export const coursesRouter = createTRPCRouter({
 	checkout: protectedProcedure
@@ -79,5 +83,29 @@ export const coursesRouter = createTRPCRouter({
 				userId: ctx.user.id
 			})
 			return { course }
+		}),
+	addAttachment: protectedProcedure
+		.input(z.object({ courseId: z.string().min(1), url: z.string().min(1) }))
+		.mutation(async ({ ctx, input }) => {
+			let attachment = await addAttachment({
+				db: ctx.db,
+				courseId: input.courseId,
+				url: input.url,
+				userId: ctx.user.id
+			})
+			return { attachment }
+		}),
+	deleteAttachment: protectedProcedure
+		.input(
+			z.object({ courseId: z.string().min(1), attachmentId: z.string().min(1) })
+		)
+		.mutation(async ({ ctx, input }) => {
+			let attachment = await deleteAttachment({
+				db: ctx.db,
+				courseId: input.courseId,
+				attachmentId: input.attachmentId,
+				userId: ctx.user.id
+			})
+			return { attachment }
 		})
 })

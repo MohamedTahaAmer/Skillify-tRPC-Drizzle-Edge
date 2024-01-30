@@ -1,7 +1,6 @@
 "use client"
 
 import type { Course } from "@prisma/client"
-import axios from "axios"
 import { ImageIcon, Pencil, PlusCircle } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"

@@ -1,7 +1,6 @@
 "use client"
 
 import type { Attachment, Course } from "@prisma/client"
-import axios from "axios"
 import { File, Loader2, PlusCircle, X } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -10,6 +9,7 @@ import * as z from "zod"
 
 import { FileUpload } from "@/components/file-upload"
 import { Button } from "@/components/ui/button"
+import { api } from "@/trpc/react"
 
 interface AttachmentFormProps {
 	initialData: Course & { attachments: Attachment[] }
@@ -30,10 +30,14 @@ export const AttachmentForm = ({
 	const toggleEdit = () => setIsEditing((current) => !current)
 
 	const router = useRouter()
+	let addAttachment = api.courses.addAttachment.useMutation()
 
-	const onSubmit = async (values: z.infer<typeof formSchema>) => {
+	const onSubmit = async ({ url }: z.infer<typeof formSchema>) => {
 		try {
-			await axios.post(`/api/courses/${courseId}/attachments`, values)
+			await addAttachment.mutateAsync({
+				courseId,
+				url
+			})
 			toast.success("Course updated")
 			toggleEdit()
 			router.refresh()
@@ -42,10 +46,12 @@ export const AttachmentForm = ({
 		}
 	}
 
+	let deleteAttachment = api.courses.deleteAttachment.useMutation()
+
 	const onDelete = async (id: string) => {
 		try {
 			setDeletingId(id)
-			await axios.delete(`/api/courses/${courseId}/attachments/${id}`)
+			await deleteAttachment.mutateAsync({ attachmentId: id, courseId })
 			toast.success("Attachment deleted")
 			router.refresh()
 		} catch {
