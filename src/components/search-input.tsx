@@ -7,6 +7,7 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation"
 
 import { Input } from "@/components/ui/input"
 import { useDebounce } from "@/hooks/use-debounce"
+import type { Route } from "next"
 
 export const SearchInput = () => {
 	const [value, setValue] = useState("")
@@ -16,22 +17,21 @@ export const SearchInput = () => {
 	const router = useRouter()
 	const pathname = usePathname()
 
-	const currentCategoryId = searchParams.get("categoryId")
-
+	let searchParamsValues = Object.fromEntries(searchParams.entries())
 	useEffect(() => {
 		const url = qs.stringifyUrl(
 			{
 				url: pathname,
 				query: {
-					categoryId: currentCategoryId,
-					title: debouncedValue
-				}
+					...searchParamsValues,
+					title: debouncedValue,
+				},
 			},
-			{ skipEmptyString: true, skipNull: true }
-		)
+			{ skipEmptyString: true, skipNull: true },
+		) as Route
 
 		router.push(url)
-	}, [debouncedValue, currentCategoryId, router, pathname])
+	}, [debouncedValue, router, pathname, searchParamsValues])
 
 	return (
 		<div className="relative">

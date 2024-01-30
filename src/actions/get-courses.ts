@@ -13,41 +13,66 @@ type GetCourses = {
 	userId: string
 	title?: string
 	categoryId?: string
+	purchaced?: string
 }
 
 export const getCourses = async ({
 	userId,
 	title,
-	categoryId
+	categoryId,
+	purchaced,
 }: GetCourses): Promise<CourseWithProgressWithCategory[]> => {
+	type Where = {
+		isPublished: true
+		title: {
+			contains: string | undefined
+		}
+		categoryId: string | undefined
+		purchases?: {
+			some: {
+				userId: string
+			}
+		}
+	}
+	let whereClouse: Where = {
+		isPublished: true,
+		title: {
+			contains: title,
+		},
+		categoryId,
+	}
+	if (purchaced) {
+		whereClouse = {
+			...whereClouse,
+			purchases: {
+				some: {
+					userId,
+				},
+			},
+		}
+	}
 	try {
 		const courses = await db.course.findMany({
-			where: {
-				isPublished: true,
-				title: {
-					contains: title
-				},
-				categoryId
-			},
+			where: whereClouse,
 			include: {
 				category: true,
 				chapters: {
 					where: {
-						isPublished: true
+						isPublished: true,
 					},
 					select: {
-						id: true
-					}
+						id: true,
+					},
 				},
 				purchases: {
 					where: {
-						userId
-					}
-				}
+						userId,
+					},
+				},
 			},
 			orderBy: {
-				createdAt: "desc"
-			}
+				createdAt: "desc",
+			},
 		})
 
 		const coursesWithProgress: CourseWithProgressWithCategory[] =
@@ -56,7 +81,7 @@ export const getCourses = async ({
 					if (course.purchases.length === 0) {
 						return {
 							...course,
-							progress: null
+							progress: null,
 						}
 					}
 
@@ -64,9 +89,9 @@ export const getCourses = async ({
 
 					return {
 						...course,
-						progress: progressPercentage
+						progress: progressPercentage,
 					}
-				})
+				}),
 			)
 
 		return coursesWithProgress

@@ -12,6 +12,7 @@ interface SearchPageProps {
 	searchParams: {
 		title: string
 		categoryId: string
+		purchaced: string
 	}
 }
 
@@ -24,13 +25,13 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 
 	const categories = await db.category.findMany({
 		orderBy: {
-			name: "asc"
-		}
+			name: "asc",
+		},
 	})
 
 	const courses = await getCourses({
 		userId,
-		...searchParams
+		...searchParams,
 	})
 
 	return (

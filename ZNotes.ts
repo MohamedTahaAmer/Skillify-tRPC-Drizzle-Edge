@@ -164,7 +164,7 @@
 = 0- use the src directory
 = 1- use the t3 env
 2- use drizzle instead of prisma
-3- use trpc instead of api
+= 3- use trpc instead of api
 */
 //#endregion
 

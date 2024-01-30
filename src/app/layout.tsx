@@ -5,7 +5,6 @@ import { ClerkProvider } from "@clerk/nextjs"
 import { ToastProvider } from "@/components/providers/toaster-provider"
 import { ConfettiProvider } from "@/components/providers/confetti-provider"
 import { TRPCReactProvider } from "@/trpc/react"
-import Run from "./Run"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -28,7 +27,7 @@ export default function RootLayout({
 					<ToastProvider />
 					<TRPCReactProvider>
 						{children}
-						<Run />
+						{/* <Run /> */}
 					</TRPCReactProvider>
 				</body>
 			</html>
