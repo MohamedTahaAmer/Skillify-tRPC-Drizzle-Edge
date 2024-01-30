@@ -5,7 +5,7 @@ const config = {
 	jsxSingleQuote: false,
 	useTabs: true,
 	semi: false,
-	trailingComma: "none"
+	trailingComma: "es5"
 }
 
 export default config

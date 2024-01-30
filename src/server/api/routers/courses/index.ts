@@ -1,18 +1,15 @@
 import { z } from "zod"
 
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"
-import { checkout } from "./courses-helpers/checkout"
-import updateProgress from "./courses-helpers/update-progress"
-import { publish, unpublish } from "./courses-helpers/un-publish"
+import { checkout } from "./checkout"
+import updateProgress from "./update-progress"
+import { publish, unpublish } from "./un-publish"
 import {
 	courseValidator,
 	deleteCourse,
 	patchCourse
-} from "./courses-helpers/delete-patch-course"
-import {
-	addAttachment,
-	deleteAttachment
-} from "./courses-helpers/add-delete-attachment"
+} from "./delete-patch-course"
+import { addAttachment, deleteAttachment } from "./add-delete-attachment"
 
 export const coursesRouter = createTRPCRouter({
 	checkout: protectedProcedure

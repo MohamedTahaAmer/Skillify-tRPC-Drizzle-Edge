@@ -1,14 +1,13 @@
 "use client"
 
 import * as z from "zod"
-import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Loader2, PlusCircle } from "lucide-react"
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
-import { Chapter, Course } from "@prisma/client"
+import type { Chapter, Course } from "@prisma/client"
 
 import {
 	Form,
@@ -22,6 +21,7 @@ import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 
 import { ChaptersList } from "./chapters-list"
+import { api } from "@/trpc/react"
 
 interface ChaptersFormProps {
 	initialData: Course & { chapters: Chapter[] }
@@ -50,10 +50,13 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 	})
 
 	const { isSubmitting, isValid } = form.formState
-
+	let addChapter = api.chapters.addChapter.useMutation()
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		try {
-			await axios.post(`/api/courses/${courseId}/chapters`, values)
+			await addChapter.mutateAsync({
+				courseId,
+				title: values.title
+			})
 			toast.success("Chapter created")
 			toggleCreating()
 			// >(12-1-2024:3.1)
@@ -63,11 +66,12 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 		}
 	}
 
+	let reorderChapters = api.chapters.reorderChapters.useMutation()
 	const onReorder = async (updateData: { id: string; position: number }[]) => {
 		try {
 			setIsUpdating(true)
-
-			await axios.put(`/api/courses/${courseId}/chapters/reorder`, {
+			await reorderChapters.mutateAsync({
+				courseId,
 				list: updateData
 			})
 			toast.success("Chapters reordered")
@@ -86,8 +90,8 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 	return (
 		<div className="relative mt-6 rounded-md border bg-slate-100 p-4">
 			{isUpdating && (
-				<div className="rounded-m absolute right-0 top-0 flex h-full w-full items-center justify-center bg-slate-500/20">
-					<Loader2 className="h-6 w-6 animate-spin text-sky-700" />
+				<div className="absolute right-0 top-0 flex size-full items-center justify-center rounded-md bg-slate-500/20">
+					<Loader2 className="size-6 animate-spin text-sky-700" />
 				</div>
 			)}
 			<div className="flex items-center justify-between font-medium">
