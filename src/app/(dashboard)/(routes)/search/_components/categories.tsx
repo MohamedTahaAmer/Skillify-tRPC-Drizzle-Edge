@@ -14,6 +14,7 @@ import type { IconType } from "react-icons"
 
 import { CategoryItem } from "./category-item"
 import Purchased from "./Purchased"
+import ClearFilters from "./ClearFilters"
 
 interface CategoriesProps {
 	items: Category[]
@@ -42,7 +43,10 @@ export const Categories = ({ items }: CategoriesProps) => {
 					/>
 				))}
 			</div>
-			<Purchased />
+			<div className="flex items-center gap-2">
+				<Purchased />
+				<ClearFilters />
+			</div>
 		</div>
 	)
 }
