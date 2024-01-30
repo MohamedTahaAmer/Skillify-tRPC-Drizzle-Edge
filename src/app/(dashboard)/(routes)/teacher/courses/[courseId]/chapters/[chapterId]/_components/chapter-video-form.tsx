@@ -1,5 +1,4 @@
 "use client"
-
 import MuxPlayer from "@mux/mux-player-react"
 import type { Chapter, MuxData } from "@prisma/client"
 import { Pencil, PlusCircle, Video } from "lucide-react"

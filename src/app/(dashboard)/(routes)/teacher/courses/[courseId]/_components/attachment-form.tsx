@@ -1,5 +1,4 @@
 "use client"
-
 import type { Attachment, Course } from "@prisma/client"
 import { File, Loader2, PlusCircle, X } from "lucide-react"
 import { useRouter } from "next/navigation"
