@@ -18,20 +18,18 @@ const ProgressInfoCards = async ({
 	})
 
 	return (
-		<div className="">
-			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-				<InfoCard
-					icon={Clock}
-					label="In Progress"
-					numberOfItems={coursesInProgress.length}
-				/>
-				<InfoCard
-					icon={CheckCircle}
-					label="Completed"
-					numberOfItems={completedCourses.length}
-					variant="success"
-				/>
-			</div>
+		<div className="grid grid-cols-1 gap-4 pb-2 sm:grid-cols-2">
+			<InfoCard
+				icon={Clock}
+				label="In Progress"
+				numberOfItems={coursesInProgress.length}
+			/>
+			<InfoCard
+				icon={CheckCircle}
+				label="Completed"
+				numberOfItems={completedCourses.length}
+				variant="success"
+			/>
 		</div>
 	)
 }

@@ -43,7 +43,7 @@ export const Categories = ({ items }: CategoriesProps) => {
 					/>
 				))}
 			</div>
-			<div className="flex items-center gap-2">
+			<div className="flex items-center gap-2 pb-2">
 				<Purchased />
 				<ClearFilters />
 			</div>

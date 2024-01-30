@@ -2,7 +2,7 @@
 
 import qs from "query-string"
 import { Search } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
 
 import { Input } from "@/components/ui/input"
@@ -17,9 +17,10 @@ export const SearchInput = () => {
 	const router = useRouter()
 	const pathname = usePathname()
 
-	let searchParamsValues = Object.fromEntries(searchParams.entries())
+	let searchParamsValues = useMemo(() => {
+		return Object.fromEntries(searchParams.entries())
+	}, [searchParams])
 	useEffect(() => {
-		console.log("TEST")
 		const url = qs.stringifyUrl(
 			{
 				url: pathname,
@@ -41,7 +42,7 @@ export const SearchInput = () => {
 				onChange={(e) => setValue(e.target.value)}
 				value={value}
 				// >(8-1-2024:1)
-				className="w-full rounded-full bg-slate-100 pl-9 ring-offset-slate-500 focus-visible:ring-blue-200 md:w-[300px]"
+				className="w-full rounded-full bg-sky-100 pl-9 ring-offset-slate-500 focus-visible:ring-blue-200"
 				placeholder="Search for a course"
 			/>
 		</div>

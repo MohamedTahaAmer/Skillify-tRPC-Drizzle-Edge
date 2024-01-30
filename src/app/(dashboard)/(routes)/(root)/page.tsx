@@ -20,7 +20,6 @@ interface SearchPageProps {
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
 	const { userId } = auth()
 	let { purchaced, categoryId, title } = searchParams
-	console.log(purchaced)
 
 	if (!userId) {
 		return redirect("/")
@@ -39,19 +38,21 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 
 	return (
 		<>
-			<div className="block px-6 pt-6 md:mb-0 md:hidden">
+			<div className="fixed left-1/2 top-2  z-20 block w-1/2 -translate-x-1/2 px-6 ">
 				<SearchInput />
 			</div>
 			<div className="space-y-4 p-6">
-				<Categories items={categories} />
-				{courses.length > 0 && purchaced && (
-					<ProgressInfoCards
-						userId={userId}
-						categoryId={categoryId}
-						title={title}
-					/>
-				)}
-				<CoursesList items={courses} />
+				<div className="container">
+					<Categories items={categories} />
+					{courses.length > 0 && purchaced && (
+						<ProgressInfoCards
+							userId={userId}
+							categoryId={categoryId}
+							title={title}
+						/>
+					)}
+					<CoursesList items={courses} />
+				</div>
 			</div>
 		</>
 	)
