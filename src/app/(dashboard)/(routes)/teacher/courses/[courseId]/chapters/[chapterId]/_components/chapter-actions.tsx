@@ -1,6 +1,5 @@
 "use client"
 
-import axios from "axios"
 import { Trash } from "lucide-react"
 import { useState } from "react"
 import toast from "react-hot-toast"
@@ -8,6 +7,7 @@ import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import { ConfirmModal } from "@/components/modals/confirm-modal"
+import { api } from "@/trpc/react"
 
 interface ChapterActionsProps {
 	disabled: boolean
@@ -20,24 +20,28 @@ export const ChapterActions = ({
 	disabled,
 	courseId,
 	chapterId,
-	isPublished
+	isPublished,
 }: ChapterActionsProps) => {
 	const router = useRouter()
 	const [isLoading, setIsLoading] = useState(false)
 
+	let unpublish = api.chapters.unPublishChapter.useMutation()
+	let publish = api.chapters.publishChapter.useMutation()
 	const onClick = async () => {
 		try {
 			setIsLoading(true)
 
 			if (isPublished) {
-				await axios.patch(
-					`/api/courses/${courseId}/chapters/${chapterId}/unpublish`
-				)
+				await unpublish.mutateAsync({
+					courseId,
+					chapterId,
+				})
 				toast.success("Chapter unpublished")
 			} else {
-				await axios.patch(
-					`/api/courses/${courseId}/chapters/${chapterId}/publish`
-				)
+				await publish.mutateAsync({
+					courseId,
+					chapterId,
+				})
 				toast.success("Chapter published")
 			}
 
@@ -49,11 +53,14 @@ export const ChapterActions = ({
 		}
 	}
 
+	let deleteChapter = api.chapters.deleteChapter.useMutation()
 	const onDelete = async () => {
 		try {
 			setIsLoading(true)
-
-			await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`)
+			await deleteChapter.mutateAsync({
+				courseId,
+				chapterId,
+			})
 
 			toast.success("Chapter deleted")
 			router.push(`/teacher/courses/${courseId}`)

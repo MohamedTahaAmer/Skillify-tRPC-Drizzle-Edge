@@ -10,7 +10,7 @@ export let quillHeightCalculator = (text: string | null | undefined) => {
 	let toolbarHeight = 43
 	let emptyEditorHeight = 44
 	let editorHeight =
-		previewHeight ?? emptyEditorHeight + toolbarHeight + editModeMargin
+		previewHeight || emptyEditorHeight + toolbarHeight + editModeMargin
 
 	return { previewHeight, editorHeight }
 }

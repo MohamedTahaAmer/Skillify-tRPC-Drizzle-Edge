@@ -1,4 +1,4 @@
-import { Category, Course } from "@prisma/client"
+import type { Category, Course } from "@prisma/client"
 
 import { CourseCard } from "@/components/course-card"
 
@@ -25,7 +25,7 @@ export const CoursesList = ({ items }: CoursesListProps) => {
 						chaptersLength={item.chapters.length}
 						price={item.price!}
 						progress={item.progress}
-						category={item?.category?.name!}
+						category={item?.category?.name ?? ""}
 					/>
 				))}
 			</div>

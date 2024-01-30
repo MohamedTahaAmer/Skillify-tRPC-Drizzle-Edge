@@ -7,7 +7,7 @@ import { publish, unpublish } from "./un-publish"
 import {
 	courseValidator,
 	deleteCourse,
-	patchCourse
+	patchCourse,
 } from "./delete-patch-course"
 import { addAttachment, deleteAttachment } from "./add-delete-attachment"
 
@@ -18,7 +18,7 @@ export const coursesRouter = createTRPCRouter({
 			let url = await checkout({
 				user: ctx.user,
 				courseId: input.courseId,
-				db: ctx.db
+				db: ctx.db,
 			})
 			return { url }
 		}),
@@ -30,7 +30,7 @@ export const coursesRouter = createTRPCRouter({
 				userId: ctx.user.id,
 				isCompleted: input.isCompleted,
 				chapterId: input.chapterId,
-				db: ctx.db
+				db: ctx.db,
 			})
 			return { userProgress }
 		}),
@@ -40,7 +40,7 @@ export const coursesRouter = createTRPCRouter({
 			let publishedCourse = await publish({
 				db: ctx.db,
 				courseId: input.courseId,
-				userId: ctx.user.id
+				userId: ctx.user.id,
 			})
 			return { publishedCourse }
 		}),
@@ -51,7 +51,7 @@ export const coursesRouter = createTRPCRouter({
 			let unpublishedCourse = await unpublish({
 				db: ctx.db,
 				courseId: input.courseId,
-				userId: ctx.user.id
+				userId: ctx.user.id,
 			})
 			return { unpublishedCourse }
 		}),
@@ -59,15 +59,15 @@ export const coursesRouter = createTRPCRouter({
 		.input(
 			z.object({
 				courseId: z.string().min(1),
-				courseNewValues: courseValidator
-			})
+				courseNewValues: courseValidator,
+			}),
 		)
 		.mutation(async ({ ctx, input }) => {
 			let course = await patchCourse({
 				db: ctx.db,
 				courseId: input.courseId,
 				userId: ctx.user.id,
-				courseNewValues: input.courseNewValues
+				courseNewValues: input.courseNewValues,
 			})
 			return { course }
 		}),
@@ -77,7 +77,7 @@ export const coursesRouter = createTRPCRouter({
 			let course = await deleteCourse({
 				db: ctx.db,
 				courseId: input.courseId,
-				userId: ctx.user.id
+				userId: ctx.user.id,
 			})
 			return { course }
 		}),
@@ -88,21 +88,35 @@ export const coursesRouter = createTRPCRouter({
 				db: ctx.db,
 				courseId: input.courseId,
 				url: input.url,
-				userId: ctx.user.id
+				userId: ctx.user.id,
 			})
 			return { attachment }
 		}),
 	deleteAttachment: protectedProcedure
 		.input(
-			z.object({ courseId: z.string().min(1), attachmentId: z.string().min(1) })
+			z.object({
+				courseId: z.string().min(1),
+				attachmentId: z.string().min(1),
+			}),
 		)
 		.mutation(async ({ ctx, input }) => {
 			let attachment = await deleteAttachment({
 				db: ctx.db,
 				courseId: input.courseId,
 				attachmentId: input.attachmentId,
-				userId: ctx.user.id
+				userId: ctx.user.id,
 			})
 			return { attachment }
-		})
+		}),
+	create: protectedProcedure
+		.input(z.object({ title: z.string().min(1) }))
+		.mutation(async ({ ctx, input }) => {
+			let course = await ctx.db.course.create({
+				data: {
+					title: input.title,
+					userId: ctx.user.id,
+				},
+			})
+			return { course }
+		}),
 })

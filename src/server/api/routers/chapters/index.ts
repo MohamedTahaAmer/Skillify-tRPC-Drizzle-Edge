@@ -8,6 +8,7 @@ import {
 	deleteChapter,
 	patchChapter,
 } from "./delete-patch-chapters"
+import { publish, unpublish } from "./un-publish"
 
 export const chaptersRouter = createTRPCRouter({
 	addChapter: protectedProcedure
@@ -68,6 +69,39 @@ export const chaptersRouter = createTRPCRouter({
 				db: ctx.db,
 				chapterId: input.chapterId,
 				chapterNewValues: input.chapterNewValues,
+			})
+			return { res }
+		}),
+	publishChapter: protectedProcedure
+		.input(
+			z.object({
+				courseId: z.string().min(1),
+				chapterId: z.string().min(1),
+			}),
+		)
+		.mutation(async ({ ctx, input }) => {
+			let res = await publish({
+				userId: ctx.user.id,
+				courseId: input.courseId,
+				db: ctx.db,
+				chapterId: input.chapterId,
+			})
+			return { res }
+		}),
+
+	unPublishChapter: protectedProcedure
+		.input(
+			z.object({
+				courseId: z.string().min(1),
+				chapterId: z.string().min(1),
+			}),
+		)
+		.mutation(async ({ ctx, input }) => {
+			let res = await unpublish({
+				userId: ctx.user.id,
+				courseId: input.courseId,
+				db: ctx.db,
+				chapterId: input.chapterId,
 			})
 			return { res }
 		}),

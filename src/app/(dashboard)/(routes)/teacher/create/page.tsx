@@ -1,7 +1,6 @@
 "use client"
 
 import * as z from "zod"
-import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useRouter } from "next/navigation"
@@ -15,15 +14,16 @@ import {
 	FormField,
 	FormLabel,
 	FormMessage,
-	FormItem
+	FormItem,
 } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { api } from "@/trpc/react"
 
 const formSchema = z.object({
 	title: z.string().min(1, {
-		message: "Title is required"
-	})
+		message: "Title is required",
+	}),
 })
 
 const CreatePage = () => {
@@ -31,16 +31,18 @@ const CreatePage = () => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: ""
-		}
+			title: "",
+		},
 	})
 
 	const { isSubmitting, isValid } = form.formState
-
+	let createCourse = api.courses.create.useMutation()
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		try {
-			const response = await axios.post("/api/courses", values)
-			router.push(`/teacher/courses/${response.data.id}`)
+			let response = await createCourse.mutateAsync({
+				title: values.title,
+			})
+			router.push(`/teacher/courses/${response.course.id}`)
 			toast.success("Course created")
 		} catch {
 			toast.error("Something went wrong")
