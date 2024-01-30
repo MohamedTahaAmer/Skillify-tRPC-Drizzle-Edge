@@ -19,6 +19,7 @@ export const SearchInput = () => {
 
 	let searchParamsValues = Object.fromEntries(searchParams.entries())
 	useEffect(() => {
+		console.log("TEST")
 		const url = qs.stringifyUrl(
 			{
 				url: pathname,

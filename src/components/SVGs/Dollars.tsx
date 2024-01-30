@@ -12,8 +12,8 @@ export const DollarsSVG = (props: LucideProps) => (
 				gradientTransform="rotate(45 256.068 255.972)"
 				gradientUnits="userSpaceOnUse"
 			>
-				<stop offset="0" stop-color="#91c553"></stop>
-				<stop offset="1" stop-color="#60a113"></stop>
+				<stop offset="0" stopColor="#91c553"></stop>
+				<stop offset="1" stopColor="#60a113"></stop>
 			</linearGradient>
 			<linearGradient
 				id="b"
@@ -24,8 +24,8 @@ export const DollarsSVG = (props: LucideProps) => (
 				gradientTransform="rotate(-45 255.972 256.068)"
 				gradientUnits="userSpaceOnUse"
 			>
-				<stop offset="0" stop-color="#53ab46"></stop>
-				<stop offset="1" stop-color="#107300"></stop>
+				<stop offset="0" stopColor="#53ab46"></stop>
+				<stop offset="1" stopColor="#107300"></stop>
 			</linearGradient>
 			<linearGradient
 				id="d"
@@ -63,8 +63,8 @@ export const DollarsSVG = (props: LucideProps) => (
 				y2="444.86"
 				gradientUnits="userSpaceOnUse"
 			>
-				<stop offset="0" stop-color="#aeed64"></stop>
-				<stop offset="1" stop-color="#78c918"></stop>
+				<stop offset="0" stopColor="#aeed64"></stop>
+				<stop offset="1" stopColor="#78c918"></stop>
 			</linearGradient>
 			<linearGradient
 				id="h"
