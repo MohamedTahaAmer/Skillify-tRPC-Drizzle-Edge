@@ -1,7 +1,6 @@
 "use client"
 
 import * as z from "zod"
-import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Pencil } from "lucide-react"
@@ -14,10 +13,11 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormMessage
+	FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { api } from "@/trpc/react"
 
 interface ChapterTitleFormProps {
 	initialData: {
@@ -28,13 +28,13 @@ interface ChapterTitleFormProps {
 }
 
 const formSchema = z.object({
-	title: z.string().min(1)
+	title: z.string().min(1),
 })
 
 export const ChapterTitleForm = ({
 	initialData,
 	courseId,
-	chapterId
+	chapterId,
 }: ChapterTitleFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 
@@ -44,17 +44,19 @@ export const ChapterTitleForm = ({
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
-		defaultValues: initialData
+		defaultValues: initialData,
 	})
 
 	const { isSubmitting, isValid } = form.formState
+	let patchChapter = api.chapters.patchChapter.useMutation()
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		try {
-			await axios.patch(
-				`/api/courses/${courseId}/chapters/${chapterId}`,
-				values
-			)
+			await patchChapter.mutateAsync({
+				courseId,
+				chapterId,
+				chapterNewValues: values,
+			})
 			toast.success("Chapter updated")
 			toggleEdit()
 			router.refresh()

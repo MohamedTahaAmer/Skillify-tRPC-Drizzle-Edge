@@ -1,8 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Chapter } from "@prisma/client"
-import axios from "axios"
+import type { Chapter } from "@prisma/client"
 import { Pencil } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -18,10 +17,11 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormMessage
+	FormMessage,
 } from "@/components/ui/form"
 import { quillHeightCalculator } from "@/lib/quill-height-calculator"
 import { cn } from "@/lib/utils"
+import { api } from "@/trpc/react"
 
 interface ChapterDescriptionFormProps {
 	initialData: Chapter
@@ -30,13 +30,13 @@ interface ChapterDescriptionFormProps {
 }
 
 const formSchema = z.object({
-	description: z.string().min(1)
+	description: z.string().min(1),
 })
 
 export const ChapterDescriptionForm = ({
 	initialData,
 	courseId,
-	chapterId
+	chapterId,
 }: ChapterDescriptionFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 
@@ -47,18 +47,20 @@ export const ChapterDescriptionForm = ({
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			description: initialData?.description ?? ""
-		}
+			description: initialData?.description ?? "",
+		},
 	})
 
 	const { isSubmitting, isValid } = form.formState
+	let patchChapter = api.chapters.patchChapter.useMutation()
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		try {
-			await axios.patch(
-				`/api/courses/${courseId}/chapters/${chapterId}`,
-				values
-			)
+			await patchChapter.mutateAsync({
+				courseId,
+				chapterId,
+				chapterNewValues: values,
+			})
 			toast.success("Chapter updated")
 			toggleEdit()
 			router.refresh()
@@ -68,7 +70,7 @@ export const ChapterDescriptionForm = ({
 	}
 
 	let { previewHeight, editorHeight } = quillHeightCalculator(
-		initialData.description
+		initialData.description,
 	)
 
 	return (
@@ -90,7 +92,7 @@ export const ChapterDescriptionForm = ({
 				<div
 					className={cn(
 						"mt-2 text-sm",
-						!initialData.description && "italic text-slate-500"
+						!initialData.description && "italic text-slate-500",
 					)}
 				>
 					{!initialData.description && "No description"}

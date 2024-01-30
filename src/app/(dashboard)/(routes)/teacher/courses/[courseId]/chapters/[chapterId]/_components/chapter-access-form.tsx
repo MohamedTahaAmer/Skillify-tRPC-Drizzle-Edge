@@ -1,8 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Chapter } from "@prisma/client"
-import axios from "axios"
+import type { Chapter } from "@prisma/client"
 import { Pencil } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -17,9 +16,10 @@ import {
 	FormControl,
 	FormDescription,
 	FormField,
-	FormItem
+	FormItem,
 } from "@/components/ui/form"
 import { cn } from "@/lib/utils"
+import { api } from "@/trpc/react"
 
 interface ChapterAccessFormProps {
 	initialData: Chapter
@@ -28,13 +28,13 @@ interface ChapterAccessFormProps {
 }
 
 const formSchema = z.object({
-	isFree: z.boolean().default(false)
+	isFree: z.boolean().default(false),
 })
 
 export const ChapterAccessForm = ({
 	initialData,
 	courseId,
-	chapterId
+	chapterId,
 }: ChapterAccessFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 
@@ -45,18 +45,19 @@ export const ChapterAccessForm = ({
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			isFree: !!initialData.isFree
-		}
+			isFree: !!initialData.isFree,
+		},
 	})
 
 	const { isSubmitting, isValid } = form.formState
-
+	let patchChapter = api.chapters.patchChapter.useMutation()
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		try {
-			await axios.patch(
-				`/api/courses/${courseId}/chapters/${chapterId}`,
-				values
-			)
+			await patchChapter.mutateAsync({
+				courseId,
+				chapterId,
+				chapterNewValues: values,
+			})
 			toast.success("Chapter updated")
 			toggleEdit()
 			router.refresh()
@@ -84,7 +85,7 @@ export const ChapterAccessForm = ({
 				<p
 					className={cn(
 						"mt-2 text-sm",
-						!initialData.isFree && "italic text-slate-500"
+						!initialData.isFree && "italic text-slate-500",
 					)}
 				>
 					{initialData.isFree ? (

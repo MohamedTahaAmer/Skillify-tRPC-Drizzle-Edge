@@ -1,8 +1,7 @@
 "use client"
 
 import MuxPlayer from "@mux/mux-player-react"
-import { Chapter, MuxData } from "@prisma/client"
-import axios from "axios"
+import type { Chapter, MuxData } from "@prisma/client"
 import { Pencil, PlusCircle, Video } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -11,6 +10,7 @@ import * as z from "zod"
 
 import { FileUpload } from "@/components/file-upload"
 import { Button } from "@/components/ui/button"
+import { api } from "@/trpc/react"
 
 interface ChapterVideoFormProps {
 	initialData: Chapter & { muxData?: MuxData | null }
@@ -19,26 +19,28 @@ interface ChapterVideoFormProps {
 }
 
 const formSchema = z.object({
-	videoUrl: z.string().min(1)
+	videoUrl: z.string().min(1),
 })
 
 export const ChapterVideoForm = ({
 	initialData,
 	courseId,
-	chapterId
+	chapterId,
 }: ChapterVideoFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 
 	const toggleEdit = () => setIsEditing((current) => !current)
 
 	const router = useRouter()
+	let patchChapter = api.chapters.patchChapter.useMutation()
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		try {
-			await axios.patch(
-				`/api/courses/${courseId}/chapters/${chapterId}`,
-				values
-			)
+			await patchChapter.mutateAsync({
+				courseId,
+				chapterId,
+				chapterNewValues: values,
+			})
 			toast.success("Chapter updated")
 			toggleEdit()
 			router.refresh()
@@ -70,7 +72,7 @@ export const ChapterVideoForm = ({
 			{!isEditing &&
 				(!initialData.videoUrl ? (
 					<div className="flex h-60 items-center justify-center rounded-md bg-slate-200">
-						<Video className="h-10 w-10 text-slate-500" />
+						<Video className="size-10 text-slate-500" />
 					</div>
 				) : (
 					<div className="relative mt-2 aspect-video">
@@ -81,9 +83,9 @@ export const ChapterVideoForm = ({
 				<div>
 					<FileUpload
 						endpoint="chapterVideo"
-						onUploadComplete={(url) => {
+						onUploadComplete={async (url) => {
 							if (url) {
-								onSubmit({ videoUrl: url })
+								await onSubmit({ videoUrl: url })
 							}
 						}}
 					/>

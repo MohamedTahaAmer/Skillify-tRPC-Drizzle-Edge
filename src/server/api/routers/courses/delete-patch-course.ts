@@ -10,7 +10,7 @@ const { Video } = new Mux(env.MUX_TOKEN_ID, env.MUX_TOKEN_SECRET)
 export async function deleteCourse({
 	courseId,
 	userId,
-	db
+	db,
 }: {
 	courseId: string
 	userId: string
@@ -19,15 +19,15 @@ export async function deleteCourse({
 	const course = await db.course.findUnique({
 		where: {
 			id: courseId,
-			userId: userId
+			userId: userId,
 		},
 		include: {
 			chapters: {
 				include: {
-					muxData: true
-				}
-			}
-		}
+					muxData: true,
+				},
+			},
+		},
 	})
 
 	if (!course)
@@ -40,40 +40,26 @@ export async function deleteCourse({
 
 	const deletedCourse = await db.course.delete({
 		where: {
-			id: courseId
-		}
+			id: courseId,
+		},
 	})
 
 	return deletedCourse
 }
 
-/*
-{
-    id: string;
-    userId: string;
-    title: string;
-    description: string | null;
-    imageUrl: string | null;
-    price: number | null;
-    isPublished: boolean;
-    categoryId: string | null;
-    createdAt: Date;
-    updatedAt: Date;
-}
-*/
 export let courseValidator = z.object({
 	title: z.string().optional(),
 	description: z.string().optional(),
 	imageUrl: z.string().optional(),
 	price: z.number().optional(),
-	categoryId: z.string().optional()
+	categoryId: z.string().optional(),
 })
 type courseValidatorType = z.infer<typeof courseValidator>
 export async function patchCourse({
 	courseId,
 	userId,
 	courseNewValues,
-	db
+	db,
 }: {
 	courseId: string
 	userId: string
@@ -83,11 +69,11 @@ export async function patchCourse({
 	const course = await db.course.update({
 		where: {
 			id: courseId,
-			userId
+			userId,
 		},
 		data: {
-			...courseNewValues
-		}
+			...courseNewValues,
+		},
 	})
 
 	return course
