@@ -1,6 +1,6 @@
 "use client"
 
-import { Course } from "@prisma/client"
+import type { Course } from "@prisma/client"
 import axios from "axios"
 import { ImageIcon, Pencil, PlusCircle } from "lucide-react"
 import Image from "next/image"
@@ -10,6 +10,7 @@ import * as z from "zod"
 
 import { FileUpload } from "@/components/file-upload"
 import { Button } from "@/components/ui/button"
+import { api } from "@/trpc/react"
 
 interface ImageFormProps {
 	initialData: Course
@@ -27,10 +28,12 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 	const [img, setImg] = useState(initialData.imageUrl)
 
 	const toggleEdit = () => setIsEditing((current) => !current)
+	let patchCourse = api.courses.patchCourse.useMutation()
 
-	const onSubmit = async (values: z.infer<typeof formSchema>) => {
+	const onSubmit = async (courseNewValues: z.infer<typeof formSchema>) => {
 		try {
-			await axios.patch(`/api/courses/${courseId}`, values)
+      await patchCourse.mutateAsync({ courseId, courseNewValues })
+
 			toast.success("Course updated")
 		} catch {
 			toast.error("Something went wrong")
@@ -45,13 +48,13 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 					{isEditing && <>Cancel</>}
 					{!isEditing && !img && (
 						<>
-							<PlusCircle className="mr-2 h-4 w-4" />
+							<PlusCircle className="mr-2 size-4" />
 							Add an image
 						</>
 					)}
 					{!isEditing && img && (
 						<>
-							<Pencil className="mr-2 h-4 w-4" />
+							<Pencil className="mr-2 size-4" />
 							Edit image
 						</>
 					)}
@@ -60,7 +63,7 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 			{!isEditing &&
 				(!img ? (
 					<div className="flex grow items-center justify-center rounded-md bg-slate-200">
-						<ImageIcon className="h-10 w-10 text-slate-500" />
+						<ImageIcon className="size-10 text-slate-500" />
 					</div>
 				) : (
 					<div className="relative mt-2 aspect-video">
@@ -77,11 +80,11 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 					<FileUpload
 						className="m-0 h-[241.6px]"
 						endpoint="courseImage"
-						onUploadComplete={(url) => {
+						onUploadComplete={async (url) => {
 							if (url) {
 								setImg(url)
 								setIsEditing(false)
-								onSubmit({ imageUrl: url })
+								await onSubmit({ imageUrl: url })
 							}
 						}}
 					/>

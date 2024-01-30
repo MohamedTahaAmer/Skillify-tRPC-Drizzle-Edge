@@ -1,6 +1,5 @@
 "use client"
 
-import axios from "axios"
 import { Trash } from "lucide-react"
 import { useState } from "react"
 import toast from "react-hot-toast"
@@ -9,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ConfirmModal } from "@/components/modals/confirm-modal"
 import { useConfettiStore } from "@/hooks/use-confetti-store"
+import { api } from "@/trpc/react"
 
 interface ActionsProps {
 	disabled: boolean
@@ -21,15 +21,18 @@ export const Actions = ({ disabled, courseId, isPublished }: ActionsProps) => {
 	const confetti = useConfettiStore()
 	const [isLoading, setIsLoading] = useState(false)
 
+	let publish = api.courses.publish.useMutation({})
+	let unpublish = api.courses.unpushlish.useMutation({})
+
 	const onClick = async () => {
 		try {
 			setIsLoading(true)
 
 			if (isPublished) {
-				await axios.patch(`/api/courses/${courseId}/unpublish`)
+				await unpublish.mutateAsync({ courseId })
 				toast.success("Course unpublished")
 			} else {
-				await axios.patch(`/api/courses/${courseId}/publish`)
+				await publish.mutateAsync({ courseId })
 				toast.success("Course published")
 				confetti.onOpen()
 			}
@@ -42,11 +45,13 @@ export const Actions = ({ disabled, courseId, isPublished }: ActionsProps) => {
 		}
 	}
 
+	let deleteCourse = api.courses.deleteCourse.useMutation()
+
 	const onDelete = async () => {
 		try {
 			setIsLoading(true)
 
-			await axios.delete(`/api/courses/${courseId}`)
+			await deleteCourse.mutateAsync({ courseId })
 
 			toast.success("Course deleted")
 			router.refresh()
@@ -70,7 +75,7 @@ export const Actions = ({ disabled, courseId, isPublished }: ActionsProps) => {
 			</Button>
 			<ConfirmModal onConfirm={onDelete}>
 				<Button size="sm" disabled={isLoading}>
-					<Trash className="h-4 w-4" />
+					<Trash className="size-4" />
 				</Button>
 			</ConfirmModal>
 		</div>

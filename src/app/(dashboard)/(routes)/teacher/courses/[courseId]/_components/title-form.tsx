@@ -1,7 +1,6 @@
 "use client"
 
 import * as z from "zod"
-import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Pencil } from "lucide-react"
@@ -18,6 +17,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { api } from "@/trpc/react"
 
 interface TitleFormProps {
 	initialData: {
@@ -45,10 +45,12 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
 	})
 
 	const { isSubmitting, isValid } = form.formState
+	let patchCourse = api.courses.patchCourse.useMutation()
 
-	const onSubmit = async (values: z.infer<typeof formSchema>) => {
+	const onSubmit = async (courseNewValues: z.infer<typeof formSchema>) => {
 		try {
-			await axios.patch(`/api/courses/${courseId}`, values)
+			await patchCourse.mutateAsync({ courseId, courseNewValues })
+
 			toast.success("Course updated")
 			toggleEdit()
 			router.refresh()
@@ -66,7 +68,7 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
 						<>Cancel</>
 					) : (
 						<>
-							<Pencil className="mr-2 h-4 w-4" />
+							<Pencil className="mr-2 size-4" />
 							Edit title
 						</>
 					)}

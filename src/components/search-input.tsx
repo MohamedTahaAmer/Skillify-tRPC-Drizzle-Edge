@@ -35,7 +35,7 @@ export const SearchInput = () => {
 
 	return (
 		<div className="relative">
-			<Search className="absolute left-3 top-3 h-4 w-4 text-slate-600" />
+			<Search className="absolute left-3 top-3 size-4 text-slate-600" />
 			<Input
 				onChange={(e) => setValue(e.target.value)}
 				value={value}

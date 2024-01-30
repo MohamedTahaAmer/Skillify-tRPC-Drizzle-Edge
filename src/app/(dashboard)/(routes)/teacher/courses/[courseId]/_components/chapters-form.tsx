@@ -97,7 +97,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 						<>Cancel</>
 					) : (
 						<>
-							<PlusCircle className="mr-2 h-4 w-4" />
+							<PlusCircle className="mr-2 size-4" />
 							Add a chapter
 						</>
 					)}

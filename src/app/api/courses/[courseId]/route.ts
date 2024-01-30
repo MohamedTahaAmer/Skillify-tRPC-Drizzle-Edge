@@ -14,8 +14,6 @@ export async function DELETE(
 ) {
 	try {
 		const { userId } = auth()
-		console.log(params)
-		console.log(params.courseId, "courseId")
 
 		if (!userId) {
 			return new NextResponse("Unauthorized", { status: 401 })

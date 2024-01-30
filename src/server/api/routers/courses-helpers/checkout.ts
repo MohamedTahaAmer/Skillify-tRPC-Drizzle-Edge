@@ -1,16 +1,18 @@
 import type Stripe from "stripe"
-
+import type { Prisma, PrismaClient } from "@prisma/client"
+import type { DefaultArgs } from "@prisma/client/runtime/library"
 import { env } from "@/env"
-import { db } from "@/lib/db"
 import { stripe } from "@/lib/stripe"
 import type { User } from "@clerk/nextjs/server"
 import { TRPCError } from "@trpc/server"
 export async function checkout({
 	user,
-	courseId
+	courseId,
+	db
 }: {
 	user: User
 	courseId: string
+	db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
 }) {
 	if (!user?.id || !user.emailAddresses?.[0]?.emailAddress)
 		throw new TRPCError({ code: "UNAUTHORIZED" })

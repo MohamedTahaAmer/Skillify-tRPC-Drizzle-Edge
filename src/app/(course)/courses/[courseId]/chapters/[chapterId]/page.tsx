@@ -36,11 +36,11 @@ const ChapterIdPage = async ({
 		courseId: params.courseId
 	})
 
-	if (!chapter ?? !course) {
+	if (!chapter || !course) {
 		return redirect("/")
 	}
 
-	const isLocked = !chapter.isFree && !purchase
+	const isLocked = !chapter?.isFree && !purchase
 	const completeOnEnd = !!purchase && !userProgress?.isCompleted
 
 	return (
@@ -62,7 +62,7 @@ const ChapterIdPage = async ({
 						courseId={params.courseId}
 						nextChapterId={nextChapter?.id}
 						// >(11-1-2024:3)
-						playbackId={muxData?.playbackId!}
+						playbackId={muxData?.playbackId ?? ''}
 						isLocked={isLocked}
 						completeOnEnd={completeOnEnd}
 					/>
@@ -86,7 +86,7 @@ const ChapterIdPage = async ({
 					</div>
 					<Separator />
 					<div>
-						<Preview value={chapter.description!} />
+						<Preview value={chapter?.description ?? ""} />
 					</div>
 					{!!attachments.length && (
 						<>

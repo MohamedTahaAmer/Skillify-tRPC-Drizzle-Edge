@@ -1,12 +1,16 @@
-import { db } from "@/lib/db"
+import type { Prisma, PrismaClient } from "@prisma/client"
+import type { DefaultArgs } from "@prisma/client/runtime/library"
+
 export default async function updateProgress({
 	userId,
 	isCompleted,
-	chapterId
+	chapterId,
+	db
 }: {
 	isCompleted: boolean
 	chapterId: string
 	userId: string
+	db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
 }) {
 	const userProgress = await db.userProgress.upsert({
 		where: {

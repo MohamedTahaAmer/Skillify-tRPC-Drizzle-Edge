@@ -67,7 +67,7 @@ export const ChaptersList = ({
 							</Badge>
 							<Pencil
 								onClick={() => onEdit(chapter.id)}
-								className="h-4 w-4 cursor-pointer transition hover:opacity-75"
+								className="size-4 cursor-pointer transition hover:opacity-75"
 							/>
 						</div>
 					</div>
@@ -143,7 +143,7 @@ export const ChaptersList = ({
 											</Badge>
 											<Pencil
 												onClick={() => onEdit(chapter.id)}
-												className="h-4 w-4 cursor-pointer transition hover:opacity-75"
+												className="size-4 cursor-pointer transition hover:opacity-75"
 											/>
 										</div>
 									</div>

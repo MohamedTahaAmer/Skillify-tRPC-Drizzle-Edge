@@ -101,7 +101,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
 						<DescriptionForm initialData={course} courseId={course.id} />
 						<ImageForm initialData={course} courseId={course.id} />
 						<CategoryForm
-							initialData={course}
+							initialCategoryId={course.categoryId ?? ""}
 							courseId={course.id}
 							options={categories.map((category) => ({
 								label: category.name,

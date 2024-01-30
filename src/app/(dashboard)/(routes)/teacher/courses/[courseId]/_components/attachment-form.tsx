@@ -1,16 +1,15 @@
 "use client"
 
-import * as z from "zod"
+import type { Attachment, Course } from "@prisma/client"
 import axios from "axios"
-import { Pencil, PlusCircle, ImageIcon, File, Loader2, X } from "lucide-react"
+import { File, Loader2, PlusCircle, X } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import toast from "react-hot-toast"
-import { useRouter } from "next/navigation"
-import { Attachment, Course } from "@prisma/client"
-import Image from "next/image"
+import * as z from "zod"
 
-import { Button } from "@/components/ui/button"
 import { FileUpload } from "@/components/file-upload"
+import { Button } from "@/components/ui/button"
 
 interface AttachmentFormProps {
 	initialData: Course & { attachments: Attachment[] }
@@ -64,7 +63,7 @@ export const AttachmentForm = ({
 					{isEditing && <>Cancel</>}
 					{!isEditing && (
 						<>
-							<PlusCircle className="mr-2 h-4 w-4" />
+							<PlusCircle className="mr-2 size-4" />
 							Add a file
 						</>
 					)}
@@ -84,11 +83,11 @@ export const AttachmentForm = ({
 									key={attachment.id}
 									className="flex w-full items-center rounded-md border border-sky-200 bg-sky-100 p-3 text-sky-700"
 								>
-									<File className="mr-2 h-4 w-4 flex-shrink-0" />
+									<File className="mr-2 size-4 shrink-0" />
 									<p className="line-clamp-1 text-xs">{attachment.name}</p>
 									{deletingId === attachment.id && (
 										<div>
-											<Loader2 className="h-4 w-4 animate-spin" />
+											<Loader2 className="size-4 animate-spin" />
 										</div>
 									)}
 									{deletingId !== attachment.id && (
@@ -96,7 +95,7 @@ export const AttachmentForm = ({
 											onClick={() => onDelete(attachment.id)}
 											className="ml-auto transition hover:opacity-75"
 										>
-											<X className="h-4 w-4" />
+											<X className="size-4" />
 										</button>
 									)}
 								</div>
@@ -109,9 +108,9 @@ export const AttachmentForm = ({
 				<div>
 					<FileUpload
 						endpoint="courseAttachment"
-						onUploadComplete={(url) => {
+						onUploadComplete={async (url) => {
 							if (url) {
-								onSubmit({ url: url })
+								await onSubmit({ url: url })
 							}
 						}}
 					/>

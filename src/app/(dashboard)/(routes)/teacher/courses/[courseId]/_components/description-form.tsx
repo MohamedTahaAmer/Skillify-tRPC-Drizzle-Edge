@@ -1,14 +1,13 @@
 "use client"
 
 import * as z from "zod"
-import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Pencil } from "lucide-react"
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
-import { Course } from "@prisma/client"
+import type { Course } from "@prisma/client"
 
 import {
 	Form,
@@ -20,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Textarea } from "@/components/ui/textarea"
+import { api } from "@/trpc/react"
 
 interface DescriptionFormProps {
 	initialData: Course
@@ -50,10 +50,11 @@ export const DescriptionForm = ({
 	})
 
 	const { isSubmitting, isValid } = form.formState
+	let patchCourse = api.courses.patchCourse.useMutation()
 
-	const onSubmit = async (values: z.infer<typeof formSchema>) => {
+	const onSubmit = async (courseNewValues: z.infer<typeof formSchema>) => {
 		try {
-			await axios.patch(`/api/courses/${courseId}`, values)
+      await patchCourse.mutateAsync({ courseId, courseNewValues })
 			toast.success("Course updated")
 			toggleEdit()
 			router.refresh()
@@ -71,7 +72,7 @@ export const DescriptionForm = ({
 						<>Cancel</>
 					) : (
 						<>
-							<Pencil className="mr-2 h-4 w-4" />
+							<Pencil className="mr-2 size-4" />
 							Edit description
 						</>
 					)}

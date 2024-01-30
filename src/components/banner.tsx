@@ -32,7 +32,7 @@ export const Banner = ({ label, variant }: BannerProps) => {
 
 	return (
 		<div className={cn(bannerVariants({ variant }))}>
-			<Icon className="mr-2 h-4 w-4" />
+			<Icon className="mr-2 size-4" />
 			{label}
 		</div>
 	)

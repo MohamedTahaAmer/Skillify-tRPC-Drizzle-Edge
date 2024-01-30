@@ -77,7 +77,7 @@ export const ChapterActions = ({
 			</Button>
 			<ConfirmModal onConfirm={onDelete}>
 				<Button size="sm" disabled={isLoading}>
-					<Trash className="h-4 w-4" />
+					<Trash className="size-4" />
 				</Button>
 			</ConfirmModal>
 		</div>
