@@ -63,7 +63,7 @@ export const ChapterActions = ({
 			})
 
 			toast.success("Chapter deleted")
-			router.push(`/teacher/courses/${courseId}`)
+			router.push(`/teacher/courses/edit/${courseId}`)
 			router.refresh()
 		} catch {
 			toast.error("Something went wrong")

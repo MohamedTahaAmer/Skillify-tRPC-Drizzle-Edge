@@ -7,7 +7,7 @@ import { getCourses } from "@/actions/get-courses"
 import { CoursesList } from "@/components/courses-list"
 
 import { Categories } from "./_components/categories"
-import ProgressInfoCards from "./_components/ProgressInfoCards"
+import ProgressInfoCards from "./_components/progress-info-cards"
 
 interface SearchPageProps {
 	searchParams: {
@@ -38,21 +38,27 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 
 	return (
 		<>
+			{/* search input */}
 			<div className="fixed left-1/2 top-2  z-20 block  w-[65%] -translate-x-1/2 px-6 md:w-1/2 ">
 				<SearchInput />
 			</div>
-			<div className="space-y-4 py-6 lg:px-6">
-				<div className="container">
-					<Categories items={categories} />
-					{courses.length > 0 && purchaced && (
-						<ProgressInfoCards
-							userId={userId}
-							categoryId={categoryId}
-							title={title}
-						/>
-					)}
-					<CoursesList items={courses} />
-				</div>
+
+			{/* main Content */}
+			<div className="container space-y-4 py-4 lg:px-6">
+				{/* category, purchased and clear cards */}
+				<Categories items={categories} />
+
+				{/* progress info cards */}
+				{courses.length > 0 && purchaced && (
+					<ProgressInfoCards
+						userId={userId}
+						categoryId={categoryId}
+						title={title}
+					/>
+				)}
+
+				{/* courses list */}
+				<CoursesList items={courses} />
 			</div>
 		</>
 	)

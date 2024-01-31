@@ -14,7 +14,7 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormMessage
+	FormMessage,
 } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -29,7 +29,7 @@ interface ChaptersFormProps {
 }
 
 const formSchema = z.object({
-	title: z.string().min(1)
+	title: z.string().min(1),
 })
 
 export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
@@ -45,8 +45,8 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: ""
-		}
+			title: "",
+		},
 	})
 
 	const { isSubmitting, isValid } = form.formState
@@ -55,7 +55,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 		try {
 			await addChapter.mutateAsync({
 				courseId,
-				title: values.title
+				title: values.title,
 			})
 			toast.success("Chapter created")
 			toggleCreating()
@@ -72,7 +72,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 			setIsUpdating(true)
 			await reorderChapters.mutateAsync({
 				courseId,
-				list: updateData
+				list: updateData,
 			})
 			toast.success("Chapters reordered")
 			router.refresh()
@@ -84,7 +84,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 	}
 
 	const onEdit = (id: string) => {
-		router.push(`/teacher/courses/${courseId}/chapters/${id}`)
+		router.push(`/teacher/courses/edit/${courseId}/chapters/${id}`)
 	}
 
 	return (
@@ -139,7 +139,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 				<div
 					className={cn(
 						"mt-2 text-sm",
-						!initialData.chapters.length && "italic text-slate-500"
+						!initialData.chapters.length && "italic text-slate-500",
 					)}
 				>
 					{!initialData.chapters.length && "No chapters"}

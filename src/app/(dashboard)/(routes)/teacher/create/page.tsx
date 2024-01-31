@@ -16,9 +16,10 @@ import {
 	FormMessage,
 	FormItem,
 } from "@/components/ui/form"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { api } from "@/trpc/react"
+import { cn } from "@/lib/utils"
 
 const formSchema = z.object({
 	title: z.string().min(1, {
@@ -42,7 +43,7 @@ const CreatePage = () => {
 			let response = await createCourse.mutateAsync({
 				title: values.title,
 			})
-			router.push(`/teacher/courses/${response.course.id}`)
+			router.push(`/teacher/courses/edit/${response.course.id}`)
 			toast.success("Course created")
 		} catch {
 			toast.error("Something went wrong")
@@ -83,14 +84,15 @@ const CreatePage = () => {
 							)}
 						/>
 						<div className="flex items-center gap-x-2">
-							<Link href="/">
-								<Button type="button" variant="ghost">
-									Cancel
-								</Button>
-							</Link>
 							<Button type="submit" disabled={!isValid ?? isSubmitting}>
 								Continue
 							</Button>
+							<Link
+								href="/teacher/courses"
+								className={cn(buttonVariants({ variant: "ghost" }))}
+							>
+								Cancel
+							</Link>
 						</div>
 					</form>
 				</Form>

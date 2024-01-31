@@ -9,7 +9,7 @@ const TeacherLayout = ({ children }: { children: React.ReactNode }) => {
 		return redirect("/")
 	}
 
-	return <>{children}</>
+	return <div className="container px-0 md:px-8">{children}</div>
 }
 
 export default TeacherLayout

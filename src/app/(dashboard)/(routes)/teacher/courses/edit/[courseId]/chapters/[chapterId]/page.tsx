@@ -14,7 +14,7 @@ import { ChapterVideoForm } from "./_components/chapter-video-form"
 import { ChapterActions } from "./_components/chapter-actions"
 
 const ChapterIdPage = async ({
-	params
+	params,
 }: {
 	params: { courseId: string; chapterId: string }
 }) => {
@@ -27,11 +27,11 @@ const ChapterIdPage = async ({
 	const chapter = await db.chapter.findUnique({
 		where: {
 			id: params.chapterId,
-			courseId: params.courseId
+			courseId: params.courseId,
 		},
 		include: {
-			muxData: true
-		}
+			muxData: true,
+		},
 	})
 
 	if (!chapter) {
@@ -59,7 +59,7 @@ const ChapterIdPage = async ({
 				<div className="flex items-center justify-between">
 					<div className="w-full">
 						<Link
-							href={`/teacher/courses/${params.courseId}`}
+							href={`/teacher/courses/edit/${params.courseId}`}
 							className="mb-6 flex items-center text-sm transition hover:opacity-75"
 						>
 							<ArrowLeft className="mr-2 size-4" />
