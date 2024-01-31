@@ -1,9 +1,9 @@
 import { auth } from "@clerk/nextjs"
-import { Chapter, Course, UserProgress } from "@prisma/client"
+import type { Chapter, Course, UserProgress } from "@prisma/client"
 import { redirect } from "next/navigation"
 
-import { db } from "@/lib/db"
 import { CourseProgress } from "@/components/course-progress"
+import { db } from "@/lib/db"
 
 import { CourseSidebarItem } from "./course-sidebar-item"
 
@@ -18,7 +18,7 @@ interface CourseSidebarProps {
 
 export const CourseSidebar = async ({
 	course,
-	progressCount
+	progressCount,
 }: CourseSidebarProps) => {
 	const { userId } = auth()
 
@@ -30,17 +30,16 @@ export const CourseSidebar = async ({
 		where: {
 			userId_courseId: {
 				userId,
-				courseId: course.id
-			}
-		}
+				courseId: course.id,
+			},
+		},
 	})
 
 	return (
-		<div className="flex h-full flex-col overflow-y-auto border-r shadow-sm">
-			<div className="flex flex-col border-b p-8">
-				<h1 className="font-semibold">{course.title}</h1>
+		<div className="flex h-full flex-col border-r shadow-sm">
+			<div className="flex flex-col border-b p-8 pt-0 xl:pt-8">
 				{purchase && (
-					<div className="mt-10">
+					<div className="mt-2 xl:mt-10">
 						<CourseProgress variant="success" value={progressCount} />
 					</div>
 				)}

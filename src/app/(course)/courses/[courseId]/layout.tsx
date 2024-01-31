@@ -6,10 +6,11 @@ import { getProgress } from "@/actions/get-progress"
 
 import { CourseSidebar } from "./_components/course-sidebar"
 import { CourseNavbar } from "./_components/course-navbar"
+import { Navbar } from "@/app/(dashboard)/_components/navbar"
 
 const CourseLayout = async ({
 	children,
-	params
+	params,
 }: {
 	children: React.ReactNode
 	params: { courseId: string }
@@ -22,25 +23,25 @@ const CourseLayout = async ({
 
 	const course = await db.course.findUnique({
 		where: {
-			id: params.courseId
+			id: params.courseId,
 		},
 		include: {
 			chapters: {
 				where: {
-					isPublished: true
+					isPublished: true,
 				},
 				include: {
 					userProgress: {
 						where: {
-							userId
-						}
-					}
+							userId,
+						},
+					},
 				},
 				orderBy: {
-					position: "asc"
-				}
-			}
-		}
+					position: "asc",
+				},
+			},
+		},
 	})
 
 	if (!course) {
@@ -51,13 +52,17 @@ const CourseLayout = async ({
 
 	return (
 		<div className="h-full">
-			<div className="fixed inset-y-0 z-50 h-[80px] w-full md:pl-80">
+			<div className="fixed inset-y-0 z-10 h-[60px] w-full">
 				<CourseNavbar course={course} progressCount={progressCount} />
+				<Navbar />
 			</div>
-			<div className="fixed inset-y-0 z-50 hidden h-full w-80 flex-col md:flex">
+			<h1 className="fixed left-1/2 top-3 z-20 hidden -translate-x-1/2 truncate rounded-full border border-sky-300 bg-slate-100 px-4 py-1 text-lg font-bold text-sky-800 xl:block">
+				{course.title}
+			</h1>
+			<div className="inset-y-0 hidden  h-full w-80 flex-col xl:fixed xl:flex">
 				<CourseSidebar course={course} progressCount={progressCount} />
 			</div>
-			<main className="h-full pt-[60px] md:pl-80">{children}</main>
+			<main className="h-full pt-[60px] md:px-6 xl:pl-80">{children}</main>
 		</div>
 	)
 }

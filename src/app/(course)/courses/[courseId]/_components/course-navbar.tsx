@@ -1,9 +1,6 @@
-import { Chapter, Course, UserProgress } from "@prisma/client"
-
-import { NavbarRoutes } from "@/components/navbar-routes"
+import type { Chapter, Course, UserProgress } from "@prisma/client"
 
 import { CourseMobileSidebar } from "./course-mobile-sidebar"
-import { auth } from "@clerk/nextjs"
 
 interface CourseNavbarProps {
 	course: Course & {
@@ -15,11 +12,9 @@ interface CourseNavbarProps {
 }
 
 export const CourseNavbar = ({ course, progressCount }: CourseNavbarProps) => {
-	let { userId } = auth()
 	return (
-		<div className="flex h-full items-center border-b bg-white p-4 shadow-sm">
+		<div className="fixed left-1/2 top-3 z-20  -translate-x-1/2   ">
 			<CourseMobileSidebar course={course} progressCount={progressCount} />
-			<NavbarRoutes userId={userId} />
 		</div>
 	)
 }

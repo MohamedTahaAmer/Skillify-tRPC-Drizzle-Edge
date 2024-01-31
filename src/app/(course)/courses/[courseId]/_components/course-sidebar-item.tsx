@@ -18,7 +18,7 @@ export const CourseSidebarItem = ({
 	id,
 	isCompleted,
 	courseId,
-	isLocked
+	isLocked,
 }: CourseSidebarItemProps) => {
 	const pathname = usePathname()
 	const router = useRouter()
@@ -35,11 +35,11 @@ export const CourseSidebarItem = ({
 			onClick={onClick}
 			type="button"
 			className={cn(
-				"flex items-center gap-x-2 pl-6 text-sm font-[500] text-slate-500 transition-all hover:bg-slate-300/20 hover:text-slate-600",
+				"flex h-12 items-center gap-x-2 pl-6 text-sm font-[500] text-slate-500 transition-all hover:bg-slate-300/20 hover:text-slate-600",
 				isActive &&
 					"bg-slate-200/20 text-slate-700 hover:bg-slate-200/20 hover:text-slate-700",
 				isCompleted && "text-emerald-700 hover:text-emerald-700",
-				isCompleted && isActive && "bg-emerald-200/20"
+				isCompleted && isActive && "bg-emerald-200/20",
 			)}
 		>
 			<div className="flex items-center gap-x-2 py-4">
@@ -48,7 +48,7 @@ export const CourseSidebarItem = ({
 					className={cn(
 						"text-slate-500",
 						isActive && "text-slate-700",
-						isCompleted && "text-emerald-700"
+						isCompleted && "text-emerald-700",
 					)}
 				/>
 				{label}
@@ -57,7 +57,7 @@ export const CourseSidebarItem = ({
 				className={cn(
 					"ml-auto h-full border-2 border-slate-700 opacity-0 transition-all",
 					isActive && "opacity-100",
-					isCompleted && "border-emerald-700"
+					isCompleted && "border-emerald-700",
 				)}
 			/>
 		</button>
