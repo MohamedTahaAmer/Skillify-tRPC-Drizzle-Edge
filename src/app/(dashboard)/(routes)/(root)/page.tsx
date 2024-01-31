@@ -38,10 +38,10 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 
 	return (
 		<>
-			<div className="fixed left-1/2 top-2  z-20 block w-1/2 -translate-x-1/2 px-6 ">
+			<div className="fixed left-1/2 top-2  z-20 block  w-[65%] -translate-x-1/2 px-6 md:w-1/2 ">
 				<SearchInput />
 			</div>
-			<div className="space-y-4 p-6">
+			<div className="space-y-4 py-6 lg:px-6">
 				<div className="container">
 					<Categories items={categories} />
 					{courses.length > 0 && purchaced && (

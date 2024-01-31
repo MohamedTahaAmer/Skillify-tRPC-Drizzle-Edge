@@ -1,34 +1,35 @@
 "use client"
 
-import { BarChart, Compass, Layout, List } from "lucide-react"
+import { BarChart, Compass, List, type LucideIcon } from "lucide-react"
 import { usePathname } from "next/navigation"
 
+import type { Route } from "next"
 import { SidebarItem } from "./sidebar-item"
 
-const guestRoutes = [
-	{
-		icon: Layout,
-		label: "Dashboard",
-		activePath: "/"
-	},
+type Routes = {
+	icon: LucideIcon
+	label: string
+	activePath: Route
+}[]
+const guestRoutes: Routes = [
 	{
 		icon: Compass,
 		label: "Browse",
-		activePath: "/search"
-	}
+		activePath: "/",
+	},
 ]
 
-const teacherRoutes = [
+const teacherRoutes: Routes = [
 	{
 		icon: List,
 		label: "Courses",
-		activePath: "/teacher/courses"
+		activePath: "/teacher/courses",
 	},
 	{
 		icon: BarChart,
 		label: "Analytics",
-		activePath: "/teacher/analytics"
-	}
+		activePath: "/teacher/analytics",
+	},
 ]
 
 export const SidebarRoutes = () => {

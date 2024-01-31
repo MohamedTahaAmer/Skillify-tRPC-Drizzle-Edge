@@ -12,7 +12,7 @@ export const Navbar = () => {
 			<Link href="/" className="p-2">
 				<Logo />
 			</Link>
-			<MobileSidebar />
+			{/* <MobileSidebar /> */}
 			<NavbarRoutes userId={userId} />
 		</div>
 	)

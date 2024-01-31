@@ -4,17 +4,18 @@ import type { LucideIcon } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 
 import { cn } from "@/lib/utils"
+import { Route } from "next"
 
 interface SidebarItemProps {
 	icon: LucideIcon
 	label: string
-	activePath: string
+	activePath: Route
 }
 
 export const SidebarItem = ({
 	icon: Icon,
 	label,
-	activePath
+	activePath,
 }: SidebarItemProps) => {
 	const pathname = usePathname()
 	const router = useRouter()
@@ -39,7 +40,7 @@ export const SidebarItem = ({
 			className={cn(
 				"grid grid-cols-2 items-center gap-x-2 pl-6 text-sm font-[500] text-slate-500 transition-all hover:bg-slate-300/20 hover:text-slate-600",
 				isActive &&
-					"bg-sky-200/20 text-sky-700 hover:bg-sky-200/40 hover:text-sky-700"
+					"bg-sky-200/20 text-sky-700 hover:bg-sky-200/40 hover:text-sky-700",
 			)}
 		>
 			<div className="flex items-center gap-x-2 py-4">
@@ -52,7 +53,7 @@ export const SidebarItem = ({
 			<div
 				className={cn(
 					" w-0 self-stretch justify-self-end border-2 border-sky-700 opacity-0 transition-all",
-					isActive && "opacity-100"
+					isActive && "opacity-100",
 				)}
 			/>
 		</button>
