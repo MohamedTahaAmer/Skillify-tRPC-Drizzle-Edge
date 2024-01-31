@@ -1,11 +1,11 @@
-import "./globals.css"
+import { ConfettiProvider } from "@/components/providers/confetti-provider"
+import { ToastProvider } from "@/components/providers/toaster-provider"
+import { TRPCReactProvider } from "@/trpc/react"
+import { ClerkProvider } from "@clerk/nextjs"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import { ClerkProvider, auth } from "@clerk/nextjs"
-import { ToastProvider } from "@/components/providers/toaster-provider"
-import { ConfettiProvider } from "@/components/providers/confetti-provider"
-import { TRPCReactProvider } from "@/trpc/react"
 import { Navbar } from "./(dashboard)/_components/navbar"
+import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -20,7 +20,6 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode
 }) {
-	const { userId } = auth()
 	return (
 		<ClerkProvider>
 			<html lang="en">
@@ -29,7 +28,7 @@ export default function RootLayout({
 					<ToastProvider />
 					<TRPCReactProvider>
 						<div className="fixed inset-x-0 top-0 z-10 h-14 w-full">
-							<Navbar userId={userId ?? ""} />
+							<Navbar />
 						</div>
 						<div className="pt-14">{children}</div>
 						{/* <Run /> */}

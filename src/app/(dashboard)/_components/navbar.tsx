@@ -2,12 +2,13 @@
 import { buttonVariants } from "@/components/ui/button"
 import { isTeacher } from "@/lib/teacher"
 import { cn } from "@/lib/utils"
-import { UserButton } from "@clerk/nextjs"
-import Link from "next/link"
-import { Logo } from "./logo"
-import { usePathname } from "next/navigation"
+import { UserButton, useUser } from "@clerk/nextjs"
 import type { Route } from "next"
-export const Navbar = ({ userId }: { userId: string }) => {
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { Logo } from "./logo"
+export const Navbar = () => {
+	const { user } = useUser()
 	let pathName = usePathname()
 	let isTeacherCourses = pathName.includes("/teacher/courses")
 	let isTeacherAnalytics = pathName.includes("/teacher/analytics")
@@ -17,12 +18,12 @@ export const Navbar = ({ userId }: { userId: string }) => {
 	let navRightLink: {
 		href: Route
 		text: string
-	} = { href: "/", text: "" }
+	} | null = null
 	if (isTeacherCourses)
 		navRightLink = { href: "/teacher/analytics", text: "Analytics" }
 	if (isTeacherAnalytics || isCreateCourse || isEditCourse)
 		navRightLink = { href: "/teacher/courses", text: "Courses" }
-	if (!insideTeacherRoutes && isTeacher(userId))
+	if (!insideTeacherRoutes && isTeacher(user?.id))
 		navRightLink = { href: "/teacher/courses", text: "Teacher mode" }
 
 	return (
@@ -32,12 +33,14 @@ export const Navbar = ({ userId }: { userId: string }) => {
 			</Link>
 
 			<div className="ml-auto flex gap-x-2">
-				<Link
-					className={cn(buttonVariants({ variant: "secondary" }))}
-					href={navRightLink.href}
-				>
-					{navRightLink.text}
-				</Link>
+				{navRightLink && (
+					<Link
+						className={cn(buttonVariants({ variant: "secondary" }))}
+						href={navRightLink.href}
+					>
+						{navRightLink.text}
+					</Link>
+				)}
 
 				<div className="aspect-square w-8">
 					<UserButton afterSignOutUrl="/" />
