@@ -4,8 +4,8 @@ import { TRPCReactProvider } from "@/trpc/react"
 import { ClerkProvider } from "@clerk/nextjs"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import { Navbar } from "./(dashboard)/_components/navbar"
 import "./globals.css"
+import { Navbar } from "./_components/navbar"
 
 const inter = Inter({ subsets: ["latin"] })
 

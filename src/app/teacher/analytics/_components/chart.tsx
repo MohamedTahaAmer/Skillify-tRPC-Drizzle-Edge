@@ -10,7 +10,6 @@ import {
 } from "recharts"
 
 import { Card } from "@/components/ui/card"
-import { randCourseNames } from "./random-course-names"
 
 interface ChartProps {
 	data: {

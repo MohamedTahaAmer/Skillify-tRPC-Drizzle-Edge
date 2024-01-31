@@ -8,7 +8,6 @@ import toast from "react-hot-toast"
 import { Button } from "@/components/ui/button"
 import { useConfettiStore } from "@/hooks/use-confetti-store"
 import { api } from "@/trpc/react"
-import { set } from "zod"
 
 interface CourseProgressButtonProps {
 	chapterId: string
