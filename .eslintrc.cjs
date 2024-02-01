@@ -2,7 +2,7 @@
 const config = {
 	parser: "@typescript-eslint/parser",
 	parserOptions: {
-		project: true
+		project: true,
 	},
 	plugins: ["@typescript-eslint"],
 	extends: [
@@ -11,8 +11,9 @@ const config = {
 		"plugin:@typescript-eslint/stylistic-type-checked",
 		"next",
 		"prettier",
-		"plugin:tailwindcss/recommended"
+		"plugin:tailwindcss/recommended",
 	],
+	ignorePatterns: ["/src/components/ui/*.tsx"],
 	rules: {
 		// These opinionated rules are enabled in stylistic-type-checked above.
 		// Feel free to reconfigure them to your own preference.
@@ -23,22 +24,22 @@ const config = {
 			"warn",
 			{
 				prefer: "type-imports",
-				fixStyle: "inline-type-imports"
-			}
+				fixStyle: "inline-type-imports",
+			},
 		],
 		"@typescript-eslint/no-unused-vars": [
 			"warn",
-			{ argsIgnorePattern: "^_", varsIgnorePattern: "^_" }
+			{ argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
 		],
 		"@typescript-eslint/require-await": "off",
 		"prefer-const": "off",
 		"@typescript-eslint/no-misused-promises": [
 			"error",
 			{
-				checksVoidReturn: { attributes: false }
-			}
-		]
-	}
+				checksVoidReturn: { attributes: false },
+			},
+		],
+	},
 }
 
 module.exports = config

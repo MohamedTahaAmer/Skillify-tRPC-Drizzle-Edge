@@ -23,7 +23,7 @@ export const CourseCard = ({
 	chaptersLength,
 	price,
 	progress,
-	category
+	category,
 }: CourseCardProps) => {
 	return (
 		<Link href={`/courses/${id}`}>
@@ -51,7 +51,7 @@ export const CourseCard = ({
 							value={progress}
 						/>
 					) : (
-						<p className="text-md font-medium text-slate-700 md:text-sm">
+						<p className="text-base font-medium text-slate-700 md:text-sm">
 							{formatPrice(price)}
 						</p>
 					)}

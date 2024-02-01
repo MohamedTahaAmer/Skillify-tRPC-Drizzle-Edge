@@ -4,7 +4,7 @@ import type { LucideIcon } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 
 import { cn } from "@/lib/utils"
-import { Route } from "next"
+import type { Route } from "next"
 
 interface SidebarItemProps {
 	icon: LucideIcon
