@@ -17,8 +17,8 @@ interface ImageFormProps {
 
 const formSchema = z.object({
 	imageUrl: z.string().min(1, {
-		message: "Image is required"
-	})
+		message: "Image is required",
+	}),
 })
 
 export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
@@ -30,7 +30,7 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 
 	const onSubmit = async (courseNewValues: z.infer<typeof formSchema>) => {
 		try {
-      await patchCourse.mutateAsync({ courseId, courseNewValues })
+			await patchCourse.mutateAsync({ courseId, courseNewValues })
 
 			toast.success("Course updated")
 		} catch {

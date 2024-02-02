@@ -26,7 +26,7 @@ export const VideoPlayer = ({
 	nextChapterId,
 	isLocked,
 	completeOnEnd,
-	title
+	title,
 }: VideoPlayerProps) => {
 	const [isReady, setIsReady] = useState(false)
 	const router = useRouter()
@@ -46,7 +46,7 @@ export const VideoPlayer = ({
 		},
 		onError: (error) => {
 			toast.error(error.message)
-		}
+		},
 	})
 
 	const onEnd = async () => {

@@ -8,7 +8,7 @@ import { TRPCError } from "@trpc/server"
 export async function checkout({
 	user,
 	courseId,
-	db
+	db,
 }: {
 	user: User
 	courseId: string
@@ -20,17 +20,17 @@ export async function checkout({
 	const course = await db.course.findUnique({
 		where: {
 			id: courseId,
-			isPublished: true
-		}
+			isPublished: true,
+		},
 	})
 
 	const purchase = await db.purchase.findUnique({
 		where: {
 			userId_courseId: {
 				userId: user.id,
-				courseId
-			}
-		}
+				courseId,
+			},
+		},
 	})
 
 	if (purchase) throw new TRPCError({ code: "CONFLICT" })
@@ -39,23 +39,23 @@ export async function checkout({
 
 	let stripeCustomer = await db.stripeCustomer.findUnique({
 		where: {
-			userId: user.id
+			userId: user.id,
 		},
 		select: {
-			stripeCustomerId: true
-		}
+			stripeCustomerId: true,
+		},
 	})
 
 	if (!stripeCustomer) {
 		const customer = await stripe.customers.create({
-			email: user.emailAddresses[0].emailAddress
+			email: user.emailAddresses[0].emailAddress,
 		})
 
 		stripeCustomer = await db.stripeCustomer.create({
 			data: {
 				userId: user.id,
-				stripeCustomerId: customer.id
-			}
+				stripeCustomerId: customer.id,
+			},
 		})
 	}
 
@@ -66,11 +66,11 @@ export async function checkout({
 				currency: "USD",
 				product_data: {
 					name: course.title,
-					description: course.description ?? ""
+					description: course.description ?? "",
 				},
-				unit_amount: Math.round(course.price! * 100)
-			}
-		}
+				unit_amount: Math.round(course.price! * 100),
+			},
+		},
 	]
 
 	// >(10-1-2024) creating a checkout session on the fly
@@ -82,8 +82,8 @@ export async function checkout({
 		cancel_url: `${env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?canceled=1`,
 		metadata: {
 			courseId: course.id,
-			userId: user.id
-		}
+			userId: user.id,
+		},
 	})
 
 	return session.url

@@ -10,12 +10,12 @@ import {
 	CommandEmpty,
 	CommandGroup,
 	CommandInput,
-	CommandItem
+	CommandItem,
 } from "@/components/ui/command"
 import {
 	Popover,
 	PopoverContent,
-	PopoverTrigger
+	PopoverTrigger,
 } from "@/components/ui/popover"
 
 interface ComboboxProps {
@@ -58,7 +58,7 @@ export const Combobox = ({ options, value, onChange }: ComboboxProps) => {
 								<Check
 									className={cn(
 										"mr-2 size-4",
-										value === option.value ? "opacity-100" : "opacity-0"
+										value === option.value ? "opacity-100" : "opacity-0",
 									)}
 								/>
 								{option.label}

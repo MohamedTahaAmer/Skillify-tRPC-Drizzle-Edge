@@ -14,7 +14,7 @@ interface CourseEnrollButtonProps {
 
 export const CourseEnrollButton = ({
 	price,
-	courseId
+	courseId,
 }: CourseEnrollButtonProps) => {
 	const [isLoading, setIsLoading] = useState(false)
 	let checkout = api.courses.checkout.useMutation({
@@ -26,7 +26,7 @@ export const CourseEnrollButton = ({
 		},
 		onSettled(_data, _error, _variables, _context) {
 			setIsLoading(false)
-		}
+		},
 	})
 
 	return (

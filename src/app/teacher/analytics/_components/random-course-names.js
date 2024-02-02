@@ -121,5 +121,5 @@ export let randCourseNames = [
 	"Fusion 360",
 	"Solidworks",
 	"AutoCAD",
-	"Revit"
+	"Revit",
 ]

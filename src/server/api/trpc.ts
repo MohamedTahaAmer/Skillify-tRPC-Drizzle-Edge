@@ -31,7 +31,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
 	return {
 		db,
 		user,
-		...opts
+		...opts,
 	}
 }
 
@@ -49,10 +49,11 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
 			...shape,
 			data: {
 				...shape.data,
-				zodError: error.cause instanceof ZodError ? error.cause.flatten() : null
-			}
+				zodError:
+					error.cause instanceof ZodError ? error.cause.flatten() : null,
+			},
 		}
-	}
+	},
 })
 
 /**
@@ -93,7 +94,7 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
 	return next({
 		ctx: {
 			// infers the `session` as non-nullable
-			user: ctx.user
-		}
+			user: ctx.user,
+		},
 	})
 })

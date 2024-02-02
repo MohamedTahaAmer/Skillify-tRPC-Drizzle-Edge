@@ -5,7 +5,7 @@ import { TRPCError } from "@trpc/server"
 export async function unpublish({
 	courseId,
 	userId,
-	db
+	db,
 }: {
 	courseId: string
 	userId: string
@@ -14,8 +14,8 @@ export async function unpublish({
 	const course = await db.course.findUnique({
 		where: {
 			id: courseId,
-			userId
-		}
+			userId,
+		},
 	})
 
 	if (!course)
@@ -24,11 +24,11 @@ export async function unpublish({
 	const unpublishedCourse = await db.course.update({
 		where: {
 			id: courseId,
-			userId
+			userId,
 		},
 		data: {
-			isPublished: false
-		}
+			isPublished: false,
+		},
 	})
 
 	return unpublishedCourse
@@ -37,7 +37,7 @@ export async function unpublish({
 export async function publish({
 	courseId,
 	userId,
-	db
+	db,
 }: {
 	courseId: string
 	userId: string
@@ -46,22 +46,22 @@ export async function publish({
 	const course = await db.course.findUnique({
 		where: {
 			id: courseId,
-			userId
+			userId,
 		},
 		include: {
 			chapters: {
 				include: {
-					muxData: true
-				}
-			}
-		}
+					muxData: true,
+				},
+			},
+		},
 	})
 
 	if (!course)
 		throw new TRPCError({ code: "NOT_FOUND", message: "Course not found" })
 
 	const hasPublishedChapter = course.chapters.some(
-		(chapter) => chapter.isPublished
+		(chapter) => chapter.isPublished,
 	)
 
 	if (
@@ -73,18 +73,18 @@ export async function publish({
 	) {
 		throw new TRPCError({
 			code: "BAD_REQUEST",
-			message: "Missing required fields"
+			message: "Missing required fields",
 		})
 	}
 
 	const publishedCourse = await db.course.update({
 		where: {
 			id: courseId,
-			userId
+			userId,
 		},
 		data: {
-			isPublished: true
-		}
+			isPublished: true,
+		},
 	})
 
 	return publishedCourse

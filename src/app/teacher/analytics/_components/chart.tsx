@@ -6,7 +6,7 @@ import {
 	ResponsiveContainer,
 	XAxis,
 	YAxis,
-	Tooltip
+	Tooltip,
 } from "recharts"
 
 import { Card } from "@/components/ui/card"

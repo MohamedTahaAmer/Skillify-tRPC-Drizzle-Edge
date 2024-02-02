@@ -13,7 +13,7 @@ interface EditorProps {
 export const Editor = ({ onChange, value }: EditorProps) => {
 	const ReactQuill = useMemo(
 		() => dynamic(() => import("react-quill"), { ssr: false }),
-		[]
+		[],
 	)
 
 	return (

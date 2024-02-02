@@ -5,7 +5,7 @@ export async function reorderChapters({
 	courseId,
 	list,
 	userId,
-	db
+	db,
 }: {
 	courseId: string
 	userId: string
@@ -18,8 +18,8 @@ export async function reorderChapters({
 	const ownCourse = await db.course.findUnique({
 		where: {
 			id: courseId,
-			userId: userId
-		}
+			userId: userId,
+		},
 	})
 
 	if (!ownCourse) throw new TRPCError({ code: "FORBIDDEN" })
@@ -27,7 +27,7 @@ export async function reorderChapters({
 	for (let item of list) {
 		await db.chapter.update({
 			where: { id: item.id },
-			data: { position: item.position }
+			data: { position: item.position },
 		})
 	}
 

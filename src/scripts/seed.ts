@@ -12,8 +12,8 @@ export async function main() {
 				{ name: "Photography" },
 				{ name: "Accounting" },
 				{ name: "Engineering" },
-				{ name: "Filming" }
-			]
+				{ name: "Filming" },
+			],
 		})
 
 		console.log("Success")

@@ -2,17 +2,17 @@ import { db } from "@/lib/db"
 
 export const getProgress = async (
 	userId: string,
-	courseId: string
+	courseId: string,
 ): Promise<number> => {
 	try {
 		const publishedChapters = await db.chapter.findMany({
 			where: {
 				courseId: courseId,
-				isPublished: true
+				isPublished: true,
 			},
 			select: {
-				id: true
-			}
+				id: true,
+			},
 		})
 
 		const publishedChapterIds = publishedChapters.map((chapter) => chapter.id)
@@ -21,10 +21,10 @@ export const getProgress = async (
 			where: {
 				userId: userId,
 				chapterId: {
-					in: publishedChapterIds
+					in: publishedChapterIds,
 				},
-				isCompleted: true
-			}
+				isCompleted: true,
+			},
 		})
 
 		const progressPercentage =

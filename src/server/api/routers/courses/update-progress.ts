@@ -5,7 +5,7 @@ export default async function updateProgress({
 	userId,
 	isCompleted,
 	chapterId,
-	db
+	db,
 }: {
 	isCompleted: boolean
 	chapterId: string
@@ -16,17 +16,17 @@ export default async function updateProgress({
 		where: {
 			userId_chapterId: {
 				userId,
-				chapterId: chapterId
-			}
+				chapterId: chapterId,
+			},
 		},
 		update: {
-			isCompleted
+			isCompleted,
 		},
 		create: {
 			userId,
 			chapterId: chapterId,
-			isCompleted
-		}
+			isCompleted,
+		},
 	})
 
 	return userProgress

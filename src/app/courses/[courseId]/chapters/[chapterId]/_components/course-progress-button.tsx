@@ -20,7 +20,7 @@ export const CourseProgressButton = ({
 	chapterId,
 	courseId,
 	isCompleted,
-	nextChapterId
+	nextChapterId,
 }: CourseProgressButtonProps) => {
 	const router = useRouter()
 	const confetti = useConfettiStore()
@@ -46,7 +46,7 @@ export const CourseProgressButton = ({
 		},
 		onError: (error) => {
 			toast.error(error.message)
-		}
+		},
 	})
 
 	const Icon = isCompleted ? XCircle : CheckCircle

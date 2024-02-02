@@ -5,7 +5,7 @@ export async function addAttachment({
 	courseId,
 	url,
 	userId,
-	db
+	db,
 }: {
 	courseId: string
 	userId: string
@@ -15,8 +15,8 @@ export async function addAttachment({
 	const courseOwner = await db.course.findUnique({
 		where: {
 			id: courseId,
-			userId: userId
-		}
+			userId: userId,
+		},
 	})
 
 	if (!courseOwner)
@@ -26,8 +26,8 @@ export async function addAttachment({
 		data: {
 			url,
 			name: url.split("/").pop() ?? "",
-			courseId: courseId
-		}
+			courseId: courseId,
+		},
 	})
 
 	return attachment
@@ -37,7 +37,7 @@ export async function deleteAttachment({
 	attachmentId,
 	courseId,
 	userId,
-	db
+	db,
 }: {
 	attachmentId: string
 	courseId: string
@@ -47,8 +47,8 @@ export async function deleteAttachment({
 	const courseOwner = await db.course.findUnique({
 		where: {
 			id: courseId,
-			userId: userId
-		}
+			userId: userId,
+		},
 	})
 
 	if (!courseOwner)
@@ -56,8 +56,8 @@ export async function deleteAttachment({
 	const attachment = await db.attachment.delete({
 		where: {
 			courseId: courseId,
-			id: attachmentId
-		}
+			id: attachmentId,
+		},
 	})
 
 	return attachment

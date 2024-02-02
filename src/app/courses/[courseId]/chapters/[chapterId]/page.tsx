@@ -12,7 +12,7 @@ import { CourseEnrollButton } from "./_components/course-enroll-button"
 import { CourseProgressButton } from "./_components/course-progress-button"
 
 const ChapterIdPage = async ({
-	params
+	params,
 }: {
 	params: { courseId: string; chapterId: string }
 }) => {
@@ -29,11 +29,11 @@ const ChapterIdPage = async ({
 		attachments,
 		nextChapter,
 		userProgress,
-		purchase
+		purchase,
 	} = await getChapter({
 		userId,
 		chapterId: params.chapterId,
-		courseId: params.courseId
+		courseId: params.courseId,
 	})
 
 	if (!chapter || !course) {
@@ -62,7 +62,7 @@ const ChapterIdPage = async ({
 						courseId={params.courseId}
 						nextChapterId={nextChapter?.id}
 						// >(11-1-2024:3)
-						playbackId={muxData?.playbackId ?? ''}
+						playbackId={muxData?.playbackId ?? ""}
 						isLocked={isLocked}
 						completeOnEnd={completeOnEnd}
 					/>

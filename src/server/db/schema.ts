@@ -178,3 +178,27 @@ export const stripeCustomers = mysqlTable(
 		),
 	}),
 )
+
+export type SelectCourses = typeof courses.$inferSelect
+export type InsertCourses = typeof courses.$inferInsert
+
+export type SelectCategories = typeof categories.$inferSelect
+export type InsertCategories = typeof categories.$inferInsert
+
+export type SelectAttachments = typeof attachments.$inferSelect
+export type InsertAttachments = typeof attachments.$inferInsert
+
+export type SelectChapters = typeof chapters.$inferSelect
+export type InsertChapters = typeof chapters.$inferInsert
+
+export type SelectMuxData = typeof muxData.$inferSelect
+export type InsertMuxData = typeof muxData.$inferInsert
+
+export type SelectUserProgress = typeof userProgress.$inferSelect
+export type InsertUserProgress = typeof userProgress.$inferInsert
+
+export type SelectPurchases = typeof purchases.$inferSelect
+export type InsertPurchases = typeof purchases.$inferInsert
+
+export type SelectStripeCustomers = typeof stripeCustomers.$inferSelect
+export type InsertStripeCustomers = typeof stripeCustomers.$inferInsert

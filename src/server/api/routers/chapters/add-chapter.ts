@@ -5,7 +5,7 @@ export async function addChapter({
 	courseId,
 	title,
 	userId,
-	db
+	db,
 }: {
 	courseId: string
 	userId: string
@@ -15,19 +15,19 @@ export async function addChapter({
 	const courseOwner = await db.course.findUnique({
 		where: {
 			id: courseId,
-			userId: userId
-		}
+			userId: userId,
+		},
 	})
 
 	if (!courseOwner) throw new TRPCError({ code: "FORBIDDEN" })
 
 	const lastChapter = await db.chapter.findFirst({
 		where: {
-			courseId: courseId
+			courseId: courseId,
 		},
 		orderBy: {
-			position: "desc"
-		}
+			position: "desc",
+		},
 	})
 
 	const newPosition = lastChapter ? lastChapter.position + 1 : 1
@@ -36,8 +36,8 @@ export async function addChapter({
 		data: {
 			title,
 			courseId: courseId,
-			position: newPosition
-		}
+			position: newPosition,
+		},
 	})
 
 	return chapter

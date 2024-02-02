@@ -14,7 +14,7 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormMessage
+	FormMessage,
 } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -28,13 +28,13 @@ interface DescriptionFormProps {
 
 const formSchema = z.object({
 	description: z.string().min(1, {
-		message: "Description is required"
-	})
+		message: "Description is required",
+	}),
 })
 
 export const DescriptionForm = ({
 	initialData,
-	courseId
+	courseId,
 }: DescriptionFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 
@@ -45,8 +45,8 @@ export const DescriptionForm = ({
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			description: initialData?.description ?? ""
-		}
+			description: initialData?.description ?? "",
+		},
 	})
 
 	const { isSubmitting, isValid } = form.formState
@@ -54,7 +54,7 @@ export const DescriptionForm = ({
 
 	const onSubmit = async (courseNewValues: z.infer<typeof formSchema>) => {
 		try {
-      await patchCourse.mutateAsync({ courseId, courseNewValues })
+			await patchCourse.mutateAsync({ courseId, courseNewValues })
 			toast.success("Course updated")
 			toggleEdit()
 			router.refresh()
@@ -82,7 +82,7 @@ export const DescriptionForm = ({
 				<p
 					className={cn(
 						"mt-2 text-sm",
-						!initialData.description && "italic text-slate-500"
+						!initialData.description && "italic text-slate-500",
 					)}
 				>
 					{initialData.description ?? "No description"}
