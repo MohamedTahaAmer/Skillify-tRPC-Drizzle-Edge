@@ -10,17 +10,23 @@ export const env = createEnv({
 			process.env.NODE_ENV === "production"
 				? z
 						.string()
-						.url()
+						.url() // - I'm still histant about this .url() validation, as the db url doens't include 'http://' even the production connection string
 						.refine(
 							(str) => !str.includes("YOUR_MYSQL_URL_HERE"),
-							"You forgot to change the default URL"
+							"You forgot to change the default URL",
 						)
 				: z
 						.string()
 						.refine(
 							(str) => !str.includes("YOUR_MYSQL_URL_HERE"),
-							"You forgot to change the default URL"
+							"You forgot to change the default URL",
 						),
+		SQL_DATABASE_URL: z
+			.string()
+			.refine(
+				(str) => !str.includes("YOUR_MYSQL_URL_HERE"),
+				"You forgot to change the default URL",
+			),
 		NODE_ENV: z
 			.enum(["development", "test", "production"])
 			.default("development"),
@@ -30,7 +36,7 @@ export const env = createEnv({
 		UPLOADTHING_SECRET: z.string(),
 		UPLOADTHING_APP_ID: z.string(),
 		STRIPE_API_KEY: z.string(),
-		STRIPE_WEBHOOK_SECRET: z.string()
+		STRIPE_WEBHOOK_SECRET: z.string(),
 	},
 
 	/**
@@ -45,7 +51,7 @@ export const env = createEnv({
 		NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: z.string(),
 		NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: z.string(),
 		NEXT_PUBLIC_APP_URL: z.string(),
-		NEXT_PUBLIC_TEACHER_ID: z.string()
+		NEXT_PUBLIC_TEACHER_ID: z.string(),
 	},
 
 	/**
@@ -71,7 +77,8 @@ export const env = createEnv({
 		STRIPE_API_KEY: process.env.STRIPE_API_KEY,
 		STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
 		DATABASE_URL: process.env.DATABASE_URL,
-		NODE_ENV: process.env.NODE_ENV
+		SQL_DATABASE_URL: process.env.SQL_DATABASE_URL,
+		NODE_ENV: process.env.NODE_ENV,
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
@@ -82,5 +89,5 @@ export const env = createEnv({
 	 * Makes it so that empty strings are treated as undefined. `SOME_VAR: z.string()` and
 	 * `SOME_VAR=''` will throw an error.
 	 */
-	emptyStringAsUndefined: true
+	emptyStringAsUndefined: true,
 })
