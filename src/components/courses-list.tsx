@@ -22,7 +22,7 @@ export const CoursesList = ({ items }: CoursesListProps) => {
 				{items.map((item) => (
 					<CourseCard
 						key={item.id}
-						id={item.id + ""}
+						id={item.id }
 						title={item.title}
 						imageUrl={item.imageUrl!}
 						chaptersLength={item.chapters.length}

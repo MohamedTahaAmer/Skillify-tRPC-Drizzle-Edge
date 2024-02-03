@@ -7,8 +7,7 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint",
-		"postinstall": "prisma generate"
+		"lint": "next lint"
 	},
 	"dependencies": {
 		"@clerk/nextjs": "^4.29.2",
@@ -18,7 +17,6 @@
 		"@mux/mux-player-react": "^1.14.2",
 		"@paralleldrive/cuid2": "^2.2.2",
 		"@planetscale/database": "^1.14.0",
-		"@prisma/client": "^5.3.0",
 		"@radix-ui/react-alert-dialog": "^1.0.4",
 		"@radix-ui/react-checkbox": "^1.0.4",
 		"@radix-ui/react-dialog": "^1.0.4",
@@ -77,7 +75,6 @@
 		"postcss": "8.4.29",
 		"prettier": "^3.2.4",
 		"prettier-plugin-tailwindcss": "^0.5.11",
-		"prisma": "^5.3.0",
 		"tailwind": "^4.0.0",
 		"typescript": "5.2.2"
 	}

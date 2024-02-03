@@ -12,15 +12,15 @@ import ProgressInfoCards from "./_components/progress-info-cards"
 
 interface SearchPageProps {
 	searchParams: {
-		title: string
-		categoryId: string
-		purchaced: string
+		title?: string
+		categoryId?: string
+		purchased?: string
 	}
 }
 
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
 	const { userId } = auth()
-	let { purchaced, categoryId, title } = searchParams
+	let { purchased, categoryId, title } = searchParams
 
 	if (!userId) {
 		return redirect("/")
@@ -49,7 +49,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 				<Categories items={categories} />
 
 				{/* progress info cards */}
-				{courses.length > 0 && purchaced && (
+				{courses.length > 0 && purchased && (
 					<ProgressInfoCards
 						userId={userId}
 						categoryId={categoryId}

@@ -27,45 +27,22 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
 		return redirect("/")
 	}
 
-	// const course = await db.course.findUnique({
-	// 	where: {
-	// 		id: params.courseId,
-	// 		userId,
-	// 	},
-	// 	include: {
-	// 		chapters: {
-	// 			orderBy: {
-	// 				position: "asc",
-	// 			},
-	// 		},
-	// 		attachments: {
-	// 			orderBy: {
-	// 				createdAt: "desc",
-	// 			},
-	// 		},
-	// 	},
-	// })
-
 	let course = await db.query.courses.findFirst({
 		where: and(
 			eq(schema.courses.id, params.courseId),
 			eq(schema.courses.userId, userId),
 		),
 		with: {
-			chapters: {
-				orderBy: asc(schema.chapters.position),
-			},
+			// chapters: {
+			// 	orderBy: asc(schema.chapters.position),
+			// },
 			attachments: {
 				orderBy: desc(schema.attachments.createdAt),
 			},
+			chapters: true,
+			// attachments: true,
 		},
 	})
-
-	// const categories = await db.category.findMany({
-	// 	orderBy: {
-	// 		name: "asc",
-	// 	},
-	// })
 
 	let categories = await db.query.categories.findMany({
 		orderBy: asc(schema.categories.name),

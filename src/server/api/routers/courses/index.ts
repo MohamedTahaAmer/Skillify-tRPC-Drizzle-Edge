@@ -11,6 +11,7 @@ import {
 } from "./delete-patch-course"
 import { addAttachment, deleteAttachment } from "./add-delete-attachment"
 import { schema } from "@/server/db"
+import { and, eq } from "drizzle-orm"
 
 export const coursesRouter = createTRPCRouter({
 	checkout: protectedProcedure
@@ -117,10 +118,19 @@ export const coursesRouter = createTRPCRouter({
 	create: protectedProcedure
 		.input(z.object({ title: z.string().min(1) }))
 		.mutation(async ({ ctx, input }) => {
-			let course = await ctx.db.insert(schema.courses).values({
+			await ctx.db.insert(schema.courses).values({
 				title: input.title,
 				userId: ctx.user.id,
 			})
+			let course = (
+				await ctx.db
+					.selectDistinct()
+					.from(schema.courses)
+					.where(
+						(and(eq(schema.courses.title, input.title)),
+						eq(schema.courses.userId, ctx.user.id)),
+					)
+			)[0]
 			return { course }
 		}),
 })

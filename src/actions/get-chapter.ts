@@ -64,7 +64,7 @@ export const getChapter = async ({
 				.where(eq(schema.attachments.courseId, courseId))
 		}
 
-		if (chapter?.isFree ?? purchase) {
+		if (!!chapter?.isFree || purchase) {
 			muxData = (
 				await db
 					.selectDistinct()

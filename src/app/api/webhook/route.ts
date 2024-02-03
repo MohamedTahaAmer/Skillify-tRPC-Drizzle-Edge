@@ -38,14 +38,8 @@ export async function POST(req: Request) {
 			})
 		}
 
-		// await db.purchase.create({
-		// 	data: {
-		// 		courseId: courseId,
-		// 		userId: userId,
-		// 	},
-		// })
 		await db.insert(schema.purchases).values({
-			courseId: +courseId,
+			courseId: courseId,
 			userId: userId,
 		})
 	} else {

@@ -55,7 +55,7 @@ export const Categories = ({ items }: CategoriesProps) => {
 										key={item.id}
 										label={item.name ?? ""}
 										icon={iconMap[item.name ?? ""]}
-										value={item.id + ""}
+										value={item.id}
 									/>
 								))}
 							</div>
@@ -71,7 +71,7 @@ export const Categories = ({ items }: CategoriesProps) => {
 						key={item.id}
 						label={item.name ?? ""}
 						icon={iconMap[item.name ?? ""]}
-						value={item.id + ""}
+						value={item.id}
 					/>
 				))}
 			</div>

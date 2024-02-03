@@ -1,16 +1,15 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { getCategories } from "@/scripts/Mine/seed-categories"
+import { getCategories, seedCategories } from "@/scripts/Mine/seed-categories"
 import { main } from "@/scripts/Mine/test-drizzle"
 import toast from "react-hot-toast"
 
 const Run = () => {
 	let onClick = async () => {
-		// await seedCategories()
-		// toast.success("Categories seeded")
-		// let categories = await getCategories()
-		let stripeCustomer = await main()
-		console.log(stripeCustomer)
+		await seedCategories()
+		toast.success("Categories seeded")
+		// let stripeCustomer = await main()
+		// console.log(stripeCustomer)
 	}
 	return (
 		<>

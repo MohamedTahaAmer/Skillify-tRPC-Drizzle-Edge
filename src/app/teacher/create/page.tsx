@@ -43,7 +43,7 @@ const CreatePage = () => {
 			let response = await createCourse.mutateAsync({
 				title: values.title,
 			})
-			router.push(`/teacher/courses/edit/${response.course.id}`)
+			router.push(`/teacher/courses/edit/${response.course?.id ?? ""}`)
 			toast.success("Course created")
 		} catch {
 			toast.error("Something went wrong")

@@ -8,7 +8,7 @@ const Purchased = () => {
 	const pathname = usePathname()
 	const router = useRouter()
 	const searchParams = useSearchParams()
-	let isPurchased = searchParams.get("purchaced")
+	let isPurchased = searchParams.get("purchased")
 	let searchParamsValues = Object.fromEntries(searchParams.entries())
 	const onClick = () => {
 		const url = qs.stringifyUrl(
@@ -16,7 +16,7 @@ const Purchased = () => {
 				url: pathname,
 				query: {
 					...searchParamsValues,
-					purchaced: isPurchased ? null : "true",
+					purchased: isPurchased ? null : "true",
 				},
 			},
 			{ skipNull: true, skipEmptyString: true },

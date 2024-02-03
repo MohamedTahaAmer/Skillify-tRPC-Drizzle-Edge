@@ -25,14 +25,6 @@ export const CourseSidebar = async ({
 		return redirect("/")
 	}
 
-	// const purchase = await db.purchase.findUnique({
-	// 	where: {
-	// 		userId_courseId: {
-	// 			userId,
-	// 			courseId: course.id,
-	// 		},
-	// 	},
-	// })
 	let purchase = await db.query.purchases.findFirst({
 		where: and(
 			eq(schema.purchases.userId, userId),

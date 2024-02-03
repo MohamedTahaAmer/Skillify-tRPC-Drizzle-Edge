@@ -51,7 +51,7 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
 	const onSubmit = async (courseNewValues: z.infer<typeof formSchema>) => {
 		try {
 			await patchCourse.mutateAsync({
-				courseId: courseId + "",
+				courseId: courseId,
 				courseNewValues,
 			})
 

@@ -13,7 +13,7 @@ type GetCourses = {
 	userId: schema.PurchasesSelect["userId"]
 	title?: schema.CoursesSelect["title"]
 	categoryId?: schema.CoursesSelect["categoryId"]
-	purchased?: schema.PurchasesSelect["userId"]
+	purchased?: string
 }
 
 export const getCourses = async ({
