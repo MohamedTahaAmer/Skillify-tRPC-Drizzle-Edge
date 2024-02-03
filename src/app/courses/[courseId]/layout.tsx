@@ -9,8 +9,8 @@ import {
 	SheetContent,
 	SheetTrigger,
 } from "@/components/ui/sheet"
-import { db } from "@/lib/db"
-
+import { db, schema } from "@/server/db"
+import { and, asc, eq } from "drizzle-orm"
 import { CourseSidebar } from "./_components/course-sidebar"
 
 const CourseLayout = async ({
@@ -26,25 +26,17 @@ const CourseLayout = async ({
 		return redirect("/")
 	}
 
-	const course = await db.course.findUnique({
-		where: {
-			id: params.courseId,
-		},
-		include: {
+	let course = await db.query.courses.findFirst({
+		where: eq(schema.courses.id, params.courseId),
+		with: {
 			chapters: {
-				where: {
-					isPublished: true,
-				},
-				include: {
+				where: and(eq(schema.chapters.isPublished, true)),
+				with: {
 					userProgress: {
-						where: {
-							userId,
-						},
+						where: eq(schema.userProgress.userId, userId),
 					},
 				},
-				orderBy: {
-					position: "asc",
-				},
+				orderBy: asc(schema.chapters.position),
 			},
 		},
 	})

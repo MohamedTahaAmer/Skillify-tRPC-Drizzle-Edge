@@ -1,6 +1,6 @@
 "use server"
 
-import { drizzleDb } from "@/server/db"
+import { db } from "@/server/db"
 import { stripeCustomers } from "@/server/db/schema"
 
 export let main = async () => {
@@ -13,10 +13,10 @@ export let main = async () => {
 }
 
 let insert = async () => {
-	await drizzleDb
+	await db
 		.insert(stripeCustomers)
 		.values([{ userId: "1", stripeCustomerId: "cus_123" }])
 
-	let stripeCustomer = await drizzleDb.select().from(stripeCustomers)
+	let stripeCustomer = await db.select().from(stripeCustomers)
 	console.log(stripeCustomer)
 }

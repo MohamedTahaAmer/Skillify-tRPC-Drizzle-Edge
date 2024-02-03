@@ -1,13 +1,41 @@
 {
-	"version": "5",
-	"dialect": "mysql",
-	"entries": [
-		{
-			"idx": 0,
-			"version": "5",
-			"when": 1706822927529,
-			"tag": "0000_exotic_zombie",
-			"breakpoints": true
-		}
-	]
+  "version": "5",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1706822927529,
+      "tag": "0000_exotic_zombie",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1706842673854,
+      "tag": "0001_magical_colonel_america",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1706944676136,
+      "tag": "0002_normal_magus",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1706944887493,
+      "tag": "0003_whole_lorna_dane",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1706945202037,
+      "tag": "0004_acoustic_ultragirl",
+      "breakpoints": true
+    }
+  ]
 }

@@ -1,5 +1,4 @@
 "use client"
-import type { Attachment, Course } from "@prisma/client"
 import { File, Loader2, PlusCircle, X } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -8,11 +7,12 @@ import * as z from "zod"
 
 import { FileUpload } from "@/components/file-upload"
 import { Button } from "@/components/ui/button"
+import type { AttachmentsSelect, CoursesSelect } from "@/server/db/schema"
 import { api } from "@/trpc/react"
 
 interface AttachmentFormProps {
-	initialData: Course & { attachments: Attachment[] }
-	courseId: string
+	initialData: CoursesSelect & { attachments: AttachmentsSelect[] }
+	courseId: CoursesSelect["id"]
 }
 
 const formSchema = z.object({

@@ -1,34 +1,38 @@
-import { db } from "@/lib/db"
+import { db, schema } from "@/server/db"
+import { and, count, eq, inArray } from "drizzle-orm"
 
 export const getProgress = async (
-	userId: string,
-	courseId: string,
+	userId: schema.UserProgressSelect["userId"],
+	courseId: schema.ChaptersSelect["courseId"],
 ): Promise<number> => {
 	try {
-		const publishedChapters = await db.chapter.findMany({
-			where: {
-				courseId: courseId,
-				isPublished: true,
-			},
-			select: {
-				id: true,
-			},
-		})
+		let publishedChapters = await db
+			.select({ id: schema.chapters.id })
+			.from(schema.chapters)
+			.where(
+				and(
+					eq(schema.chapters.courseId, courseId),
+					eq(schema.chapters.isPublished, true),
+				),
+			)
 
 		const publishedChapterIds = publishedChapters.map((chapter) => chapter.id)
 
-		const validCompletedChapters = await db.userProgress.count({
-			where: {
-				userId: userId,
-				chapterId: {
-					in: publishedChapterIds,
-				},
-				isCompleted: true,
-			},
-		})
+		let validCompletedChapters  = (
+			await db
+				.select({ count: count() })
+				.from(schema.userProgress)
+				.where(
+					and(
+						eq(schema.userProgress.userId, userId),
+						inArray(schema.userProgress.chapterId, publishedChapterIds),
+						eq(schema.userProgress.isCompleted, true),
+					),
+				)
+		)[0]
 
 		const progressPercentage =
-			(validCompletedChapters / publishedChapterIds.length) * 100
+			(validCompletedChapters?.count ?? 0 / publishedChapterIds.length) * 100
 
 		return progressPercentage
 	} catch (error) {

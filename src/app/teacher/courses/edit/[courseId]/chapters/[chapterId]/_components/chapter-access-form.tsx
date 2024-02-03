@@ -1,7 +1,6 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { Chapter } from "@prisma/client"
 import { Pencil } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -19,10 +18,11 @@ import {
 	FormItem,
 } from "@/components/ui/form"
 import { cn } from "@/lib/utils"
+import type { ChaptersSelect } from "@/server/db/schema"
 import { api } from "@/trpc/react"
 
 interface ChapterAccessFormProps {
-	initialData: Chapter
+	initialData: ChaptersSelect
 	courseId: string
 	chapterId: string
 }

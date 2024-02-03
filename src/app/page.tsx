@@ -1,10 +1,11 @@
+import { db, schema } from "@/server/db"
 import { auth } from "@clerk/nextjs"
+import { asc } from "drizzle-orm"
 import { redirect } from "next/navigation"
 
-import { db } from "@/lib/db"
-import { SearchInput } from "@/components/search-input"
 import { getCourses } from "@/actions/get-courses"
 import { CoursesList } from "@/components/courses-list"
+import { SearchInput } from "@/components/search-input"
 
 import { Categories } from "./_components/categories"
 import ProgressInfoCards from "./_components/progress-info-cards"
@@ -25,15 +26,14 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 		return redirect("/")
 	}
 
-	const categories = await db.category.findMany({
-		orderBy: {
-			name: "asc",
-		},
+	let categories = await db.query.categories.findMany({
+		orderBy: asc(schema.categories.name),
 	})
 
 	const courses = await getCourses({
 		userId,
 		...searchParams,
+		categoryId,
 	})
 
 	return (

@@ -1,35 +1,47 @@
-import type { Prisma, PrismaClient } from "@prisma/client"
-import type { DefaultArgs } from "@prisma/client/runtime/library"
+import { schema } from "@/server/db"
 import { TRPCError } from "@trpc/server"
+import { and, eq } from "drizzle-orm"
+import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
 
 export async function unpublish({
 	courseId,
 	userId,
 	db,
 }: {
-	courseId: string
-	userId: string
-	db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+	courseId: schema.CoursesSelect["id"]
+	userId: schema.CoursesSelect["userId"]
+	db: PlanetScaleDatabase<typeof schema>
 }) {
-	const course = await db.course.findUnique({
-		where: {
-			id: courseId,
-			userId,
-		},
-	})
+	let course = (
+		await db.query.courses.findMany({
+			where: and(
+				eq(schema.courses.id, courseId),
+				eq(schema.courses.userId, userId),
+			),
+			limit: 1,
+		})
+	)[0]
 
 	if (!course)
 		throw new TRPCError({ code: "NOT_FOUND", message: "Course not found" })
 
-	const unpublishedCourse = await db.course.update({
-		where: {
-			id: courseId,
-			userId,
-		},
-		data: {
+	await db
+		.update(schema.courses)
+		.set({
 			isPublished: false,
-		},
-	})
+		})
+		.where(
+			and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)),
+		)
+
+	let unpublishedCourse = (
+		await db
+			.selectDistinct()
+			.from(schema.courses)
+			.where(
+				and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)),
+			)
+	)[0]
 
 	return unpublishedCourse
 }
@@ -39,23 +51,26 @@ export async function publish({
 	userId,
 	db,
 }: {
-	courseId: string
-	userId: string
-	db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+	courseId: schema.CoursesSelect["id"]
+	userId: schema.CoursesSelect["userId"]
+	db: PlanetScaleDatabase<typeof schema>
 }) {
-	const course = await db.course.findUnique({
-		where: {
-			id: courseId,
-			userId,
-		},
-		include: {
-			chapters: {
-				include: {
-					muxData: true,
+	let course = (
+		await db.query.courses.findMany({
+			where: and(
+				eq(schema.courses.id, courseId),
+				eq(schema.courses.userId, userId),
+			),
+			with: {
+				chapters: {
+					with: {
+						muxData: true,
+					},
 				},
 			},
-		},
-	})
+			limit: 1,
+		})
+	)[0]
 
 	if (!course)
 		throw new TRPCError({ code: "NOT_FOUND", message: "Course not found" })
@@ -77,15 +92,23 @@ export async function publish({
 		})
 	}
 
-	const publishedCourse = await db.course.update({
-		where: {
-			id: courseId,
-			userId,
-		},
-		data: {
+	await db
+		.update(schema.courses)
+		.set({
 			isPublished: true,
-		},
-	})
+		})
+		.where(
+			and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)),
+		)
+
+	let publishedCourse = (
+		await db
+			.selectDistinct()
+			.from(schema.courses)
+			.where(
+				and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)),
+			)
+	)[0]
 
 	return publishedCourse
 }

@@ -1,10 +1,10 @@
-import type Stripe from "stripe"
 import { headers } from "next/headers"
 import { NextResponse } from "next/server"
+import type Stripe from "stripe"
 
-import { stripe } from "@/lib/stripe"
-import { db } from "@/lib/db"
 import { env } from "@/env"
+import { stripe } from "@/lib/stripe"
+import { db, schema } from "@/server/db"
 
 export async function POST(req: Request) {
 	const body = await req.text()
@@ -38,11 +38,15 @@ export async function POST(req: Request) {
 			})
 		}
 
-		await db.purchase.create({
-			data: {
-				courseId: courseId,
-				userId: userId,
-			},
+		// await db.purchase.create({
+		// 	data: {
+		// 		courseId: courseId,
+		// 		userId: userId,
+		// 	},
+		// })
+		await db.insert(schema.purchases).values({
+			courseId: +courseId,
+			userId: userId,
 		})
 	} else {
 		return new NextResponse(

@@ -1,7 +1,8 @@
+import { schema } from "@/server/db"
 import Mux from "@mux/mux-node"
-import type { Prisma, PrismaClient } from "@prisma/client"
-import type { DefaultArgs } from "@prisma/client/runtime/library"
 import { TRPCError } from "@trpc/server"
+import { and, eq } from "drizzle-orm"
+import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
 
 import { env } from "@/env"
 import { z } from "zod"
@@ -12,24 +13,26 @@ export async function deleteCourse({
 	userId,
 	db,
 }: {
-	courseId: string
-	userId: string
-	db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+	courseId: schema.CoursesSelect["id"]
+	userId: schema.CoursesSelect["userId"]
+	db: PlanetScaleDatabase<typeof schema>
 }) {
-	const course = await db.course.findUnique({
-		where: {
-			id: courseId,
-			userId: userId,
-		},
-		include: {
-			chapters: {
-				include: {
-					muxData: true,
+	let course = (
+		await db.query.courses.findMany({
+			where: and(
+				eq(schema.courses.id, courseId),
+				eq(schema.courses.userId, userId),
+			),
+			with: {
+				chapters: {
+					with: {
+						muxData: true,
+					},
 				},
 			},
-		},
-	})
-
+			limit: 1,
+		})
+	)[0]
 	if (!course)
 		throw new TRPCError({ code: "NOT_FOUND", message: "Course not found" })
 	for (const chapter of course.chapters) {
@@ -38,11 +41,14 @@ export async function deleteCourse({
 		}
 	}
 
-	const deletedCourse = await db.course.delete({
-		where: {
-			id: courseId,
-		},
-	})
+	let deletedCourse = (
+		await db
+			.selectDistinct()
+			.from(schema.courses)
+			.where(eq(schema.courses.id, courseId))
+	)[0]
+
+	await db.delete(schema.courses).where(eq(schema.courses.id, courseId))
 
 	return deletedCourse
 }
@@ -61,20 +67,27 @@ export async function patchCourse({
 	courseNewValues,
 	db,
 }: {
-	courseId: string
-	userId: string
+	courseId: schema.CoursesSelect["id"]
+	userId: schema.CoursesSelect["userId"]
 	courseNewValues: courseValidatorType
-	db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+	db: PlanetScaleDatabase<typeof schema>
 }) {
-	const course = await db.course.update({
-		where: {
-			id: courseId,
-			userId,
-		},
-		data: {
+	await db
+		.update(schema.courses)
+		.set({
 			...courseNewValues,
-		},
-	})
+		})
+		.where(
+			and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)),
+		)
+	let course = (
+		await db
+			.selectDistinct()
+			.from(schema.courses)
+			.where(
+				and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)),
+			)
+	)[0]
 
 	return course
 }

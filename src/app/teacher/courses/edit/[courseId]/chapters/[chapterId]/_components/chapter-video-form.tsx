@@ -1,6 +1,5 @@
 "use client"
 import MuxPlayer from "@mux/mux-player-react"
-import type { Chapter, MuxData } from "@prisma/client"
 import { Pencil, PlusCircle, Video } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -9,10 +8,11 @@ import * as z from "zod"
 
 import { FileUpload } from "@/components/file-upload"
 import { Button } from "@/components/ui/button"
+import type { ChaptersSelect, MuxDataSelect } from "@/server/db/schema"
 import { api } from "@/trpc/react"
 
 interface ChapterVideoFormProps {
-	initialData: Chapter & { muxData?: MuxData | null }
+	initialData: ChaptersSelect & { muxData?: MuxDataSelect | null }
 	courseId: string
 	chapterId: string
 }

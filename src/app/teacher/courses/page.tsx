@@ -1,11 +1,12 @@
 import { auth } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
 
-import { db } from "@/lib/db"
+import { db, schema } from "@/server/db"
+import { desc, eq } from "drizzle-orm"
 
+import { unstable_noStore } from "next/cache"
 import { columns } from "./_components/columns"
 import { DataTable } from "./_components/data-table"
-import { unstable_noStore } from "next/cache"
 
 const CoursesPage = async () => {
 	unstable_noStore()
@@ -15,13 +16,9 @@ const CoursesPage = async () => {
 		return redirect("/")
 	}
 
-	const courses = await db.course.findMany({
-		where: {
-			userId,
-		},
-		orderBy: {
-			createdAt: "desc",
-		},
+	let courses = await db.query.courses.findMany({
+		where: eq(schema.courses.userId, userId),
+		orderBy: desc(schema.courses.createdAt),
 	})
 
 	return (

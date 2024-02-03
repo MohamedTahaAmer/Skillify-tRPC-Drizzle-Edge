@@ -1,10 +1,10 @@
-import { db } from "@/lib/db"
-import type { Attachment, Chapter } from "@prisma/client"
+import { db, schema } from "@/server/db"
+import { and, asc, eq, gt } from "drizzle-orm"
 
 interface GetChapterProps {
-	userId: string
-	courseId: string
-	chapterId: string
+	userId: schema.CoursesSelect["userId"]
+	courseId: schema.PurchasesSelect["courseId"]
+	chapterId: schema.ChaptersSelect["id"]
 }
 
 export const getChapter = async ({
@@ -13,77 +13,91 @@ export const getChapter = async ({
 	chapterId,
 }: GetChapterProps) => {
 	try {
-		const purchase = await db.purchase.findUnique({
-			where: {
-				userId_courseId: {
-					userId,
-					courseId,
-				},
-			},
-		})
+		let purchase = (
+			await db
+				.selectDistinct()
+				.from(schema.purchases)
+				.where(
+					and(
+						eq(schema.purchases.userId, userId),
+						eq(schema.purchases.courseId, courseId),
+					),
+				)
+		)[0]
 
-		const course = await db.course.findUnique({
-			where: {
-				isPublished: true,
-				id: courseId,
-			},
-			select: {
-				price: true,
-			},
-		})
+		let course = (
+			await db
+				.selectDistinct()
+				.from(schema.courses)
+				.where(
+					and(
+						eq(schema.courses.id, courseId),
+						eq(schema.courses.isPublished, true),
+					),
+				)
+		)[0]
 
-		const chapter = await db.chapter.findUnique({
-			where: {
-				id: chapterId,
-				isPublished: true,
-			},
-		})
+		let chapter = (
+			await db
+				.selectDistinct()
+				.from(schema.chapters)
+				.where(
+					and(
+						eq(schema.chapters.id, chapterId),
+						eq(schema.chapters.isPublished, true),
+					),
+				)
+		)[0]
 
 		if (!chapter ?? !course) {
 			throw new Error("Chapter or course not found")
 		}
 
 		let muxData = null
-		let attachments: Attachment[] = []
-		let nextChapter: Chapter | null = null
+		let attachments: schema.AttachmentsSelect[] = []
+		let nextChapter: schema.ChaptersSelect | undefined = undefined
 
 		if (purchase) {
-			attachments = await db.attachment.findMany({
-				where: {
-					courseId: courseId,
-				},
-			})
+			attachments = await db
+				.select()
+				.from(schema.attachments)
+				.where(eq(schema.attachments.courseId, courseId))
 		}
 
 		if (chapter?.isFree ?? purchase) {
-			muxData = await db.muxData.findUnique({
-				where: {
-					chapterId: chapterId,
-				},
-			})
+			muxData = (
+				await db
+					.selectDistinct()
+					.from(schema.muxData)
+					.where(eq(schema.muxData.chapterId, chapterId))
+			)[0]
 
-			nextChapter = await db.chapter.findFirst({
-				where: {
-					courseId: courseId,
-					isPublished: true,
-					position: {
-						gt: chapter?.position,
-					},
-				},
-				orderBy: {
-					position: "asc",
-				},
-			})
+			nextChapter = (
+				await db
+					.select()
+					.from(schema.chapters)
+					.where(
+						and(
+							eq(schema.chapters.courseId, courseId),
+							eq(schema.chapters.isPublished, true),
+							gt(schema.chapters.position, chapter?.position ?? 0),
+						),
+					)
+					.orderBy(asc(schema.chapters.position))
+			)[0]
 		}
 
-		const userProgress = await db.userProgress.findUnique({
-			where: {
-				userId_chapterId: {
-					userId,
-					chapterId,
-				},
-			},
-		})
+		let userProgress = (
+			await db
+				.selectDistinct()
+				.from(schema.userProgress)
+				.where(
+					and(
+						eq(schema.userProgress.userId, userId),
+						eq(schema.userProgress.chapterId, chapterId),
+					),
+				)
+		)[0]
 
 		return {
 			chapter,

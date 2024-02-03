@@ -1,19 +1,14 @@
-import { db } from "@/lib/db"
+import { db, schema } from "@/server/db"
+import { asc, eq } from "drizzle-orm"
 import { redirect } from "next/navigation"
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
-	const course = await db.course.findUnique({
-		where: {
-			id: params.courseId,
-		},
-		include: {
+	let course = await db.query.courses.findFirst({
+		where: eq(schema.courses.id, params.courseId),
+		with: {
 			chapters: {
-				where: {
-					isPublished: true,
-				},
-				orderBy: {
-					position: "asc",
-				},
+				where: eq(schema.chapters.isPublished, true),
+				orderBy: asc(schema.chapters.position),
 			},
 		},
 	})

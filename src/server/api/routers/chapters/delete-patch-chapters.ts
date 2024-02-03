@@ -1,9 +1,10 @@
 import Mux from "@mux/mux-node"
-import type { Prisma, PrismaClient } from "@prisma/client"
-import type { DefaultArgs } from "@prisma/client/runtime/library"
 import { TRPCError } from "@trpc/server"
 
 import { env } from "@/env"
+import { schema } from "@/server/db"
+import { and, eq } from "drizzle-orm"
+import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
 import { z } from "zod"
 
 const { Video } = new Mux(env.MUX_TOKEN_ID, env.MUX_TOKEN_SECRET)
@@ -13,69 +14,73 @@ export async function deleteChapter({
 	chapterId,
 	db,
 }: {
-	courseId: string
-	userId: string
-	chapterId: string
-	db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+	courseId: schema.CoursesSelect["id"]
+	userId: schema.CoursesSelect["userId"]
+	chapterId: schema.ChaptersSelect["id"]
+	db: PlanetScaleDatabase<typeof schema>
 }) {
-	const ownCourse = await db.course.findUnique({
-		where: {
-			id: courseId,
-			userId,
-		},
-	})
+	let ownCourse = (
+		await db
+			.selectDistinct()
+			.from(schema.courses)
+			.where(
+				and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)),
+			)
+	)[0]
 
 	if (!ownCourse) throw new TRPCError({ code: "FORBIDDEN" })
 
-	const chapter = await db.chapter.findUnique({
-		where: {
-			id: chapterId,
-			courseId: courseId,
-		},
-	})
+	let chapter = (
+		await db
+			.selectDistinct()
+			.from(schema.chapters)
+			.where(
+				and(
+					eq(schema.chapters.id, chapterId),
+					eq(schema.chapters.courseId, courseId),
+				),
+			)
+	)[0]
 
 	if (!chapter) throw new TRPCError({ code: "NOT_FOUND" })
 
 	if (chapter.videoUrl) {
-		const existingMuxData = await db.muxData.findFirst({
-			where: {
-				chapterId: chapterId,
-			},
-		})
+		let existingMuxData = (
+			await db
+				.selectDistinct()
+				.from(schema.muxData)
+				.where(eq(schema.muxData.chapterId, chapterId))
+		)[0]
 
 		if (existingMuxData) {
-			// >(11-1-2024:3)
 			await Video.Assets.del(existingMuxData.assetId)
-			await db.muxData.delete({
-				where: {
-					id: existingMuxData.id,
-				},
-			})
+			await db
+				.delete(schema.muxData)
+				.where(eq(schema.muxData.id, existingMuxData.id))
 		}
 	}
 
-	const deletedChapter = await db.chapter.delete({
-		where: {
-			id: chapterId,
-		},
-	})
+	let deletedChapter = await db
+		.selectDistinct()
+		.from(schema.chapters)
+		.where(eq(schema.chapters.id, chapterId))
+	await db.delete(schema.chapters).where(eq(schema.chapters.id, chapterId))
 
-	const publishedChaptersInCourse = await db.chapter.findMany({
-		where: {
-			courseId: courseId,
-			isPublished: true,
-		},
-	})
+	let publishedChaptersInCourse = await db
+		.select()
+		.from(schema.chapters)
+		.where(
+			and(
+				eq(schema.chapters.courseId, courseId),
+				eq(schema.chapters.isPublished, true),
+			),
+		)
 
 	if (!publishedChaptersInCourse.length) {
-		await db.course.update({
-			where: {
-				id: courseId,
-			},
-			data: {
-				isPublished: false,
-			},
-		})
+		await db
+			.update(schema.courses)
+			.set({ isPublished: false })
+			.where(eq(schema.courses.id, courseId))
 	}
 
 	return deletedChapter
@@ -95,63 +100,70 @@ export async function patchChapter({
 	chapterNewValues,
 	db,
 }: {
-	courseId: string
-	chapterId: string
-	userId: string
+	courseId: schema.CoursesSelect["id"]
+	chapterId: schema.ChaptersSelect["id"]
+	userId: schema.CoursesSelect["userId"]
 	chapterNewValues: chapterValidatorType
-	db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+	db: PlanetScaleDatabase<typeof schema>
 }) {
-	const ownCourse = await db.course.findUnique({
-		where: {
-			id: courseId,
-			userId,
-		},
-	})
+	let ownCourse = (
+		await db
+			.selectDistinct()
+			.from(schema.courses)
+			.where(
+				and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)),
+			)
+	)[0]
 
 	if (!ownCourse) throw new TRPCError({ code: "FORBIDDEN" })
 
-	const chapter = await db.chapter.update({
-		where: {
-			id: chapterId,
-			courseId: courseId,
-		},
-		data: {
-			...chapterNewValues,
-		},
-	})
+	let chapter = (
+		await db
+			.selectDistinct()
+			.from(schema.chapters)
+			.where(
+				and(
+					eq(schema.chapters.id, chapterId),
+					eq(schema.chapters.courseId, courseId),
+				),
+			)
+	)[0]
+
+	await db
+		.update(schema.chapters)
+		.set(chapterNewValues)
+		.where(
+			and(
+				eq(schema.chapters.id, chapterId),
+				eq(schema.chapters.courseId, courseId),
+			),
+		)
 
 	if (chapterNewValues.videoUrl) {
-		const existingMuxData = await db.muxData.findFirst({
-			where: {
-				chapterId: chapterId,
-			},
-		})
+		let existingMuxData = (
+			await db
+				.selectDistinct()
+				.from(schema.muxData)
+				.where(eq(schema.muxData.chapterId, chapterId))
+		)[0]
 
 		if (existingMuxData) {
 			await Video.Assets.del(existingMuxData.assetId)
-			await db.muxData.delete({
-				where: {
-					id: existingMuxData.id,
-				},
-			})
+			await db
+				.delete(schema.muxData)
+				.where(eq(schema.muxData.id, existingMuxData.id))
 		}
 
-		// >(11-1-2024:3)
 		const asset = await Video.Assets.create({
 			input: chapterNewValues.videoUrl,
 			playback_policy: "public",
 			test: false,
 		})
 
-		await db.muxData.create({
-			data: {
-				chapterId: chapterId,
-				// >(11-1-2024:3)
-				// - assetId is id of your video on MUX platform, we use it incase we need to delete the video
-				assetId: asset.id,
-				// - the playbackId is the id of the video on MUX platform, we use it to play the video using the MUXPlayer component
-				playbackId: asset.playback_ids?.[0]?.id,
-			},
+		await db.insert(schema.muxData).values({
+			chapterId: chapterId,
+			assetId: asset.id,
+			playbackId: asset.playback_ids?.[0]?.id,
 		})
 	}
 

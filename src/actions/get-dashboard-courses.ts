@@ -1,12 +1,12 @@
-import type { Category, Chapter, Course } from "@prisma/client"
+import { db, schema } from "@/server/db"
+import { and, eq, inArray, like } from "drizzle-orm"
 
-import { db } from "@/lib/db"
 import { getProgress } from "@/actions/get-progress"
 
-type CourseWithProgressWithCategory = Course & {
-	category: Category
-	chapters: Chapter[]
-	progress: number | null
+type CourseWithProgressWithCategory = schema.CoursesSelect & {
+	category: schema.CategoriesSelect
+	chapters: schema.ChaptersSelect[]
+	progress: number
 }
 
 type DashboardCourses = {
@@ -19,30 +19,36 @@ export const getDashboardCourses = async ({
 	categoryId,
 	title,
 }: {
-	userId: string
-	categoryId?: string
-	title?: string
+	userId: schema.PurchasesSelect["userId"]
+	categoryId?: schema.CoursesSelect["categoryId"]
+	title?: schema.CoursesSelect["title"]
 }): Promise<DashboardCourses> => {
 	try {
-		const purchasedCourses = await db.purchase.findMany({
-			where: {
-				userId,
+		let purchasedCourses = await db.query.purchases.findMany({
+			where: and(
+				eq(schema.purchases.userId, userId),
+				inArray(
+					schema.purchases.courseId,
+					db
+						.select({ id: schema.courses.id })
+						.from(schema.courses)
+						.where(
+							and(
+								eq(schema.courses.isPublished, true),
+								categoryId
+									? eq(schema.courses.categoryId, categoryId)
+									: undefined,
+								title ? like(schema.courses.title, title) : undefined,
+							),
+						),
+				),
+			),
+			with: {
 				course: {
-					isPublished: true,
-					categoryId,
-					title: {
-						contains: title,
-					},
-				},
-			},
-			select: {
-				course: {
-					include: {
+					with: {
 						category: true,
 						chapters: {
-							where: {
-								isPublished: true,
-							},
+							where: eq(schema.chapters.isPublished, true),
 						},
 					},
 				},

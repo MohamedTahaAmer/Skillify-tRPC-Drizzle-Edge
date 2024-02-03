@@ -19,11 +19,12 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Combobox } from "@/components/ui/combobox"
 import { api } from "@/trpc/react"
+import type { CategoriesSelect, CoursesSelect } from "@/server/db/schema"
 
 interface CategoryFormProps {
-	initialCategoryId: string
-	courseId: string
-	options: { label: string; value: string }[]
+	initialCategoryId: CategoriesSelect["id"]
+	courseId: CoursesSelect["id"]
+	options: { label: CategoriesSelect['name']; value: CategoriesSelect['id'] }[]
 }
 
 const formSchema = z.object({
@@ -44,7 +45,7 @@ export const CategoryForm = ({
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			categoryId: initialCategoryId ?? ""
+			categoryId: initialCategoryId 
 		}
 	})
 
@@ -53,7 +54,7 @@ export const CategoryForm = ({
 
 	const onSubmit = async (courseNewValues: z.infer<typeof formSchema>) => {
 		try {
-      await patchCourse.mutateAsync({ courseId, courseNewValues })
+      await patchCourse.mutateAsync({ courseId: courseId ?? '', courseNewValues })
 
 			toast.success("Course updated")
 			toggleEdit()

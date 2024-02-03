@@ -1,35 +1,45 @@
-import type { Prisma, PrismaClient } from "@prisma/client"
-import type { DefaultArgs } from "@prisma/client/runtime/library"
 import { TRPCError } from "@trpc/server"
+import { schema } from "@/server/db"
+import { and, eq } from "drizzle-orm"
+import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
 export async function addAttachment({
 	courseId,
 	url,
 	userId,
 	db,
 }: {
-	courseId: string
-	userId: string
-	url: string
-	db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+	courseId: schema.CoursesSelect["id"]
+	userId: schema.CoursesSelect["userId"]
+	url: schema.AttachmentsSelect["url"]
+	db: PlanetScaleDatabase<typeof schema>
 }) {
-	const courseOwner = await db.course.findUnique({
-		where: {
-			id: courseId,
-			userId: userId,
-		},
-	})
-
-	if (!courseOwner)
+	let ownCourse = (
+		await db
+			.selectDistinct()
+			.from(schema.courses)
+			.where(
+				and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)),
+			)
+	)[0]
+	if (!ownCourse)
 		throw new TRPCError({ code: "NOT_FOUND", message: "Course not found" })
 
-	const attachment = await db.attachment.create({
-		data: {
-			url,
-			name: url.split("/").pop() ?? "",
-			courseId: courseId,
-		},
+	await db.insert(schema.attachments).values({
+		url,
+		name: url.split("/").pop() ?? "",
+		courseId: courseId,
 	})
-
+	let attachment = (
+		await db
+			.selectDistinct()
+			.from(schema.attachments)
+			.where(
+				and(
+					eq(schema.attachments.url, url),
+					eq(schema.attachments.courseId, courseId),
+				),
+			)
+	)[0]
 	return attachment
 }
 
@@ -39,26 +49,43 @@ export async function deleteAttachment({
 	userId,
 	db,
 }: {
-	attachmentId: string
-	courseId: string
-	userId: string
-	db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+	attachmentId: schema.AttachmentsSelect["id"]
+	courseId: schema.CoursesSelect["id"]
+	userId: schema.CoursesSelect["userId"]
+	db: PlanetScaleDatabase<typeof schema>
 }) {
-	const courseOwner = await db.course.findUnique({
-		where: {
-			id: courseId,
-			userId: userId,
-		},
-	})
+	let ownCourse = (
+		await db
+			.selectDistinct()
+			.from(schema.courses)
+			.where(
+				and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)),
+			)
+	)[0]
 
-	if (!courseOwner)
+	if (!ownCourse)
 		throw new TRPCError({ code: "NOT_FOUND", message: "Course not found" })
-	const attachment = await db.attachment.delete({
-		where: {
-			courseId: courseId,
-			id: attachmentId,
-		},
-	})
+
+	let attachment = (
+		await db
+			.selectDistinct()
+			.from(schema.attachments)
+			.where(
+				and(
+					eq(schema.attachments.id, attachmentId),
+					eq(schema.attachments.courseId, courseId),
+				),
+			)
+	)[0]
+
+	await db
+		.delete(schema.attachments)
+		.where(
+			and(
+				eq(schema.attachments.id, attachmentId),
+				eq(schema.attachments.courseId, courseId),
+			),
+		)
 
 	return attachment
 }

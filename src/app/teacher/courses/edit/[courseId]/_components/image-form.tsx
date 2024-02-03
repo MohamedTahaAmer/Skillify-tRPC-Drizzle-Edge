@@ -1,5 +1,4 @@
 "use client"
-import type { Course } from "@prisma/client"
 import { ImageIcon, Pencil, PlusCircle } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
@@ -8,11 +7,12 @@ import * as z from "zod"
 
 import { FileUpload } from "@/components/file-upload"
 import { Button } from "@/components/ui/button"
+import type { CoursesSelect } from "@/server/db/schema"
 import { api } from "@/trpc/react"
 
 interface ImageFormProps {
-	initialData: Course
-	courseId: string
+	initialData: CoursesSelect
+	courseId: CoursesSelect["id"]
 }
 
 const formSchema = z.object({

@@ -1,78 +1,56 @@
-import type { Category, Course } from "@prisma/client"
+import { db, schema } from "@/server/db"
+import { and, desc, eq, inArray, like } from "drizzle-orm"
 
 import { getProgress } from "@/actions/get-progress"
-import { db } from "@/lib/db"
 
-type CourseWithProgressWithCategory = Course & {
-	category: Category | null
-	chapters: { id: string }[]
+type CourseWithProgressWithCategory = schema.CoursesSelect & {
+	category: schema.CategoriesSelect | null
+	chapters: { id: schema.ChaptersSelect["id"] }[]
 	progress: number | null
 }
 
 type GetCourses = {
-	userId: string
-	title?: string
-	categoryId?: string
-	purchaced?: string
+	userId: schema.PurchasesSelect["userId"]
+	title?: schema.CoursesSelect["title"]
+	categoryId?: schema.CoursesSelect["categoryId"]
+	purchased?: schema.PurchasesSelect["userId"]
 }
 
 export const getCourses = async ({
 	userId,
 	title,
 	categoryId,
-	purchaced,
+	purchased,
 }: GetCourses): Promise<CourseWithProgressWithCategory[]> => {
-	type Where = {
-		isPublished: true
-		title: {
-			contains: string | undefined
-		}
-		categoryId: string | undefined
-		purchases?: {
-			some: {
-				userId: string
-			}
-		}
-	}
-	let whereClouse: Where = {
-		isPublished: true,
-		title: {
-			contains: title,
-		},
-		categoryId,
-	}
-	if (purchaced) {
-		whereClouse = {
-			...whereClouse,
-			purchases: {
-				some: {
-					userId,
-				},
-			},
-		}
-	}
 	try {
-		const courses = await db.course.findMany({
-			where: whereClouse,
-			include: {
+		let courses = await db.query.courses.findMany({
+			where: and(
+				eq(schema.courses.isPublished, true),
+				title ? like(schema.courses.title, title) : undefined,
+				categoryId ? eq(schema.courses.categoryId, categoryId) : undefined,
+				purchased
+					? inArray(
+							schema.courses.id,
+							db
+								.select({ id: schema.purchases.courseId })
+								.from(schema.purchases)
+								.where(eq(schema.purchases.userId, userId)),
+						)
+					: undefined,
+			),
+			with: {
 				category: true,
 				chapters: {
-					where: {
-						isPublished: true,
-					},
-					select: {
+					where: eq(schema.chapters.isPublished, true),
+					columns: {
 						id: true,
 					},
 				},
 				purchases: {
-					where: {
-						userId,
-					},
+					where: eq(schema.purchases.userId, userId),
 				},
 			},
-			orderBy: {
-				createdAt: "desc",
-			},
+			orderBy: desc(schema.courses.createdAt),
 		})
 
 		const coursesWithProgress: CourseWithProgressWithCategory[] =

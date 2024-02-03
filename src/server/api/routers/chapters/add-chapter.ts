@@ -1,44 +1,54 @@
-import type { Prisma, PrismaClient } from "@prisma/client"
-import type { DefaultArgs } from "@prisma/client/runtime/library"
+import { schema } from "@/server/db"
 import { TRPCError } from "@trpc/server"
+import { and, desc, eq } from "drizzle-orm"
+import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
 export async function addChapter({
 	courseId,
 	title,
 	userId,
 	db,
 }: {
-	courseId: string
-	userId: string
-	title: string
-	db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+	courseId: schema.CoursesSelect["id"]
+	userId: schema.CoursesSelect["userId"]
+	title: schema.ChaptersSelect["title"]
+	db: PlanetScaleDatabase<typeof schema>
 }) {
-	const courseOwner = await db.course.findUnique({
-		where: {
-			id: courseId,
-			userId: userId,
-		},
-	})
+	let courseOwner = (
+		await db
+			.selectDistinct()
+			.from(schema.courses)
+			.where(
+				and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)),
+			)
+	)[0]
 
 	if (!courseOwner) throw new TRPCError({ code: "FORBIDDEN" })
 
-	const lastChapter = await db.chapter.findFirst({
-		where: {
-			courseId: courseId,
-		},
-		orderBy: {
-			position: "desc",
-		},
-	})
+	let lastChapter = (
+		await db
+			.selectDistinct()
+			.from(schema.chapters)
+			.where(eq(schema.chapters.courseId, courseId))
+			.orderBy(desc(schema.chapters.position))
+	)[0]
 
 	const newPosition = lastChapter ? lastChapter.position + 1 : 1
 
-	const chapter = await db.chapter.create({
-		data: {
-			title,
-			courseId: courseId,
-			position: newPosition,
-		},
-	})
+	await db
+		.insert(schema.chapters)
+		.values({ title, courseId, position: newPosition })
+	let chapter = (
+		await db
+			.selectDistinct()
+			.from(schema.chapters)
+			.where(
+				and(
+					eq(schema.chapters.title, title),
+					eq(schema.chapters.courseId, courseId),
+					eq(schema.chapters.position, newPosition),
+				),
+			)
+	)[0]
 
 	return chapter
 }

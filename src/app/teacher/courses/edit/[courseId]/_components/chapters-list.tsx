@@ -1,18 +1,18 @@
 import {
 	DragDropContext,
 	Draggable,
-	type DropResult,
 	Droppable,
+	type DropResult,
 } from "@hello-pangea/dnd"
-import type { Chapter } from "@prisma/client"
 import { Grip, Pencil } from "lucide-react"
 import { useEffect, useState } from "react"
 
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
+import type { ChaptersSelect } from "@/server/db/schema"
 
 interface ChaptersListProps {
-	items: Chapter[]
+	items: ChaptersSelect[]
 	onReorder: (updateData: { id: string; position: number }[]) => void
 	onEdit: (id: string) => void
 }

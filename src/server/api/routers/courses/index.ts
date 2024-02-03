@@ -10,6 +10,7 @@ import {
 	patchCourse,
 } from "./delete-patch-course"
 import { addAttachment, deleteAttachment } from "./add-delete-attachment"
+import { schema } from "@/server/db"
 
 export const coursesRouter = createTRPCRouter({
 	checkout: protectedProcedure
@@ -24,7 +25,12 @@ export const coursesRouter = createTRPCRouter({
 		}),
 
 	updateProgress: protectedProcedure
-		.input(z.object({ isCompleted: z.boolean(), chapterId: z.string().min(1) }))
+		.input(
+			z.object({
+				isCompleted: z.boolean(),
+				chapterId: z.string().min(1),
+			}),
+		)
 		.mutation(async ({ ctx, input }) => {
 			let userProgress = await updateProgress({
 				userId: ctx.user.id,
@@ -111,11 +117,9 @@ export const coursesRouter = createTRPCRouter({
 	create: protectedProcedure
 		.input(z.object({ title: z.string().min(1) }))
 		.mutation(async ({ ctx, input }) => {
-			let course = await ctx.db.course.create({
-				data: {
-					title: input.title,
-					userId: ctx.user.id,
-				},
+			let course = await ctx.db.insert(schema.courses).values({
+				title: input.title,
+				userId: ctx.user.id,
 			})
 			return { course }
 		}),

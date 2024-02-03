@@ -1,34 +1,37 @@
-import type { Prisma, PrismaClient } from "@prisma/client"
-import type { DefaultArgs } from "@prisma/client/runtime/library"
+import { schema } from "@/server/db"
 import { TRPCError } from "@trpc/server"
+import { and, eq } from "drizzle-orm"
+import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
 export async function reorderChapters({
 	courseId,
 	list,
 	userId,
 	db,
 }: {
-	courseId: string
-	userId: string
+	courseId: schema.CoursesSelect["id"]
+	userId: schema.CoursesSelect["userId"]
 	list: {
-		id: string
-		position: number
+		id: schema.ChaptersSelect["id"]
+		position: schema.ChaptersSelect["position"]
 	}[]
-	db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+	db: PlanetScaleDatabase<typeof schema>
 }) {
-	const ownCourse = await db.course.findUnique({
-		where: {
-			id: courseId,
-			userId: userId,
-		},
-	})
+	const ownCourse = (
+		await db
+			.selectDistinct()
+			.from(schema.courses)
+			.where(
+				and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)),
+			)
+	)[0]
 
 	if (!ownCourse) throw new TRPCError({ code: "FORBIDDEN" })
 
 	for (let item of list) {
-		await db.chapter.update({
-			where: { id: item.id },
-			data: { position: item.position },
-		})
+		await db
+			.update(schema.chapters)
+			.set({ position: item.position })
+			.where(eq(schema.chapters.id, item.id))
 	}
 
 	return "Success"

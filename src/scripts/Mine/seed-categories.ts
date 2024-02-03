@@ -1,10 +1,12 @@
 "use server"
-import { db } from "@/lib/db"
+
+import { db, schema } from "@/server/db"
 
 export async function seedCategories() {
 	try {
-		await db.category.createMany({
-			data: [
+		await db
+			.insert(schema.categories)
+			.values([
 				{ name: "Computer Science" },
 				{ name: "Music" },
 				{ name: "Fitness" },
@@ -12,18 +14,13 @@ export async function seedCategories() {
 				{ name: "Accounting" },
 				{ name: "Engineering" },
 				{ name: "Filming" },
-			],
-		})
-
+			])
 		console.log("Success")
 	} catch (error) {
 		console.log("Error seeding the database categories", error)
-	} finally {
-		await db.$disconnect()
 	}
 }
 
 export async function getCategories() {
-	// return "getCategories"
-	return await db.category.findMany()
+	return await db.query.categories.findMany()
 }

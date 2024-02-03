@@ -1,8 +1,8 @@
-import { db } from "@/lib/db"
-import type { Course, Purchase } from "@prisma/client"
+import { db, schema } from "@/server/db"
+import { eq, inArray } from "drizzle-orm"
 
-type PurchaseWithCourse = Purchase & {
-	course: Course
+type PurchaseWithCourse = schema.PurchasesSelect & {
+	course: schema.CoursesSelect
 }
 
 const groupByCourse = (purchases: PurchaseWithCourse[]) => {
@@ -21,13 +21,15 @@ const groupByCourse = (purchases: PurchaseWithCourse[]) => {
 
 export const getAnalytics = async (userId: string) => {
 	try {
-		const purchases = await db.purchase.findMany({
-			where: {
-				course: {
-					userId: userId,
-				},
-			},
-			include: {
+		let purchases = await db.query.purchases.findMany({
+			where: inArray(
+				schema.purchases.courseId,
+				db
+					.select({ id: schema.purchases.courseId })
+					.from(schema.purchases)
+					.where(eq(schema.purchases.userId, userId)),
+			),
+			with: {
 				course: true,
 			},
 		})

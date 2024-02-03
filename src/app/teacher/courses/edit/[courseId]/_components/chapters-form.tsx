@@ -1,14 +1,14 @@
 "use client"
 
-import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
 import { Loader2, PlusCircle } from "lucide-react"
-import { useState } from "react"
-import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
-import type { Chapter, Course } from "@prisma/client"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import toast from "react-hot-toast"
+import * as z from "zod"
 
+import { Button } from "@/components/ui/button"
 import {
 	Form,
 	FormControl,
@@ -16,16 +16,16 @@ import {
 	FormItem,
 	FormMessage,
 } from "@/components/ui/form"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
 
-import { ChaptersList } from "./chapters-list"
+import type { ChaptersSelect, CoursesSelect } from "@/server/db/schema"
 import { api } from "@/trpc/react"
+import { ChaptersList } from "./chapters-list"
 
 interface ChaptersFormProps {
-	initialData: Course & { chapters: Chapter[] }
-	courseId: string
+	initialData: CoursesSelect & { chapters: ChaptersSelect[] }
+	courseId: CoursesSelect["id"]
 }
 
 const formSchema = z.object({

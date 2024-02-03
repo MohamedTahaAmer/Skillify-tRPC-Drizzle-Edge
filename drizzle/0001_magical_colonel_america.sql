@@ -1,0 +1,1 @@
+ALTER TABLE `skillify_dev_1_mux_data` MODIFY COLUMN `chapter_id` int NOT NULL;

@@ -1,22 +1,26 @@
+import { db, schema } from "@/server/db"
 import { auth } from "@clerk/nextjs"
-import { redirect } from "next/navigation"
-import Link from "next/link"
+import { and, eq } from "drizzle-orm"
 import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react"
+import Link from "next/link"
+import { redirect } from "next/navigation"
 
-import { db } from "@/lib/db"
-import { IconBadge } from "@/components/icon-badge"
 import { Banner } from "@/components/banner"
+import { IconBadge } from "@/components/icon-badge"
 
-import { ChapterTitleForm } from "./_components/chapter-title-form"
-import { ChapterDescriptionForm } from "./_components/chapter-description-form"
 import { ChapterAccessForm } from "./_components/chapter-access-form"
-import { ChapterVideoForm } from "./_components/chapter-video-form"
 import { ChapterActions } from "./_components/chapter-actions"
+import { ChapterDescriptionForm } from "./_components/chapter-description-form"
+import { ChapterTitleForm } from "./_components/chapter-title-form"
+import { ChapterVideoForm } from "./_components/chapter-video-form"
 
 const ChapterIdPage = async ({
 	params,
 }: {
-	params: { courseId: string; chapterId: string }
+	params: {
+		courseId: schema.CoursesSelect["id"]
+		chapterId: schema.ChaptersSelect["id"]
+	}
 }) => {
 	const { userId } = auth()
 
@@ -24,16 +28,15 @@ const ChapterIdPage = async ({
 		return redirect("/")
 	}
 
-	const chapter = await db.chapter.findUnique({
-		where: {
-			id: params.chapterId,
-			courseId: params.courseId,
-		},
-		include: {
+	let chapter = await db.query.chapters.findFirst({
+		where: and(
+			eq(schema.chapters.id, params.chapterId),
+			eq(schema.chapters.courseId, params.courseId),
+		),
+		with: {
 			muxData: true,
 		},
 	})
-
 	if (!chapter) {
 		return redirect("/")
 	}
@@ -76,7 +79,7 @@ const ChapterIdPage = async ({
 								disabled={!isComplete}
 								courseId={params.courseId}
 								chapterId={params.chapterId}
-								isPublished={chapter.isPublished}
+								isPublished={!!chapter.isPublished}
 							/>
 						</div>
 					</div>

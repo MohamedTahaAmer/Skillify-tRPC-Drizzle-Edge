@@ -5,7 +5,7 @@ import {
 	SheetContent,
 	SheetTrigger,
 } from "@/components/ui/sheet"
-import type { Category } from "@prisma/client"
+import type { IconType } from "react-icons"
 import {
 	FcEngineering,
 	FcFilmReel,
@@ -15,16 +15,16 @@ import {
 	FcSalesPerformance,
 	FcSportsMode,
 } from "react-icons/fc"
-import type { IconType } from "react-icons"
 
-import { CategoryItem } from "./category-item"
-import Purchased from "./purchased"
-import ClearFilters from "./clear-filters"
+import type { CategoriesSelect } from "@/server/db/schema"
 import { Menu } from "lucide-react"
+import { CategoryItem } from "./category-item"
+import ClearFilters from "./clear-filters"
 import { MobileCategoryItem } from "./mobile-category-items"
+import Purchased from "./purchased"
 
 interface CategoriesProps {
-	items: Category[]
+	items: CategoriesSelect[]
 }
 
 const iconMap: Record<string, IconType> = {
@@ -53,9 +53,9 @@ export const Categories = ({ items }: CategoriesProps) => {
 								{items.map((item) => (
 									<MobileCategoryItem
 										key={item.id}
-										label={item.name}
-										icon={iconMap[item.name]}
-										value={item.id}
+										label={item.name ?? ""}
+										icon={iconMap[item.name ?? ""]}
+										value={item.id + ""}
 									/>
 								))}
 							</div>
@@ -69,9 +69,9 @@ export const Categories = ({ items }: CategoriesProps) => {
 				{items.map((item) => (
 					<CategoryItem
 						key={item.id}
-						label={item.name}
-						icon={iconMap[item.name]}
-						value={item.id}
+						label={item.name ?? ""}
+						icon={iconMap[item.name ?? ""]}
+						value={item.id + ""}
 					/>
 				))}
 			</div>

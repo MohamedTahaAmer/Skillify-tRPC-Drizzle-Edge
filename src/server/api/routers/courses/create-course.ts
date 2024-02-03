@@ -1,5 +1,6 @@
-import type { Prisma, PrismaClient } from "@prisma/client"
-import type { DefaultArgs } from "@prisma/client/runtime/library"
+import { schema } from "@/server/db"
+import { and, eq } from "drizzle-orm"
+import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
 import { revalidatePath } from "next/cache"
 
 export async function createCourse({
@@ -7,16 +8,27 @@ export async function createCourse({
 	userId,
 	db,
 }: {
-	title: string
-	userId: string
-	db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+	title: schema.CoursesInsert["title"]
+	userId: schema.CoursesInsert["userId"]
+	db: PlanetScaleDatabase<typeof schema>
 }) {
-	const course = await db.course.create({
-		data: {
-			userId,
-			title,
-		},
+	// const course = await db.course.create({
+	// 	data: {
+	// 		userId,
+	// 		title,
+	// 	},
+	// })
+	await db.insert(schema.courses).values({
+		userId,
+		title,
 	})
+	let course = ( await db.selectDistinct().from(schema.courses).where(
+		and(
+			eq(schema.courses.userId, userId),
+			eq(schema.courses.title, title),
+		),
+	))[0]
+	
 	revalidatePath("/teacher/courses")
 
 	return course

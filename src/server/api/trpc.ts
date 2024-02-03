@@ -10,7 +10,7 @@
 import { initTRPC, TRPCError } from "@trpc/server"
 import superjson from "superjson"
 import { ZodError } from "zod"
-import { db } from "src/lib/db"
+import { db } from "../db"
 import { currentUser } from "@clerk/nextjs"
 
 /**

@@ -1,6 +1,7 @@
-import type { Prisma, PrismaClient } from "@prisma/client"
-import type { DefaultArgs } from "@prisma/client/runtime/library"
+import { schema } from "@/server/db"
 import { TRPCError } from "@trpc/server"
+import { and, eq } from "drizzle-orm"
+import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
 
 export async function unpublish({
 	courseId,
@@ -8,47 +9,59 @@ export async function unpublish({
 	userId,
 	db,
 }: {
-	courseId: string
-	chapterId: string
-	userId: string
-	db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+	courseId: schema.CoursesSelect["id"]
+	chapterId: schema.ChaptersSelect["id"]
+	userId: schema.CoursesSelect["userId"]
+	db: PlanetScaleDatabase<typeof schema>
 }) {
-	const ownCourse = await db.course.findUnique({
-		where: {
-			id: courseId,
-			userId,
-		},
-	})
-
+	let ownCourse = (
+		await db
+			.selectDistinct()
+			.from(schema.courses)
+			.where(
+				and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)),
+			)
+	)[0]
 	if (!ownCourse)
 		throw new TRPCError({ code: "UNAUTHORIZED", message: "Unauthorized" })
 
-	const unpublishedChapter = await db.chapter.update({
-		where: {
-			id: chapterId,
-			courseId: courseId,
-		},
-		data: {
-			isPublished: false,
-		},
-	})
+	let unpublishedChapter = (
+		await db
+			.selectDistinct()
+			.from(schema.chapters)
+			.where(
+				and(
+					eq(schema.chapters.id, chapterId),
+					eq(schema.chapters.courseId, courseId),
+				),
+			)
+	)[0]
 
-	const publishedChaptersInCourse = await db.chapter.findMany({
-		where: {
-			courseId: courseId,
-			isPublished: true,
-		},
-	})
+	await db
+		.update(schema.chapters)
+		.set({ isPublished: false })
+		.where(
+			and(
+				eq(schema.chapters.id, chapterId),
+				eq(schema.chapters.courseId, courseId),
+			),
+		)
+
+	let publishedChaptersInCourse = await db
+		.select()
+		.from(schema.chapters)
+		.where(
+			and(
+				eq(schema.chapters.courseId, courseId),
+				eq(schema.chapters.isPublished, true),
+			),
+		)
 
 	if (!publishedChaptersInCourse.length) {
-		await db.course.update({
-			where: {
-				id: courseId,
-			},
-			data: {
-				isPublished: false,
-			},
-		})
+		await db
+			.update(schema.courses)
+			.set({ isPublished: false })
+			.where(eq(schema.courses.id, courseId))
 	}
 
 	return unpublishedChapter
@@ -60,33 +73,41 @@ export async function publish({
 	userId,
 	db,
 }: {
-	courseId: string
-	chapterId: string
-	userId: string
-	db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+	courseId: schema.CoursesSelect["id"]
+	chapterId: schema.ChaptersSelect["id"]
+	userId: schema.CoursesSelect["userId"]
+	db: PlanetScaleDatabase<typeof schema>
 }) {
-	const ownCourse = await db.course.findUnique({
-		where: {
-			id: courseId,
-			userId,
-		},
-	})
+	let ownCourse = (
+		await db
+			.selectDistinct()
+			.from(schema.courses)
+			.where(
+				and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)),
+			)
+	)[0]
 
 	if (!ownCourse)
 		throw new TRPCError({ code: "UNAUTHORIZED", message: "Unauthorized" })
 
-	const chapter = await db.chapter.findUnique({
-		where: {
-			id: chapterId,
-			courseId: courseId,
-		},
-	})
+	let chapter = (
+		await db
+			.selectDistinct()
+			.from(schema.chapters)
+			.where(
+				and(
+					eq(schema.chapters.id, chapterId),
+					eq(schema.chapters.courseId, courseId),
+				),
+			)
+	)[0]
 
-	const muxData = await db.muxData.findUnique({
-		where: {
-			chapterId: chapterId,
-		},
-	})
+	let muxData = (
+		await db
+			.selectDistinct()
+			.from(schema.muxData)
+			.where(eq(schema.muxData.chapterId, chapterId))
+	)[0]
 
 	if (
 		!muxData ||
@@ -100,15 +121,27 @@ export async function publish({
 		})
 	}
 
-	const publishedChapter = await db.chapter.update({
-		where: {
-			id: chapterId,
-			courseId: courseId,
-		},
-		data: {
-			isPublished: true,
-		},
-	})
+	let publishedChapter = (
+		await db
+			.selectDistinct()
+			.from(schema.chapters)
+			.where(
+				and(
+					eq(schema.chapters.id, chapterId),
+					eq(schema.chapters.courseId, courseId),
+				),
+			)
+	)[0]
+
+	await db
+		.update(schema.chapters)
+		.set({ isPublished: true })
+		.where(
+			and(
+				eq(schema.chapters.id, chapterId),
+				eq(schema.chapters.courseId, courseId),
+			),
+		)
 
 	return publishedChapter
 }

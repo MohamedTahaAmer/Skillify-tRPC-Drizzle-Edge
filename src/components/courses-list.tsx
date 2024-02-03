@@ -1,10 +1,13 @@
-import type { Category, Course } from "@prisma/client"
-
 import { CourseCard } from "@/components/course-card"
+import type {
+	CategoriesSelect,
+	ChaptersSelect,
+	CoursesSelect,
+} from "@/server/db/schema"
 
-type CourseWithProgressWithCategory = Course & {
-	category: Category | null
-	chapters: { id: string }[]
+type CourseWithProgressWithCategory = CoursesSelect & {
+	category: CategoriesSelect | null
+	chapters: { id: ChaptersSelect["id"] }[]
 	progress: number | null
 }
 
@@ -19,7 +22,7 @@ export const CoursesList = ({ items }: CoursesListProps) => {
 				{items.map((item) => (
 					<CourseCard
 						key={item.id}
-						id={item.id}
+						id={item.id + ""}
 						title={item.title}
 						imageUrl={item.imageUrl!}
 						chaptersLength={item.chapters.length}

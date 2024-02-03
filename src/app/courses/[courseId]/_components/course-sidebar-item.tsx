@@ -4,12 +4,13 @@ import { CheckCircle, Lock, PlayCircle } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 
 import { cn } from "@/lib/utils"
+import type { schema } from "@/server/db"
 
 interface CourseSidebarItemProps {
-	label: string
-	id: string
+	label: schema.ChaptersSelect["title"]
+	id: schema.ChaptersSelect["id"]
 	isCompleted: boolean
-	courseId: string
+	courseId: schema.CoursesSelect["id"]
 	isLocked: boolean
 }
 
@@ -24,7 +25,7 @@ export const CourseSidebarItem = ({
 	const router = useRouter()
 
 	const Icon = isLocked ? Lock : isCompleted ? CheckCircle : PlayCircle
-	const isActive = pathname?.includes(id)
+	const isActive = pathname?.includes(id + "")
 
 	const onClick = () => {
 		router.push(`/courses/${courseId}/chapters/${id}`)

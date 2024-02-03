@@ -9,8 +9,8 @@ import { redirect } from "next/navigation"
 
 import { Banner } from "@/components/banner"
 import { IconBadge } from "@/components/icon-badge"
-import { db } from "@/lib/db"
-
+import { db, schema } from "@/server/db"
+import { and, asc, desc, eq } from "drizzle-orm"
 import { Actions } from "./_components/actions"
 import { AttachmentForm } from "./_components/attachment-form"
 import { CategoryForm } from "./_components/category-form"
@@ -27,29 +27,48 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
 		return redirect("/")
 	}
 
-	const course = await db.course.findUnique({
-		where: {
-			id: params.courseId,
-			userId,
-		},
-		include: {
+	// const course = await db.course.findUnique({
+	// 	where: {
+	// 		id: params.courseId,
+	// 		userId,
+	// 	},
+	// 	include: {
+	// 		chapters: {
+	// 			orderBy: {
+	// 				position: "asc",
+	// 			},
+	// 		},
+	// 		attachments: {
+	// 			orderBy: {
+	// 				createdAt: "desc",
+	// 			},
+	// 		},
+	// 	},
+	// })
+
+	let course = await db.query.courses.findFirst({
+		where: and(
+			eq(schema.courses.id, params.courseId),
+			eq(schema.courses.userId, userId),
+		),
+		with: {
 			chapters: {
-				orderBy: {
-					position: "asc",
-				},
+				orderBy: asc(schema.chapters.position),
 			},
 			attachments: {
-				orderBy: {
-					createdAt: "desc",
-				},
+				orderBy: desc(schema.attachments.createdAt),
 			},
 		},
 	})
 
-	const categories = await db.category.findMany({
-		orderBy: {
-			name: "asc",
-		},
+	// const categories = await db.category.findMany({
+	// 	orderBy: {
+	// 		name: "asc",
+	// 	},
+	// })
+
+	let categories = await db.query.categories.findMany({
+		orderBy: asc(schema.categories.name),
 	})
 
 	if (!course) {
@@ -88,7 +107,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
 					<Actions
 						disabled={!isComplete}
 						courseId={params.courseId}
-						isPublished={course.isPublished}
+						isPublished={!!course.isPublished}
 					/>
 				</div>
 				<div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">

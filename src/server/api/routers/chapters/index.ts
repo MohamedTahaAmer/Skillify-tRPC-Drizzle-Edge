@@ -9,10 +9,11 @@ import {
 	patchChapter,
 } from "./delete-patch-chapters"
 import { publish, unpublish } from "./un-publish"
-
 export const chaptersRouter = createTRPCRouter({
 	addChapter: protectedProcedure
-		.input(z.object({ courseId: z.string().min(1), title: z.string().min(1) }))
+		.input(
+			z.object({ courseId: z.string().min(1), title: z.string().min(1) }),
+		)
 		.mutation(async ({ ctx, input }) => {
 			let chapter = await addChapter({
 				userId: ctx.user.id,
@@ -26,7 +27,9 @@ export const chaptersRouter = createTRPCRouter({
 		.input(
 			z.object({
 				courseId: z.string().min(1),
-				list: z.object({ id: z.string().min(1), position: z.number() }).array(),
+				list: z
+					.object({ id: z.string().min(1), position: z.number() })
+					.array(),
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {

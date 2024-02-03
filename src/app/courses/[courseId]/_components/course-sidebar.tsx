@@ -1,16 +1,15 @@
 import { auth } from "@clerk/nextjs"
-import type { Chapter, Course, UserProgress } from "@prisma/client"
 import { redirect } from "next/navigation"
 
 import { CourseProgress } from "@/components/course-progress"
-import { db } from "@/lib/db"
-
+import { db, schema } from "@/server/db"
+import { and, eq } from "drizzle-orm"
 import { CourseSidebarItem } from "./course-sidebar-item"
 
 interface CourseSidebarProps {
-	course: Course & {
-		chapters: (Chapter & {
-			userProgress: UserProgress[] | null
+	course: schema.CoursesSelect & {
+		chapters: (schema.ChaptersSelect & {
+			userProgress: schema.UserProgressSelect[] | null
 		})[]
 	}
 	progressCount: number
@@ -26,15 +25,20 @@ export const CourseSidebar = async ({
 		return redirect("/")
 	}
 
-	const purchase = await db.purchase.findUnique({
-		where: {
-			userId_courseId: {
-				userId,
-				courseId: course.id,
-			},
-		},
+	// const purchase = await db.purchase.findUnique({
+	// 	where: {
+	// 		userId_courseId: {
+	// 			userId,
+	// 			courseId: course.id,
+	// 		},
+	// 	},
+	// })
+	let purchase = await db.query.purchases.findFirst({
+		where: and(
+			eq(schema.purchases.userId, userId),
+			eq(schema.purchases.courseId, course.id),
+		),
 	})
-
 	return (
 		<div className="flex h-full flex-col border-r shadow-sm">
 			<div className="flex flex-col border-b p-4">

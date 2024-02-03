@@ -1,5 +1,6 @@
-import type { Prisma, PrismaClient } from "@prisma/client"
-import type { DefaultArgs } from "@prisma/client/runtime/library"
+import { schema } from "@/server/db"
+import { and, eq } from "drizzle-orm"
+import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
 
 export default async function updateProgress({
 	userId,
@@ -7,27 +8,51 @@ export default async function updateProgress({
 	chapterId,
 	db,
 }: {
-	isCompleted: boolean
-	chapterId: string
-	userId: string
-	db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+	isCompleted: schema.UserProgressInsert["isCompleted"]
+	chapterId: schema.UserProgressInsert["chapterId"]
+	userId: schema.UserProgressInsert["userId"]
+	db: PlanetScaleDatabase<typeof schema>
 }) {
-	const userProgress = await db.userProgress.upsert({
-		where: {
-			userId_chapterId: {
-				userId,
-				chapterId: chapterId,
-			},
-		},
-		update: {
-			isCompleted,
-		},
-		create: {
+	let userProgress = (
+		await db
+			.selectDistinct()
+			.from(schema.userProgress)
+			.where(
+				and(
+					eq(schema.userProgress.userId, userId),
+					eq(schema.userProgress.chapterId, chapterId),
+				),
+			)
+	)[0]
+
+	if (userProgress) {
+		await db
+			.update(schema.userProgress)
+			.set({ isCompleted })
+			.where(
+				and(
+					eq(schema.userProgress.userId, userId),
+					eq(schema.userProgress.chapterId, chapterId),
+				),
+			)
+	} else {
+		await db.insert(schema.userProgress).values({
 			userId,
-			chapterId: chapterId,
+			chapterId,
 			isCompleted,
-		},
-	})
+		})
+		userProgress = (
+			await db
+				.selectDistinct()
+				.from(schema.userProgress)
+				.where(
+					and(
+						eq(schema.userProgress.userId, userId),
+						eq(schema.userProgress.chapterId, chapterId),
+					),
+				)
+		)[0]
+	}
 
 	return userProgress
 }

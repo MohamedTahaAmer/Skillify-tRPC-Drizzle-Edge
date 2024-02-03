@@ -18,12 +18,13 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { api } from "@/trpc/react"
+import type { CoursesSelect } from "@/server/db/schema"
 
 interface TitleFormProps {
 	initialData: {
 		title: string
 	}
-	courseId: string
+	courseId: CoursesSelect["id"]
 }
 
 const formSchema = z.object({
@@ -49,7 +50,10 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
 
 	const onSubmit = async (courseNewValues: z.infer<typeof formSchema>) => {
 		try {
-			await patchCourse.mutateAsync({ courseId, courseNewValues })
+			await patchCourse.mutateAsync({
+				courseId: courseId + "",
+				courseNewValues,
+			})
 
 			toast.success("Course updated")
 			toggleEdit()
