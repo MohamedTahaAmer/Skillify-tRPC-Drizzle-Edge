@@ -30,6 +30,8 @@ export async function checkout({
 			)
 	)[0]
 
+	if (!course) throw new TRPCError({ code: "NOT_FOUND" })
+
 	let purchase = (
 		await db
 			.selectDistinct()
@@ -43,8 +45,6 @@ export async function checkout({
 	)[0]
 
 	if (purchase) throw new TRPCError({ code: "CONFLICT" })
-
-	if (!course) throw new TRPCError({ code: "NOT_FOUND" })
 
 	let stripeCustomer = (
 		await db
@@ -70,14 +70,9 @@ export async function checkout({
 					stripeCustomerId: schema.stripeCustomers.stripeCustomerId,
 				})
 				.from(schema.stripeCustomers)
-				.where(
-					and(
-						eq(schema.stripeCustomers.stripeCustomerId, customer.id),
-					),
-				)
+				.where(and(eq(schema.stripeCustomers.stripeCustomerId, customer.id)))
 		)[0]!
 	}
-
 
 	const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [
 		{
@@ -94,7 +89,7 @@ export async function checkout({
 	]
 
 	const session = await stripe.checkout.sessions.create({
-		customer: stripeCustomer.stripeCustomerId ?? '',
+		customer: stripeCustomer.stripeCustomerId ?? "",
 		line_items,
 		mode: "payment",
 		success_url: `${env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?success=1`,

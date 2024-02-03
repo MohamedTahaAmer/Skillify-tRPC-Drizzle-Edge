@@ -25,6 +25,7 @@ import Purchased from "./purchased"
 
 interface CategoriesProps {
 	items: CategoriesSelect[]
+	userId: string | null
 }
 
 const iconMap: Record<string, IconType> = {
@@ -37,7 +38,7 @@ const iconMap: Record<string, IconType> = {
 	Engineering: FcEngineering as IconType,
 }
 
-export const Categories = ({ items }: CategoriesProps) => {
+export const Categories = ({ items, userId }: CategoriesProps) => {
 	return (
 		<div className="flex w-full items-center justify-between pb-4 xl:mx-auto xl:w-[1200px]">
 			{/* mobile Categoreis */}
@@ -77,7 +78,7 @@ export const Categories = ({ items }: CategoriesProps) => {
 			</div>
 
 			<div className="flex items-center gap-2 ">
-				<Purchased />
+				{userId && <Purchased />}
 				<ClearFilters />
 			</div>
 		</div>

@@ -6,11 +6,11 @@ import { getProgress } from "@/actions/get-progress"
 type CourseWithProgressWithCategory = schema.CoursesSelect & {
 	category: schema.CategoriesSelect | null
 	chapters: { id: schema.ChaptersSelect["id"] }[]
-	progress: number | null
+	progress?: number | null
 }
 
 type GetCourses = {
-	userId: schema.PurchasesSelect["userId"]
+	userId: schema.PurchasesSelect["userId"] | null
 	title?: schema.CoursesSelect["title"]
 	categoryId?: schema.CoursesSelect["categoryId"]
 	purchased?: string
@@ -28,7 +28,7 @@ export const getCourses = async ({
 				eq(schema.courses.isPublished, true),
 				title ? like(schema.courses.title, title) : undefined,
 				categoryId ? eq(schema.courses.categoryId, categoryId) : undefined,
-				purchased
+				userId && purchased
 					? inArray(
 							schema.courses.id,
 							db
@@ -46,33 +46,36 @@ export const getCourses = async ({
 						id: true,
 					},
 				},
-				purchases: {
-					where: eq(schema.purchases.userId, userId),
-				},
+				purchases: userId
+					? {
+							where: eq(schema.purchases.userId, userId),
+						}
+					: undefined,
 			},
 			orderBy: desc(schema.courses.createdAt),
 		})
 
-		const coursesWithProgress: CourseWithProgressWithCategory[] =
-			await Promise.all(
-				courses.map(async (course) => {
-					if (course.purchases.length === 0) {
+		courses = userId
+			? await Promise.all(
+					courses.map(async (course) => {
+						if (course.purchases.length === 0) {
+							return {
+								...course,
+								progress: null,
+							}
+						}
+
+						const progressPercentage = await getProgress(userId, course.id)
+
 						return {
 							...course,
-							progress: null,
+							progress: progressPercentage,
 						}
-					}
+					}),
+				)
+			: courses
 
-					const progressPercentage = await getProgress(userId, course.id)
-
-					return {
-						...course,
-						progress: progressPercentage,
-					}
-				}),
-			)
-
-		return coursesWithProgress
+		return courses
 	} catch (error) {
 		console.log("[GET_COURSES]", error)
 		return []

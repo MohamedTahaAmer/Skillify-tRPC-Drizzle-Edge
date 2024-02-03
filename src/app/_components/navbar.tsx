@@ -1,14 +1,14 @@
 "use client"
-import { buttonVariants } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { isTeacher } from "@/lib/teacher"
 import { cn } from "@/lib/utils"
-import { UserButton, useUser } from "@clerk/nextjs"
+import { SignInButton, UserButton, useUser } from "@clerk/nextjs"
 import type { Route } from "next"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Logo } from "./logo"
 export const Navbar = () => {
-	const { user } = useUser()
+	const { isLoaded, user } = useUser()
 	let pathName = usePathname()
 	let isTeacherCourses = pathName.includes("/teacher/courses")
 	let isTeacherAnalytics = pathName.includes("/teacher/analytics")
@@ -42,9 +42,15 @@ export const Navbar = () => {
 					</Link>
 				)}
 
+				{/* auth buttons */}
 				<div className="aspect-square w-8">
 					<UserButton afterSignOutUrl="/" />
 				</div>
+				{!user && isLoaded && (
+					<SignInButton afterSignInUrl={pathName}>
+						<Button variant={"secondary"}>Login</Button>
+					</SignInButton>
+				)}
 			</div>
 		</div>
 	)

@@ -20,11 +20,7 @@ const CourseLayout = async ({
 	children: React.ReactNode
 	params: { courseId: string }
 }) => {
-	const { userId } = auth()
-
-	if (!userId) {
-		return redirect("/")
-	}
+	let { userId } = auth()
 
 	let course = await db.query.courses.findFirst({
 		where: eq(schema.courses.id, params.courseId),
@@ -32,9 +28,11 @@ const CourseLayout = async ({
 			chapters: {
 				where: and(eq(schema.chapters.isPublished, true)),
 				with: {
-					userProgress: {
-						where: eq(schema.userProgress.userId, userId),
-					},
+					userProgress: userId
+						? {
+								where: eq(schema.userProgress.userId, userId),
+							}
+						: undefined,
 				},
 				orderBy: asc(schema.chapters.position),
 			},
@@ -45,7 +43,9 @@ const CourseLayout = async ({
 		return redirect("/")
 	}
 
-	const progressCount = await getProgress(userId, course.id)
+	const progressCount = userId
+		? await getProgress(userId, course.id)
+		: undefined
 
 	return (
 		<div className="h-full">

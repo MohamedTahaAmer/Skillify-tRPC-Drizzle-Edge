@@ -1,7 +1,6 @@
 import { db, schema } from "@/server/db"
 import { auth } from "@clerk/nextjs"
 import { asc } from "drizzle-orm"
-import { redirect } from "next/navigation"
 
 import { getCourses } from "@/actions/get-courses"
 import { CoursesList } from "@/components/courses-list"
@@ -19,12 +18,8 @@ interface SearchPageProps {
 }
 
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
-	const { userId } = auth()
+	let { userId } = auth()
 	let { purchased, categoryId, title } = searchParams
-
-	if (!userId) {
-		return redirect("/")
-	}
 
 	let categories = await db.query.categories.findMany({
 		orderBy: asc(schema.categories.name),
@@ -46,10 +41,10 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 			{/* main Content */}
 			<div className="container space-y-4 py-4 lg:px-6">
 				{/* category, purchased and clear cards */}
-				<Categories items={categories} />
+				<Categories items={categories} userId={userId} />
 
 				{/* progress info cards */}
-				{courses.length > 0 && purchased && (
+				{courses.length > 0 && purchased && userId && (
 					<ProgressInfoCards
 						userId={userId}
 						categoryId={categoryId}

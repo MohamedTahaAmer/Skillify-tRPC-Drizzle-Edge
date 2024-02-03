@@ -16,11 +16,7 @@ const ChapterIdPage = async ({
 }: {
 	params: { courseId: string; chapterId: string }
 }) => {
-	const { userId } = auth()
-
-	if (!userId) {
-		return redirect("/")
-	}
+	let { userId } = auth()
 
 	const {
 		chapter,
@@ -81,6 +77,7 @@ const ChapterIdPage = async ({
 							<CourseEnrollButton
 								courseId={params.courseId}
 								price={course.price!}
+								userId={userId}
 							/>
 						)}
 					</div>

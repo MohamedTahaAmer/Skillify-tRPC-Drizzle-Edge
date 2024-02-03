@@ -8,7 +8,7 @@ import type {
 type CourseWithProgressWithCategory = CoursesSelect & {
 	category: CategoriesSelect | null
 	chapters: { id: ChaptersSelect["id"] }[]
-	progress: number | null
+	progress?: number | null
 }
 
 interface CoursesListProps {
@@ -22,7 +22,7 @@ export const CoursesList = ({ items }: CoursesListProps) => {
 				{items.map((item) => (
 					<CourseCard
 						key={item.id}
-						id={item.id }
+						id={item.id}
 						title={item.title}
 						imageUrl={item.imageUrl!}
 						chaptersLength={item.chapters.length}

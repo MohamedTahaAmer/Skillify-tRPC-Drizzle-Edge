@@ -18,7 +18,7 @@ export const getProgress = async (
 
 		const publishedChapterIds = publishedChapters.map((chapter) => chapter.id)
 
-		let validCompletedChapters  = (
+		let validCompletedChapters = (
 			await db
 				.select({ count: count() })
 				.from(schema.userProgress)

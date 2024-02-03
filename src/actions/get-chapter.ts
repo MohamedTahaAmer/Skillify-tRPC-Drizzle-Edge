@@ -2,7 +2,7 @@ import { db, schema } from "@/server/db"
 import { and, asc, eq, gt } from "drizzle-orm"
 
 interface GetChapterProps {
-	userId: schema.CoursesSelect["userId"]
+	userId?: schema.CoursesSelect["userId"] | null
 	courseId: schema.PurchasesSelect["courseId"]
 	chapterId: schema.ChaptersSelect["id"]
 }
@@ -13,17 +13,19 @@ export const getChapter = async ({
 	chapterId,
 }: GetChapterProps) => {
 	try {
-		let purchase = (
-			await db
-				.selectDistinct()
-				.from(schema.purchases)
-				.where(
-					and(
-						eq(schema.purchases.userId, userId),
-						eq(schema.purchases.courseId, courseId),
-					),
-				)
-		)[0]
+		let purchase = userId
+			? (
+					await db
+						.selectDistinct()
+						.from(schema.purchases)
+						.where(
+							and(
+								eq(schema.purchases.userId, userId),
+								eq(schema.purchases.courseId, courseId),
+							),
+						)
+				)[0]
+			: undefined
 
 		let course = (
 			await db
@@ -87,17 +89,19 @@ export const getChapter = async ({
 			)[0]
 		}
 
-		let userProgress = (
-			await db
-				.selectDistinct()
-				.from(schema.userProgress)
-				.where(
-					and(
-						eq(schema.userProgress.userId, userId),
-						eq(schema.userProgress.chapterId, chapterId),
-					),
-				)
-		)[0]
+		let userProgress = userId
+			? (
+					await db
+						.selectDistinct()
+						.from(schema.userProgress)
+						.where(
+							and(
+								eq(schema.userProgress.userId, userId),
+								eq(schema.userProgress.chapterId, chapterId),
+							),
+						)
+				)[0]
+			: undefined
 
 		return {
 			chapter,

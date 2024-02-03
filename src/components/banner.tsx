@@ -30,7 +30,6 @@ const iconMap = {
 
 export const Banner = ({ label, variant }: BannerProps) => {
 	const Icon = iconMap[variant ?? "warning"]
-
 	return (
 		<div className={cn(bannerVariants({ variant }))}>
 			<Icon className="mr-2 size-4" />
