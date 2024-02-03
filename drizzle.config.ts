@@ -8,7 +8,7 @@ export default {
 	out: "./drizzle",
 	driver: "mysql2",
 	dbCredentials: {
-		uri: env.SQL_DATABASE_URL,
+		uri: env.DATABASE_URL,
 	},
 	tablesFilter: [`${dbName}*`],
 } satisfies Config

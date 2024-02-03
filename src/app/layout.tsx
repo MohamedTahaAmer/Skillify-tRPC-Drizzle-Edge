@@ -4,9 +4,8 @@ import { TRPCReactProvider } from "@/trpc/react"
 import { ClerkProvider } from "@clerk/nextjs"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import "./globals.css"
 import { Navbar } from "./_components/navbar"
-import Run from "./Run"
+import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -32,7 +31,7 @@ export default function RootLayout({
 							<Navbar />
 						</div>
 						<div className="pt-14">{children}</div>
-						<Run />
+						{/* <Run /> */}
 					</TRPCReactProvider>
 				</body>
 			</html>

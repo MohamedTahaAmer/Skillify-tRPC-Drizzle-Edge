@@ -1,7 +1,6 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { getCategories, seedCategories } from "@/scripts/Mine/seed-categories"
-import { main } from "@/scripts/Mine/test-drizzle"
+import { seedCategories } from "@/scripts/Mine/seed-categories"
 import toast from "react-hot-toast"
 
 const Run = () => {

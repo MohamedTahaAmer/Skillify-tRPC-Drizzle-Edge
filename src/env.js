@@ -6,22 +6,7 @@ export const env = createEnv({
 	 * isn't built with invalid env vars.
 	 */
 	server: {
-		DATABASE_URL:
-			process.env.NODE_ENV === "production"
-				? z
-						.string()
-						.url() // - I'm still histant about this .url() validation, as the db url doens't include 'http://' even the production connection string
-						.refine(
-							(str) => !str.includes("YOUR_MYSQL_URL_HERE"),
-							"You forgot to change the default URL",
-						)
-				: z
-						.string()
-						.refine(
-							(str) => !str.includes("YOUR_MYSQL_URL_HERE"),
-							"You forgot to change the default URL",
-						),
-		SQL_DATABASE_URL: z
+		DATABASE_URL: z
 			.string()
 			.refine(
 				(str) => !str.includes("YOUR_MYSQL_URL_HERE"),
@@ -77,7 +62,6 @@ export const env = createEnv({
 		STRIPE_API_KEY: process.env.STRIPE_API_KEY,
 		STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
 		DATABASE_URL: process.env.DATABASE_URL,
-		SQL_DATABASE_URL: process.env.SQL_DATABASE_URL,
 		NODE_ENV: process.env.NODE_ENV,
 	},
 	/**
