@@ -1,4 +1,5 @@
 import { db, schema } from "@/server/db"
+import { eq } from "drizzle-orm"
 
 export let userId = "user_2agUwB33larEJrVqdkUgDlHC9Vz"
 export let categories = {
@@ -108,6 +109,7 @@ export let seedChapters = async () => {
 					"https://utfs.io/f/29dc41e5-d9a2-4ef7-93f0-5d243cb4aaa4-nae63u.mp4"
 				let position = i + 1
 				let isPublished = true
+				let isFree = i === 0
 				let description = `<p><strong>${course.title} </strong></p>
 				<p>lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`
 				await db.insert(schema.chapters).values({
@@ -117,11 +119,39 @@ export let seedChapters = async () => {
 					videoUrl,
 					position,
 					isPublished,
+					isFree,
 				})
 			}
 		}
 		console.log("seeded chapters")
 	} catch (error) {
 		console.log("Error seeding the database chapters", error)
+	}
+}
+
+export let seedMuxData = async () => {
+	try {
+		let chapters = await db.query.chapters.findMany()
+		for (let chapter of chapters) {
+			let assetId = "assetId"
+			let playbackId = "playbackId"
+			await db.insert(schema.muxData).values({
+				chapterId: chapter.id,
+				assetId,
+				playbackId,
+			})
+		}
+		console.log("seeded mux data")
+	} catch (error) {
+		console.log("Error seeding the database mux data", error)
+	}
+}
+
+export let openFirstVideo = async () => {
+	try {
+		await db.update(schema.chapters).set({ isFree: true }).where(eq(schema.chapters.position, 1))
+		console.log("opened first video")
+	} catch (error) {
+		console.log("Error opening the first video", error)
 	}
 }

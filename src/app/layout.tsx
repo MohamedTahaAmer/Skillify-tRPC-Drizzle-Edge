@@ -31,7 +31,6 @@ export default function RootLayout({
 							<Navbar />
 						</div>
 						<div className="pt-14">{children}</div>
-						{/* <Run /> */}
 					</TRPCReactProvider>
 				</body>
 			</html>
