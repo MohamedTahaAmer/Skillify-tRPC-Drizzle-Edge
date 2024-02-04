@@ -10,7 +10,7 @@ import { TRPCClientError } from "@trpc/client"
 import type { Route } from "next"
 import { usePathname, useSearchParams } from "next/navigation"
 import queryString from "query-string"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 interface CourseEnrollButtonProps {
 	price: number
@@ -25,7 +25,8 @@ export const CourseEnrollButton = ({
 }: CourseEnrollButtonProps) => {
 	let searchPramas = useSearchParams()
 	let pathName = usePathname()
-	let { redirectedFromAuth } = Object.fromEntries(searchPramas.entries())
+	let { isRedirectedFromAuth } = Object.fromEntries(searchPramas.entries())
+	let isRedirectedFromAuthRef = useRef(isRedirectedFromAuth)
 
 	let checkout = api.courses.checkout.useMutation({
 		onSuccess(data, _variables, _context) {
@@ -37,20 +38,25 @@ export const CourseEnrollButton = ({
 			toast.error(error.message)
 		},
 	})
+
 	useEffect(() => {
-		// - here we are delaying the redierct by 1 sec, as react in dev mode will mount the component twice, which will couse checkout.mutate() to be called twice, and by waiting this second, if the new render came before 1 sec, we will clear the previouse call and start a new one ' debouncing the component mount'
-		let redirectToCheckoutTimer = setTimeout(() => {
-			if (redirectedFromAuth === "true") {
+		isRedirectedFromAuthRef.current = isRedirectedFromAuth
+	}, [isRedirectedFromAuth])
+
+	useEffect(() => {
+		let redirectToCheckoutTimer: NodeJS.Timeout = setTimeout(() => {
+			// - this is the correct way of doing it, using a ref, and then reseting it to undefined after using it
+			if (isRedirectedFromAuthRef.current === "true") {
+				isRedirectedFromAuthRef.current = undefined
 				checkout.mutate({ courseId })
 			}
 		}, 1000)
+
 		return () => {
+			// - this is how to protect against calling checkout.mutate() twice, deu to the react mount and unmount during dev environment, and that's by clearing the timer if the component is unmounted within 1 second
 			clearTimeout(redirectToCheckoutTimer)
 		}
-
-		// - here we can't include the checkout() in the dependency array, as calling checkout.mutate() will trigger a re-render which will create a new checkout() function and cause an infinite loop
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [redirectedFromAuth, courseId])
+	}, [checkout, courseId])
 
 	let toCheckOut = (
 		<Button
@@ -69,7 +75,7 @@ export const CourseEnrollButton = ({
 				url: pathName,
 				// to trigger redirectToCheckoutTimer after coming back from sign in
 				query: {
-					redirectedFromAuth: "true",
+					isRedirectedFromAuth: "true",
 				},
 			},
 			{ skipNull: true, skipEmptyString: true },

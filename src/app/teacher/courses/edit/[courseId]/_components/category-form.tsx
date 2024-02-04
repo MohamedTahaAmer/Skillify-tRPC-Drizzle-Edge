@@ -54,8 +54,7 @@ export const CategoryForm = ({
 
 	const onSubmit = async (courseNewValues: z.infer<typeof formSchema>) => {
 		try {
-      await patchCourse.mutateAsync({ courseId: courseId ?? '', courseNewValues })
-
+      await patchCourse.mutateAsync({ courseId, courseNewValues })
 			toast.success("Course updated")
 			toggleEdit()
 			router.refresh()
