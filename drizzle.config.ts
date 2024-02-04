@@ -1,7 +1,7 @@
 import { env } from "./src/env.js"
 import type { Config } from "drizzle-kit"
 
-export let dbName = "skillify_dev_1_"
+export let dbName = "skillify_edge_dev_1_"
 
 export default {
 	schema: "./src/server/db/schema.ts",

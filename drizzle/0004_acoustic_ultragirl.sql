@@ -1,1 +1,0 @@
-ALTER TABLE `skillify_dev_1_categories` MODIFY COLUMN `name` varchar(255) NOT NULL;
