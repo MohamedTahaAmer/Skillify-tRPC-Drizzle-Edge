@@ -88,6 +88,7 @@ export const coursesRouter = createTRPCRouter({
 			})
 			return { course }
 		}),
+
 	addAttachment: protectedProcedure
 		.input(
 			z.object({
