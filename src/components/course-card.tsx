@@ -44,11 +44,11 @@ export const CourseCard = ({
 							</span>
 						</div>
 					</div>
-					{!!progress ? (
+					{progress !== null ? (
 						<CourseProgress
 							variant={progress === 100 ? "success" : "default"}
 							size="sm"
-							value={progress}
+							value={progress ?? 0}
 						/>
 					) : (
 						<p className="text-base font-medium text-slate-700 md:text-sm">

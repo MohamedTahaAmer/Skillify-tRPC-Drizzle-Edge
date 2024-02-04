@@ -34,9 +34,9 @@ export const CourseSidebar = async ({
 				<h1 className="truncate text-lg font-bold text-emerald-700">
 					{course.title}
 				</h1>
-				{purchase && progressCount && (
+				{purchase && (
 					<div className="pt-2">
-						<CourseProgress variant="success" value={progressCount} />
+						<CourseProgress variant="success" value={progressCount ?? 0} />
 					</div>
 				)}
 			</div>
