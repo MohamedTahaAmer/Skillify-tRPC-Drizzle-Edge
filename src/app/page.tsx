@@ -1,3 +1,5 @@
+export const runtime = "edge"
+
 import { db, schema } from "@/server/db"
 import { auth } from "@clerk/nextjs"
 import { asc } from "drizzle-orm"

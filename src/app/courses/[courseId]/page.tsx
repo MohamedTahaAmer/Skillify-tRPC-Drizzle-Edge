@@ -1,3 +1,4 @@
+export const runtime = "edge"
 import { db, schema } from "@/server/db"
 import { asc, eq } from "drizzle-orm"
 import { redirect } from "next/navigation"
