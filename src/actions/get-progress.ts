@@ -4,7 +4,7 @@ import { and, count, eq, inArray } from "drizzle-orm"
 export const getProgress = async (
 	userId: schema.UserProgressSelect["userId"],
 	courseId: schema.ChaptersSelect["courseId"],
-): Promise<number> => {
+) => {
 	try {
 		let publishedChapters = await db
 			.select({ id: schema.chapters.id })
@@ -29,14 +29,17 @@ export const getProgress = async (
 						eq(schema.userProgress.isCompleted, true),
 					),
 				)
-		)[0]!
+		)[0]
+
+		let numOfCompletedChapters = validCompletedChapters?.count ?? 0
+		let numOfPublishedChapters = publishedChapterIds.length
 
 		const progressPercentage =
-			((validCompletedChapters?.count ?? 0) / publishedChapterIds.length) * 100
+			(numOfCompletedChapters / numOfPublishedChapters) * 100
 
-		return progressPercentage
+		return {progressPercentage, numOfCompletedChapters, numOfPublishedChapters}
 	} catch (error) {
 		console.log("[GET_PROGRESS]", error)
-		return 0
+		return {progressPercentage: 0, numOfCompletedChapters: 0, numOfPublishedChapters: 0}
 	}
 }

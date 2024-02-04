@@ -14,6 +14,7 @@ interface CourseProgressButtonProps {
 	courseId: string
 	isCompleted?: boolean
 	nextChapterId?: string
+	lastChapterToFinishTheCourse?: boolean
 }
 
 export const CourseProgressButton = ({
@@ -21,6 +22,7 @@ export const CourseProgressButton = ({
 	courseId,
 	isCompleted,
 	nextChapterId,
+	lastChapterToFinishTheCourse,
 }: CourseProgressButtonProps) => {
 	const router = useRouter()
 	const confetti = useConfettiStore()
@@ -33,7 +35,8 @@ export const CourseProgressButton = ({
 			setIsLoading(false)
 		},
 		onSuccess: () => {
-			if (!isCompleted && !nextChapterId) {
+			console.log(lastChapterToFinishTheCourse)
+			if (!isCompleted && lastChapterToFinishTheCourse ) {
 				confetti.onOpen()
 			}
 

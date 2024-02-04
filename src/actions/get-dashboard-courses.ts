@@ -60,8 +60,8 @@ export const getDashboardCourses = async ({
 		) as CourseWithProgressWithCategory[]
 
 		for (let course of courses) {
-			const progress = await getProgress(userId, course.id)
-			course.progress = progress
+			const {progressPercentage} = await getProgress(userId, course.id)
+			course.progress = progressPercentage
 		}
 
 		const completedCourses = courses.filter((course) => course.progress === 100)

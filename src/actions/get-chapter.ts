@@ -51,7 +51,7 @@ export const getChapter = async ({
 				)
 		)[0]
 
-		if (!chapter ?? !course) {
+		if (!chapter || !course) {
 			throw new Error("Chapter or course not found")
 		}
 
@@ -86,6 +86,7 @@ export const getChapter = async ({
 						),
 					)
 					.orderBy(asc(schema.chapters.position))
+					.limit(1)
 			)[0]
 		}
 

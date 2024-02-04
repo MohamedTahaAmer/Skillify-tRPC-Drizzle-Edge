@@ -43,15 +43,15 @@ const CourseLayout = async ({
 		return redirect("/")
 	}
 
-	const progressCount = userId
+	const { progressPercentage } = userId
 		? await getProgress(userId, course.id)
-		: undefined
+		: { progressPercentage: 0 }
 
 	return (
 		<div className="h-full">
 			{/* Desctop Sidebar */}
 			<div className="inset-y-0 hidden h-full w-80 flex-col pt-14 xl:fixed xl:flex">
-				<CourseSidebar course={course} progressCount={progressCount} />
+				<CourseSidebar course={course} progressCount={progressPercentage} />
 			</div>
 
 			{/* Mobile Sidebar */}
@@ -64,7 +64,10 @@ const CourseLayout = async ({
 					<SheetContent side="left" className="w-72 bg-white p-0">
 						<SheetClose asChild>
 							<div>
-								<CourseSidebar course={course} progressCount={progressCount} />
+								<CourseSidebar
+									course={course}
+									progressCount={progressPercentage}
+								/>
 							</div>
 						</SheetClose>
 					</SheetContent>

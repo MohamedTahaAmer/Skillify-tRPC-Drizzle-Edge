@@ -11,6 +11,7 @@ import { Preview } from "@/components/preview"
 import { VideoPlayer } from "./_components/video-player"
 import { CourseEnrollButton } from "./_components/course-enroll-button"
 import { CourseProgressButton } from "./_components/course-progress-button"
+import { getProgress } from "@/actions/get-progress"
 
 const ChapterIdPage = async ({
 	params,
@@ -36,6 +37,16 @@ const ChapterIdPage = async ({
 	if (!chapter || !course) {
 		return redirect("/")
 	}
+
+	let { numOfCompletedChapters, numOfPublishedChapters } = userId
+		? await getProgress(userId, course.id)
+		: {
+				numOfCompletedChapters: 0,
+				numOfPublishedChapters: 0,
+			}
+
+	let lastChapterToFinishTheCourse =
+		numOfPublishedChapters - numOfCompletedChapters === 1
 
 	const isLocked = !chapter?.isFree && !purchase
 	const completeOnEnd = !!purchase && !userProgress?.isCompleted
@@ -73,6 +84,7 @@ const ChapterIdPage = async ({
 								courseId={params.courseId}
 								nextChapterId={nextChapter?.id}
 								isCompleted={!!userProgress?.isCompleted}
+								lastChapterToFinishTheCourse={lastChapterToFinishTheCourse}
 							/>
 						) : (
 							<CourseEnrollButton
