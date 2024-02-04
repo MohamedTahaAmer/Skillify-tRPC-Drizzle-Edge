@@ -12,7 +12,7 @@ interface CourseCardProps {
 	imageUrl: string
 	chaptersLength: number
 	price: number
-	progress?: number | null
+	progress?: number
 	category: string
 }
 
@@ -25,6 +25,7 @@ export const CourseCard = ({
 	progress,
 	category,
 }: CourseCardProps) => {
+	console.log(progress)
 	return (
 		<Link href={`/courses/${id}`}>
 			<div className="group h-full overflow-hidden rounded-lg border p-3 transition hover:shadow-sm">
@@ -44,7 +45,7 @@ export const CourseCard = ({
 							</span>
 						</div>
 					</div>
-					{progress !== null ? (
+					{progress !== undefined ? (
 						<CourseProgress
 							variant={progress === 100 ? "success" : "default"}
 							size="sm"

@@ -8,7 +8,7 @@ import type {
 type CourseWithProgressWithCategory = CoursesSelect & {
 	category: CategoriesSelect | null
 	chapters: { id: ChaptersSelect["id"] }[]
-	progress?: number | null
+	progress?: number
 }
 
 interface CoursesListProps {

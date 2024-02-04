@@ -6,7 +6,7 @@ import { getProgress } from "@/actions/get-progress"
 type CourseWithProgressWithCategory = schema.CoursesSelect & {
 	category: schema.CategoriesSelect | null
 	chapters: { id: schema.ChaptersSelect["id"] }[]
-	progress?: number | null
+	progress?: number
 }
 
 type GetCourses = {
@@ -61,7 +61,7 @@ export const getCourses = async ({
 						if (course.purchases.length === 0) {
 							return {
 								...course,
-								progress: null,
+								progress: undefined,
 							}
 						}
 
