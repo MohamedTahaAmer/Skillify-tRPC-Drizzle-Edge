@@ -82,7 +82,7 @@ export const ChapterVideoForm = ({
 				<div>
 					<FileUpload
 						endpoint="chapterVideo"
-						onUploadComplete={async (url) => {
+						onUploadComplete={async ({ url }) => {
 							if (url) {
 								await onSubmit({ videoUrl: url })
 							}

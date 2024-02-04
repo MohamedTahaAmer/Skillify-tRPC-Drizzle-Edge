@@ -4,7 +4,7 @@ import { UploadDropzone } from "@/lib/uploadthing"
 import type { ourFileRouter } from "@/app/api/uploadthing/core"
 
 interface FileUploadProps {
-	onUploadComplete: (url?: string) => void
+	onUploadComplete: ({ url, name }: { url?: string; name?: string }) => void
 	on100percent?: (progress: number) => void
 	endpoint: keyof typeof ourFileRouter
 	className?: string
@@ -31,7 +31,7 @@ export const FileUpload = ({
 				on100percent?.(progress)
 			}}
 			onClientUploadComplete={(res) => {
-				onUploadComplete(res?.[0]?.url)
+				onUploadComplete({ url: res?.[0]?.url, name: res?.[0]?.name })
 			}}
 			onUploadError={(error: Error) => {
 				toast.error(`${error?.message}`)

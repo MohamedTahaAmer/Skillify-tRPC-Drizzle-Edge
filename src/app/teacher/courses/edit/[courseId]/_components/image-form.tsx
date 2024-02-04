@@ -78,7 +78,7 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 					<FileUpload
 						className="m-0 h-[241.6px]"
 						endpoint="courseImage"
-						onUploadComplete={async (url) => {
+						onUploadComplete={async ({url}) => {
 							if (url) {
 								setImg(url)
 								setIsEditing(false)

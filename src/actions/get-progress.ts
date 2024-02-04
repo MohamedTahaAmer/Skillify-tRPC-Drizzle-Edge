@@ -29,10 +29,10 @@ export const getProgress = async (
 						eq(schema.userProgress.isCompleted, true),
 					),
 				)
-		)[0]
+		)[0]!
 
 		const progressPercentage =
-			(validCompletedChapters?.count ?? 0 / publishedChapterIds.length) * 100
+			((validCompletedChapters?.count ?? 0) / publishedChapterIds.length) * 100
 
 		return progressPercentage
 	} catch (error) {

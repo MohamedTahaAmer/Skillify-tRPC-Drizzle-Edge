@@ -89,12 +89,19 @@ export const coursesRouter = createTRPCRouter({
 			return { course }
 		}),
 	addAttachment: protectedProcedure
-		.input(z.object({ courseId: z.string().min(1), url: z.string().min(1) }))
+		.input(
+			z.object({
+				courseId: z.string().min(1),
+				url: z.string().min(1),
+				name: z.string().min(1),
+			}),
+		)
 		.mutation(async ({ ctx, input }) => {
 			let attachment = await addAttachment({
 				db: ctx.db,
 				courseId: input.courseId,
 				url: input.url,
+				name: input.name,
 				userId: ctx.user.id,
 			})
 			return { attachment }

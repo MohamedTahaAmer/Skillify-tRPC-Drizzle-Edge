@@ -5,12 +5,14 @@ import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
 export async function addAttachment({
 	courseId,
 	url,
+	name,
 	userId,
 	db,
 }: {
 	courseId: schema.CoursesSelect["id"]
 	userId: schema.CoursesSelect["userId"]
 	url: schema.AttachmentsSelect["url"]
+	name: schema.AttachmentsSelect["url"]
 	db: PlanetScaleDatabase<typeof schema>
 }) {
 	let ownCourse = (
@@ -26,7 +28,7 @@ export async function addAttachment({
 
 	await db.insert(schema.attachments).values({
 		url,
-		name: url.split("/").pop() ?? "",
+		name,
 		courseId: courseId,
 	})
 	let attachment = (

@@ -8,9 +8,7 @@ import {
 import type { IconType } from "react-icons"
 import {
 	FcEngineering,
-	FcFilmReel,
 	FcMultipleDevices,
-	FcMusic,
 	FcOldTimeCamera,
 	FcSalesPerformance,
 	FcSportsMode,
@@ -29,12 +27,10 @@ interface CategoriesProps {
 }
 
 const iconMap: Record<string, IconType> = {
-	Music: FcMusic as IconType,
 	Photography: FcOldTimeCamera as IconType,
 	Fitness: FcSportsMode as IconType,
 	Accounting: FcSalesPerformance as IconType,
 	"Computer Science": FcMultipleDevices as IconType,
-	Filming: FcFilmReel as IconType,
 	Engineering: FcEngineering as IconType,
 }
 

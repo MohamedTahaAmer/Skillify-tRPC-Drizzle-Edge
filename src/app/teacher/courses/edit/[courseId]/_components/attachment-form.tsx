@@ -17,6 +17,7 @@ interface AttachmentFormProps {
 
 const formSchema = z.object({
 	url: z.string().min(1),
+	name: z.string().min(1),
 })
 
 export const AttachmentForm = ({
@@ -31,10 +32,11 @@ export const AttachmentForm = ({
 	const router = useRouter()
 	let addAttachment = api.courses.addAttachment.useMutation()
 
-	const onSubmit = async ({ url }: z.infer<typeof formSchema>) => {
+	const onSubmit = async ({ name, url }: z.infer<typeof formSchema>) => {
 		try {
 			await addAttachment.mutateAsync({
 				courseId,
+				name,
 				url,
 			})
 			toast.success("Course updated")
@@ -113,10 +115,8 @@ export const AttachmentForm = ({
 				<div>
 					<FileUpload
 						endpoint="courseAttachment"
-						onUploadComplete={async (url) => {
-							if (url) {
-								await onSubmit({ url: url })
-							}
+						onUploadComplete={async ({ name, url }) => {
+							await onSubmit({ name: name ?? "", url: url ?? "" })
 						}}
 					/>
 					<div className="mt-4 text-xs text-muted-foreground">
