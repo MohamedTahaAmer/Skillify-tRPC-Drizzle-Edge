@@ -17,6 +17,7 @@ interface VideoPlayerProps {
 	isLocked: boolean
 	completeOnEnd: boolean
 	title: string
+	lastChapterToFinishTheCourse: boolean
 }
 
 export const VideoPlayer = ({
@@ -27,13 +28,14 @@ export const VideoPlayer = ({
 	isLocked,
 	completeOnEnd,
 	title,
+	lastChapterToFinishTheCourse,
 }: VideoPlayerProps) => {
 	const [isReady, setIsReady] = useState(false)
 	const router = useRouter()
 	const confetti = useConfettiStore()
 	let updateProgress = api.courses.updateProgress.useMutation({
 		onSuccess: () => {
-			if (!nextChapterId) {
+			if (!nextChapterId && lastChapterToFinishTheCourse) {
 				confetti.onOpen()
 			}
 

@@ -11,6 +11,7 @@ import type { Route } from "next"
 import { usePathname, useSearchParams } from "next/navigation"
 import queryString from "query-string"
 import { useEffect, useRef } from "react"
+import { env } from "@/env"
 
 interface CourseEnrollButtonProps {
 	price: number
@@ -80,6 +81,10 @@ export const CourseEnrollButton = ({
 			},
 			{ skipNull: true, skipEmptyString: true },
 		) as Route
+
+		console.log("\x1b[33m%s\x1b[0m", "afterSignInUrl", url)
+		url = (env.NEXT_PUBLIC_APP_URL + url) as Route
+		console.log("\x1b[33m%s\x1b[0m", "afterSignInUrl", url)
 
 		return (
 			<SignInButton afterSignInUrl={url}>

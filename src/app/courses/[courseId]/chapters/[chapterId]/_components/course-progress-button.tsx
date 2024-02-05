@@ -35,8 +35,7 @@ export const CourseProgressButton = ({
 			setIsLoading(false)
 		},
 		onSuccess: () => {
-			console.log(lastChapterToFinishTheCourse)
-			if (!isCompleted && lastChapterToFinishTheCourse ) {
+			if (!isCompleted && lastChapterToFinishTheCourse) {
 				confetti.onOpen()
 			}
 
