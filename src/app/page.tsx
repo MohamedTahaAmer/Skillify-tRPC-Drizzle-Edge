@@ -1,4 +1,5 @@
 export const runtime = "edge"
+export const preferredRegion = "cle1"
 
 import { db, schema } from "@/server/db"
 import { auth } from "@clerk/nextjs"
@@ -32,6 +33,8 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 		...searchParams,
 		categoryId,
 	})
+	console.log(searchParams)
+	console.log(courses)
 
 	return (
 		<>

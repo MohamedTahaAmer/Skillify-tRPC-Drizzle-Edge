@@ -1,4 +1,6 @@
 export const runtime = "edge"
+export const preferredRegion = "cle1"
+
 import { auth } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
 

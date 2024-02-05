@@ -1,4 +1,6 @@
 export const runtime = "edge"
+export const preferredRegion = "cle1"
+
 import { db, schema } from "@/server/db"
 import { asc, eq } from "drizzle-orm"
 import { redirect } from "next/navigation"

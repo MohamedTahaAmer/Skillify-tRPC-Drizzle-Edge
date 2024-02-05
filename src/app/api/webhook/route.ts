@@ -1,4 +1,6 @@
 export const runtime = "edge"
+export const preferredRegion = "cle1"
+
 import { headers } from "next/headers"
 import { NextResponse } from "next/server"
 import type Stripe from "stripe"

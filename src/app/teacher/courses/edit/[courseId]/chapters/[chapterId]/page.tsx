@@ -1,4 +1,5 @@
 export const runtime = "edge"
+export const preferredRegion = "cle1"
 import { db, schema } from "@/server/db"
 import { auth } from "@clerk/nextjs"
 import { and, eq } from "drizzle-orm"

@@ -1,5 +1,6 @@
 "use client"
 export const runtime = "edge"
+export const preferredRegion = "cle1"
 
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"

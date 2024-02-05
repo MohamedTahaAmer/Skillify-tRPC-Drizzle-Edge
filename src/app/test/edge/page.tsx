@@ -1,4 +1,5 @@
 export const runtime = "edge"
+export const preferredRegion = "cle1"
 
 const Page = () => {
 	return (

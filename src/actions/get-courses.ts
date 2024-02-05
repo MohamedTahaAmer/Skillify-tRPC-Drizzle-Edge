@@ -26,7 +26,7 @@ export const getCourses = async ({
 		let courses = await db.query.courses.findMany({
 			where: and(
 				eq(schema.courses.isPublished, true),
-				title ? like(schema.courses.title, title) : undefined,
+				title ? like(schema.courses.title, `%${title}%`) : undefined,
 				categoryId ? eq(schema.courses.categoryId, categoryId) : undefined,
 				userId && purchased
 					? inArray(
@@ -65,7 +65,7 @@ export const getCourses = async ({
 							}
 						}
 
-						const {progressPercentage} = await getProgress(userId, course.id)
+						const { progressPercentage } = await getProgress(userId, course.id)
 
 						return {
 							...course,
