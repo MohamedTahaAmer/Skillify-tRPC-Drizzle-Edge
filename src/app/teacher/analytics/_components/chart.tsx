@@ -16,9 +16,10 @@ interface ChartProps {
 		name: string
 		total: number
 	}[]
+	title: string
 }
 
-export const Chart = ({ data }: ChartProps) => {
+export const Chart = ({ data, title }: ChartProps) => {
 	let randData = null
 	// randData = data
 	// 	.map((item) =>
@@ -31,7 +32,10 @@ export const Chart = ({ data }: ChartProps) => {
 	// 	)
 	// 	.flat()
 	return (
-		<Card className="p-6 pb-2 pl-0">
+		<Card className="p-6 pb-2 pl-0 pt-3">
+			<h1 className="pb-3 text-center text-xl font-bold text-sky-800">
+				{title}
+			</h1>
 			<ResponsiveContainer width="100%" height={350}>
 				<BarChart data={randData ?? data}>
 					<Tooltip trigger="hover" />
@@ -49,10 +53,11 @@ export const Chart = ({ data }: ChartProps) => {
 						stroke="#888888"
 						fontSize={12}
 						tickLine={false}
+						allowDecimals={false}
 						axisLine={false}
-						tickFormatter={(value) => `$${value}`}
+						tickFormatter={(value) => `${value}`}
 					/>
-					<Bar dataKey="total" fill="#0369a1" radius={[4, 4, 0, 0]} />
+					<Bar dataKey="total" fill="#A3FFAE" radius={[4, 4, 0, 0]} />
 				</BarChart>
 			</ResponsiveContainer>
 		</Card>

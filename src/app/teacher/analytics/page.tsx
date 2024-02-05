@@ -6,6 +6,7 @@ import { getAnalytics } from "@/actions/get-analytics"
 
 import { DataCard } from "./_components/data-card"
 import { Chart } from "./_components/chart"
+import { Separator } from "@/components/ui/separator"
 
 const AnalyticsPage = async () => {
 	const { userId } = auth()
@@ -14,15 +15,18 @@ const AnalyticsPage = async () => {
 		return redirect("/")
 	}
 
-	const { data, totalRevenue, totalSales } = await getAnalytics(userId)
-
+	const { data, totalRevenue, totalSales, coursesPurchasesData } =
+		await getAnalytics(userId)
+	console.log({ data, totalRevenue, totalSales, coursesPurchasesData })
 	return (
 		<div className="p-6">
 			<div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
 				<DataCard label="Total Revenue" value={totalRevenue} shouldFormat />
 				<DataCard label="Total Sales" value={totalSales} />
 			</div>
-			<Chart data={data} />
+			<Chart title="Sales" data={data} />
+			<Separator className="my-6" />
+			<Chart title="Courses" data={coursesPurchasesData} />
 		</div>
 	)
 }
