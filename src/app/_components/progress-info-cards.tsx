@@ -11,11 +11,17 @@ const ProgressInfoCards = async ({
 	categoryId?: string
 	title?: string
 }) => {
+	let startTime = Date.now()
 	const { completedCourses, coursesInProgress } = await getDashboardCourses({
 		userId,
 		categoryId,
 		title,
 	})
+	console.log(
+		"\x1b[33m%s\x1b[0m",
+		"3- Time to getDashboardCourses",
+		Date.now() - startTime,
+	)
 
 	return (
 		<div className="grid grid-cols-1 gap-4 pb-2 sm:grid-cols-2">

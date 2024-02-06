@@ -24,17 +24,19 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 	let { userId } = auth()
 	let { purchased, categoryId, title } = searchParams
 
+	let startTime = Date.now()
 	let categories = await db.query.categories.findMany({
 		orderBy: asc(schema.categories.name),
 	})
+	console.log('\x1b[33m%s\x1b[0m', "1- Time to categories", Date.now() - startTime)
 
+	startTime = Date.now()
 	const courses = await getCourses({
 		userId,
 		...searchParams,
 		categoryId,
 	})
-	console.log(searchParams)
-	console.log(courses)
+	console.log('\x1b[33m%s\x1b[0m', "2- Time to getCourses", Date.now() - startTime)
 
 	return (
 		<>

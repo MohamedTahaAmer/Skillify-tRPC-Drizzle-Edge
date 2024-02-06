@@ -38,7 +38,7 @@ export const getDashboardCourses = async ({
 								categoryId
 									? eq(schema.courses.categoryId, categoryId)
 									: undefined,
-								title ? like(schema.courses.title, title) : undefined,
+								title ? like(schema.courses.title, `%${title}%`) : undefined,
 							),
 						),
 				),
@@ -60,7 +60,7 @@ export const getDashboardCourses = async ({
 		) as CourseWithProgressWithCategory[]
 
 		for (let course of courses) {
-			const {progressPercentage} = await getProgress(userId, course.id)
+			const { progressPercentage } = await getProgress(userId, course.id)
 			course.progress = progressPercentage
 		}
 

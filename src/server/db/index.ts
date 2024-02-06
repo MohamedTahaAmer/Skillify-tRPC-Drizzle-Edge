@@ -10,4 +10,5 @@ export const db = drizzle(
 		url: env.DATABASE_URL,
 	}).connection(),
 	{ schema },
+	// { schema, logger: true },
 )
