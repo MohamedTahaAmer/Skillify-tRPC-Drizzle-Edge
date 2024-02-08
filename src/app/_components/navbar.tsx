@@ -7,8 +7,17 @@ import type { Route } from "next"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Logo } from "./logo"
+import { useUser as useZustandUser } from "@/hooks/useUser"
+import { useEffect } from "react"
+
 export const Navbar = () => {
 	const { isLoaded, user } = useUser()
+	let { setUser } = useZustandUser()
+
+	useEffect(() => {
+		setUser(user)
+	}, [user, setUser])
+
 	let pathName = usePathname()
 	let isTeacherCourses = pathName.includes("/teacher/courses")
 	let isTeacherAnalytics = pathName.includes("/teacher/analytics")

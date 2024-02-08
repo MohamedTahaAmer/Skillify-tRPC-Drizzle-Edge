@@ -11,6 +11,7 @@ import { SearchInput } from "@/components/search-input"
 
 import { Categories } from "./_components/categories"
 import ProgressInfoCards from "./_components/progress-info-cards"
+import { logTime } from "@/lib/logTime"
 
 interface SearchPageProps {
 	searchParams: {
@@ -28,7 +29,8 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 	let categories = await db.query.categories.findMany({
 		orderBy: asc(schema.categories.name),
 	})
-	console.log('\x1b[33m%s\x1b[0m', "1- Time to categories", Date.now() - startTime)
+
+	logTime({ title: "1- Time to get categories", startTime })
 
 	startTime = Date.now()
 	const courses = await getCourses({
@@ -36,8 +38,8 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 		...searchParams,
 		categoryId,
 	})
-	console.log('\x1b[33m%s\x1b[0m', "2- Time to getCourses", Date.now() - startTime)
 
+	logTime({ title: "2- Time to get courses", startTime })
 	return (
 		<>
 			{/* search input */}
