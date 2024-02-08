@@ -4,14 +4,6 @@ import {
 	SheetContent,
 	SheetTrigger,
 } from "@/components/ui/sheet"
-import type { IconType } from "react-icons"
-import {
-	FcEngineering,
-	FcMultipleDevices,
-	FcOldTimeCamera,
-	FcSalesPerformance,
-	FcSportsMode,
-} from "react-icons/fc"
 
 import type { CategoriesSelect } from "@/server/db/schema"
 import { Menu } from "lucide-react"
@@ -19,14 +11,6 @@ import { CategoryItem } from "./category-item"
 import ClearFilters from "./clear-filters"
 import { MobileCategoryItem } from "./mobile-category-items"
 import ShowPurchased from "./show-purchased"
-
-const iconMap: Record<string, IconType> = {
-	Photography: FcOldTimeCamera as IconType,
-	Fitness: FcSportsMode as IconType,
-	Accounting: FcSalesPerformance as IconType,
-	"Computer Science": FcMultipleDevices as IconType,
-	Engineering: FcEngineering as IconType,
-}
 
 interface CategoriesProps {
 	items: (CategoriesSelect | null)[]
@@ -50,7 +34,7 @@ export const Categories = ({ items }: CategoriesProps) => {
 											<MobileCategoryItem
 												key={item.id}
 												label={item.name}
-												icon={iconMap[item.name]}
+												iconName={item.name}
 												value={item.id}
 											/>
 										),
@@ -69,7 +53,7 @@ export const Categories = ({ items }: CategoriesProps) => {
 							<CategoryItem
 								key={item.id}
 								label={item.name}
-								icon={iconMap[item.name]}
+								iconName={item.name}
 								value={item.id}
 							/>
 						),

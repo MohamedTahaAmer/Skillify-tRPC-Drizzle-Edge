@@ -31,6 +31,7 @@ const config = {
 			"warn",
 			{ argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
 		],
+		"@typescript-eslint/no-unnecessary-type-assertion": "off",
 		"@typescript-eslint/require-await": "off",
 		"prefer-const": "off",
 		"@typescript-eslint/no-misused-promises": [

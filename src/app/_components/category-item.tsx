@@ -6,18 +6,28 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 import { cn } from "@/lib/utils"
 import type { Route } from "next"
+import {
+	FcEngineering,
+	FcMultipleDevices,
+	FcOldTimeCamera,
+	FcSalesPerformance,
+	FcSportsMode,
+} from "react-icons/fc"
 
+const iconMap: Record<string, IconType> = {
+	Photography: FcOldTimeCamera as IconType,
+	Fitness: FcSportsMode as IconType,
+	Accounting: FcSalesPerformance as IconType,
+	"Computer Science": FcMultipleDevices as IconType,
+	Engineering: FcEngineering as IconType,
+}
 interface CategoryItemProps {
 	label: string
 	value?: string
-	icon?: IconType
+	iconName: string
 }
 
-export const CategoryItem = ({
-	label,
-	value,
-	icon: Icon,
-}: CategoryItemProps) => {
+export const CategoryItem = ({ label, value, iconName }: CategoryItemProps) => {
 	const pathname = usePathname()
 	const router = useRouter()
 	const searchParams = useSearchParams()
@@ -41,6 +51,8 @@ export const CategoryItem = ({
 
 		router.push(url)
 	}
+
+	let Icon = iconMap[iconName]
 
 	return (
 		<button

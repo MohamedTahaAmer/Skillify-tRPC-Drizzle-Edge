@@ -1,21 +1,16 @@
-export const runtime = "edge"
-export const preferredRegion = "cle1"
-
 import { db, schema } from "@/server/db"
-import { auth } from "@clerk/nextjs"
 import { and, asc, eq } from "drizzle-orm"
 
-import { CoursesList } from "@/components/courses-list"
 import { SearchInput } from "@/components/search-input"
 
 import { logTime } from "@/lib/logTime"
-import { Suspense } from "react"
+import uniqBy from "lodash.uniqby"
 import { Categories } from "./_components/categories"
+import { CoursesList } from "@/components/courses-list"
+import { Suspense } from "react"
 import ShowProgressInfoCards from "./_components/show-progress-info-cards"
 
 const SearchPage = async () => {
-	let { userId } = auth()
-
 	let startTime = Date.now()
 
 	startTime = Date.now()
@@ -32,9 +27,10 @@ const SearchPage = async () => {
 		},
 		orderBy: asc(schema.courses.createdAt),
 	})
-	logTime({ title: "2- Time to get all courses", startTime })
+	logTime({ title: "1- Time to get all courses", startTime })
 
 	let categories = allCourses.map((course) => course.category)
+	categories = uniqBy(categories, (c) => c?.name)
 
 	return (
 		<>
@@ -45,7 +41,7 @@ const SearchPage = async () => {
 
 			{/* main Content */}
 			<div className="container space-y-4 py-4 lg:px-6">
-				{/* category, purchased and clear cards */}
+				{/* category, purchased and clear badges */}
 				<Categories items={categories} />
 
 				{/* progress info cards */}
