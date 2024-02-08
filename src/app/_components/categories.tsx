@@ -1,4 +1,3 @@
-"use client"
 import {
 	Sheet,
 	SheetClose,
@@ -19,12 +18,7 @@ import { Menu } from "lucide-react"
 import { CategoryItem } from "./category-item"
 import ClearFilters from "./clear-filters"
 import { MobileCategoryItem } from "./mobile-category-items"
-import Purchased from "./purchased"
-
-interface CategoriesProps {
-	items: CategoriesSelect[]
-	userId: string | null
-}
+import ShowPurchased from "./show-purchased"
 
 const iconMap: Record<string, IconType> = {
 	Photography: FcOldTimeCamera as IconType,
@@ -34,7 +28,10 @@ const iconMap: Record<string, IconType> = {
 	Engineering: FcEngineering as IconType,
 }
 
-export const Categories = ({ items, userId }: CategoriesProps) => {
+interface CategoriesProps {
+	items: (CategoriesSelect | null)[]
+}
+export const Categories = ({ items }: CategoriesProps) => {
 	return (
 		<div className="flex w-full items-center justify-between pb-4 xl:mx-auto xl:w-[1200px]">
 			{/* mobile Categoreis */}
@@ -47,14 +44,17 @@ export const Categories = ({ items, userId }: CategoriesProps) => {
 					<SheetContent side="left" className="w-1/2 bg-white p-0 sm:max-w-64">
 						<SheetClose asChild>
 							<div className="flex flex-col pt-10">
-								{items.map((item) => (
-									<MobileCategoryItem
-										key={item.id}
-										label={item.name ?? ""}
-										icon={iconMap[item.name ?? ""]}
-										value={item.id}
-									/>
-								))}
+								{items.map(
+									(item) =>
+										item && (
+											<MobileCategoryItem
+												key={item.id}
+												label={item.name}
+												icon={iconMap[item.name]}
+												value={item.id}
+											/>
+										),
+								)}
 							</div>
 						</SheetClose>
 					</SheetContent>
@@ -63,18 +63,21 @@ export const Categories = ({ items, userId }: CategoriesProps) => {
 
 			{/* Desctop Categories */}
 			<div className="hidden items-center gap-x-2 overflow-x-auto  xl:flex">
-				{items.map((item) => (
-					<CategoryItem
-						key={item.id}
-						label={item.name ?? ""}
-						icon={iconMap[item.name ?? ""]}
-						value={item.id}
-					/>
-				))}
+				{items.map(
+					(item) =>
+						item && (
+							<CategoryItem
+								key={item.id}
+								label={item.name}
+								icon={iconMap[item.name]}
+								value={item.id}
+							/>
+						),
+				)}
 			</div>
 
 			<div className="flex items-center gap-2 ">
-				{userId && <Purchased />}
+				<ShowPurchased />
 				<ClearFilters />
 			</div>
 		</div>

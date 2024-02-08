@@ -1,3 +1,4 @@
+"use client"
 import { DollarsSVG } from "@/components/SVGs/Dollars"
 import qs from "query-string"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"

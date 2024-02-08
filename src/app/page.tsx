@@ -3,43 +3,39 @@ export const preferredRegion = "cle1"
 
 import { db, schema } from "@/server/db"
 import { auth } from "@clerk/nextjs"
-import { asc } from "drizzle-orm"
+import { and, asc, eq } from "drizzle-orm"
 
-import { getCourses } from "@/actions/get-courses"
 import { CoursesList } from "@/components/courses-list"
 import { SearchInput } from "@/components/search-input"
 
-import { Categories } from "./_components/categories"
-import ProgressInfoCards from "./_components/progress-info-cards"
 import { logTime } from "@/lib/logTime"
+import { Suspense } from "react"
+import { Categories } from "./_components/categories"
+import ShowProgressInfoCards from "./_components/show-progress-info-cards"
 
-interface SearchPageProps {
-	searchParams: {
-		title?: string
-		categoryId?: string
-		purchased?: string
-	}
-}
-
-const SearchPage = async ({ searchParams }: SearchPageProps) => {
+const SearchPage = async () => {
 	let { userId } = auth()
-	let { purchased, categoryId, title } = searchParams
 
 	let startTime = Date.now()
-	let categories = await db.query.categories.findMany({
-		orderBy: asc(schema.categories.name),
-	})
-
-	logTime({ title: "1- Time to get categories", startTime })
 
 	startTime = Date.now()
-	const courses = await getCourses({
-		userId,
-		...searchParams,
-		categoryId,
+	const allCourses = await db.query.courses.findMany({
+		where: and(eq(schema.courses.isPublished, true)),
+		with: {
+			category: true,
+			chapters: {
+				where: eq(schema.chapters.isPublished, true),
+				columns: {
+					id: true,
+				},
+			},
+		},
+		orderBy: asc(schema.courses.createdAt),
 	})
+	logTime({ title: "2- Time to get all courses", startTime })
 
-	logTime({ title: "2- Time to get courses", startTime })
+	let categories = allCourses.map((course) => course.category)
+
 	return (
 		<>
 			{/* search input */}
@@ -50,19 +46,17 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 			{/* main Content */}
 			<div className="container space-y-4 py-4 lg:px-6">
 				{/* category, purchased and clear cards */}
-				<Categories items={categories} userId={userId} />
+				<Categories items={categories} />
 
 				{/* progress info cards */}
-				{courses.length > 0 && purchased && userId && (
-					<ProgressInfoCards
-						userId={userId}
-						categoryId={categoryId}
-						title={title}
-					/>
+				{allCourses.length > 0 && (
+					<Suspense fallback={<div>Loading...</div>}>
+						<ShowProgressInfoCards />
+					</Suspense>
 				)}
 
 				{/* courses list */}
-				<CoursesList items={courses} />
+				<CoursesList items={allCourses} />
 			</div>
 		</>
 	)

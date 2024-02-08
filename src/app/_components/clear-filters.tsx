@@ -1,3 +1,4 @@
+"use client"
 import { cn } from "@/lib/utils"
 import type { Route } from "next"
 import { usePathname, useRouter } from "next/navigation"
