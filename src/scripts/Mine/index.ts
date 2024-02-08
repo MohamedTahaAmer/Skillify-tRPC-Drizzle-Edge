@@ -1,8 +1,8 @@
 "use server"
 
-import { getUserCoursesProgress } from "./drizzle"
+import { addFitnessCourse } from "./drizzle"
 
-export default async function main({ userId }: { userId: string }) {
+export default async function main() {
 	// await seedCategories()
 	// await seedCourses()
 	// await seedAttachments()
@@ -10,5 +10,6 @@ export default async function main({ userId }: { userId: string }) {
 	// await seedMuxData()
 	// await updateMuxDate()
 	// await openFirstVideo()
-	await getUserCoursesProgress(userId)
+	// await getUserCoursesProgress(userId)
+	await addFitnessCourse()
 }
