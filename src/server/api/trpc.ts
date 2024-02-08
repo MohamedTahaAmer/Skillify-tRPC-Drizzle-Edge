@@ -31,6 +31,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
 	return {
 		db,
 		user,
+		// here we spreading only one property 'headers', we can get it explicitly, then pass it without spreading
 		...opts,
 	}
 }
