@@ -1,9 +1,13 @@
+"use client"
 import { CourseCard } from "@/components/course-card"
+import { useUser } from "@/hooks/useUser"
 import type {
 	CategoriesSelect,
 	ChaptersSelect,
 	CoursesSelect,
 } from "@/server/db/schema"
+import { api } from "@/trpc/react"
+import { useSearchParams } from "next/navigation"
 
 type CourseWithProgressWithCategory = CoursesSelect & {
 	category: CategoriesSelect | null
@@ -16,6 +20,43 @@ interface CoursesListProps {
 }
 
 export const CoursesList = ({ items }: CoursesListProps) => {
+	let searchParams = Object.fromEntries(useSearchParams().entries())
+	let categoryId = searchParams.categoryId
+	let title = searchParams.title
+
+	categoryId &&
+		(items = items.filter((course) => course.categoryId === categoryId))
+
+	// - weird TS error, it should be able to infer the title will be string only after && check
+	// this is happening only in this file, in 'progress-info-cards.tsx' it works fine
+	title?.length &&
+		(items = items.filter((course) => course.title.includes(title!)))
+
+	let { user } = useUser()
+	let userId = user?.id
+	let { data: courses } = api.get.getUserCoursesWithProgress.useQuery(
+		{
+			userId: userId ?? "",
+		},
+		{ enabled: !!userId },
+	)
+	let progressMap = courses?.reduce(
+		(acc, course) => {
+			let totalNumOfChapters = course.chapters.length
+			let numOfCompletedChapters = course.chapters.reduce((acc, chapter) => {
+				if (chapter.userProgress.length > 0) {
+					acc++
+				}
+				return acc
+			}, 0)
+			let progress = Math.round(
+				(numOfCompletedChapters / totalNumOfChapters) * 100,
+			)
+			acc[course.id] = progress
+			return acc
+		},
+		{} as Record<string, number>,
+	)
 	return (
 		<div className="">
 			<div className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4">
@@ -27,7 +68,7 @@ export const CoursesList = ({ items }: CoursesListProps) => {
 						imageUrl={item.imageUrl!}
 						chaptersLength={item.chapters.length}
 						price={item.price!}
-						progress={item.progress}
+						progress={progressMap?.[item.id]}
 						category={item?.category?.name ?? ""}
 					/>
 				))}

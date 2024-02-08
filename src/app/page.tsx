@@ -52,7 +52,9 @@ const SearchPage = async () => {
 				)}
 
 				{/* courses list */}
-				<CoursesList items={allCourses} />
+				<Suspense fallback={<div>Loading...</div>}>
+					<CoursesList items={allCourses} />
+				</Suspense>
 			</div>
 		</>
 	)

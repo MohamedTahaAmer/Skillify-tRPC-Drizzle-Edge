@@ -1,22 +1,18 @@
 import { z } from "zod"
-import getUserCoursesProgress from "./user-courses-progress"
+import getUserCoursesWithProgress from "./user-courses-with-progress"
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"
 
 export const getRouter = createTRPCRouter({
-	getUserCoursesProgress: protectedProcedure
+	getUserCoursesWithProgress: protectedProcedure
 		.input(
 			z.object({
 				userId: z.string(),
-				categoryId: z.string().optional(),
-				title: z.string().optional(),
 			}),
 		)
 		.query(async ({ input }) => {
-			let { userId, categoryId, title } = input
-			let userCoursesProgress = await getUserCoursesProgress({
+			let { userId } = input
+			let userCoursesProgress = await getUserCoursesWithProgress({
 				userId,
-				categoryId,
-				title,
 			})
 			return userCoursesProgress
 		}),
