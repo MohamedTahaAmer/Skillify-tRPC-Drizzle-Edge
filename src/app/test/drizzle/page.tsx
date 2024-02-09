@@ -1,11 +1,13 @@
-import { db } from "@/server/db"
+import { db, schema } from "@/server/db"
+import { count } from "drizzle-orm"
 
 const Page = async () => {
-	let course = await db.query.courses.findFirst()
-	console.log(course?.title)
+	// revalidate this path and see if it will error
+	let coursesCount = await db.select({ value: count() }).from(schema.courses)
+	console.log(coursesCount)
 	return (
 		<>
-			<div className="">page</div>
+			<div className="">coursesCount - {coursesCount[0]?.value} </div>
 		</>
 	)
 }

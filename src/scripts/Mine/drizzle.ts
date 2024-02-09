@@ -73,6 +73,6 @@ export async function addFitnessCourse() {
 		})
 	}
 	logTime({ title: "3- Time to add fitness course", startTime })
-	revalidatePath("/")
+	revalidatePath("/test/drizzle")
 	return course
 }
