@@ -1,6 +1,6 @@
 "use server"
 
-import { addFitnessCourse } from "./drizzle"
+import callTRPC from "./call-trpc"
 
 export default async function main() {
 	// await seedCategories()
@@ -11,5 +11,6 @@ export default async function main() {
 	// await updateMuxDate()
 	// await openFirstVideo()
 	// await getUserCoursesProgress(userId)
-	await addFitnessCourse()
+	// await addFitnessCourse()
+	await callTRPC()
 }

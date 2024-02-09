@@ -1,33 +1,33 @@
-import { db, schema } from "@/server/db"
-import { and, asc, eq } from "drizzle-orm"
-
 import { SearchInput } from "@/components/search-input"
 
-import { logTime } from "@/lib/logTime"
-import uniqBy from "lodash.uniqby"
-import { Categories } from "./_components/categories"
 import { CoursesList } from "@/components/courses-list"
+import { env } from "@/env"
+import type {
+	CategoriesSelect,
+	ChaptersSelect,
+	CoursesSelect,
+} from "@/server/db/schema"
+import uniqBy from "lodash.uniqby"
 import { Suspense } from "react"
+import { Categories } from "./_components/categories"
 import ShowProgressInfoCards from "./_components/show-progress-info-cards"
 
 const SearchPage = async () => {
-	let startTime = Date.now()
-
-	startTime = Date.now()
-	const allCourses = await db.query.courses.findMany({
-		where: and(eq(schema.courses.isPublished, true)),
-		with: {
-			category: true,
-			chapters: {
-				where: eq(schema.chapters.isPublished, true),
-				columns: {
-					id: true,
-				},
-			},
-		},
-		orderBy: asc(schema.courses.createdAt),
-	})
-	logTime({ title: "1- Time to get all courses", startTime })
+	type Courses = (CoursesSelect & {
+		category: CategoriesSelect | null
+		chapters: { id: ChaptersSelect["id"] }[]
+	})[]
+	let res = await fetch(
+		`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`,
+	)
+	if (!res.ok) {
+		console.log("Failed to fetch courses")
+		return
+	}
+	let { result } = (await res.json()) as {
+		result: { data: { json: Courses } }
+	}
+	let allCourses = result.data.json
 
 	let categories = allCourses.map((course) => course.category)
 	categories = uniqBy(categories, (c) => c?.name)

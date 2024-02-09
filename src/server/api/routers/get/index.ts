@@ -1,6 +1,11 @@
 import { z } from "zod"
 import getUserCoursesWithProgress from "./user-courses-with-progress"
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"
+import {
+	createTRPCRouter,
+	protectedProcedure,
+	publicProcedure,
+} from "@/server/api/trpc"
+import getAllPublishedCourses from "./all-published-courses"
 
 export const getRouter = createTRPCRouter({
 	getUserCoursesWithProgress: protectedProcedure
@@ -16,4 +21,8 @@ export const getRouter = createTRPCRouter({
 			})
 			return userCoursesProgress
 		}),
+
+	getAllPublishedCourses: publicProcedure.query(async () => {
+		return getAllPublishedCourses()
+	}),
 })
