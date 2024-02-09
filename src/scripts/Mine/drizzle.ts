@@ -55,28 +55,24 @@ export async function getUserCoursesProgress(userId: string) {
 }
 
 export async function addFitnessCourse() {
-	try {
-		let startTime = Date.now()
-		let course = await db.query.courses.findFirst({
-			where: inArray(
-				schema.courses.categoryId,
-				db
-					.select({ id: schema.categories.id })
-					.from(schema.categories)
-					.where(and(eq(schema.categories.name, "Fitness"))),
-			),
+	let startTime = Date.now()
+	let course = await db.query.courses.findFirst({
+		where: inArray(
+			schema.courses.categoryId,
+			db
+				.select({ id: schema.categories.id })
+				.from(schema.categories)
+				.where(and(eq(schema.categories.name, "Fitness"))),
+		),
+	})
+	if (course) {
+		await db.insert(schema.courses).values({
+			...course,
+			id: undefined,
+			title: "Fitness Course - test" + Math.random().toFixed(2),
 		})
-		if (course) {
-			await db.insert(schema.courses).values({
-				...course,
-				id: undefined,
-				title: "Fitness Course - test" + Math.random().toFixed(2),
-			})
-		}
-		logTime({ title: "3- Time to add fitness course", startTime })
-		revalidatePath("/")
-		return course
-	} catch (error) {
-		console.error(error)
 	}
+	logTime({ title: "3- Time to add fitness course", startTime })
+	revalidatePath("/")
+	return course
 }
