@@ -6,6 +6,7 @@ import {
 	publicProcedure,
 } from "@/server/api/trpc"
 import getAllPublishedCourses from "./all-published-courses"
+import { revalidatePath } from "next/cache"
 
 export const getRouter = createTRPCRouter({
 	getUserCoursesWithProgress: protectedProcedure
@@ -24,5 +25,9 @@ export const getRouter = createTRPCRouter({
 
 	getAllPublishedCourses: publicProcedure.query(async () => {
 		return getAllPublishedCourses()
+	}),
+	validatePath: publicProcedure.input(z.string()).mutation(({ input }) => {
+		console.log(input)
+		revalidatePath(input || "/")
 	}),
 })

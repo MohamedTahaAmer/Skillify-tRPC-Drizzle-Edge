@@ -11,6 +11,6 @@ export default async function main() {
 	// await updateMuxDate()
 	// await openFirstVideo()
 	// await getUserCoursesProgress(userId)
-	await addFitnessCourse()
+	return addFitnessCourse()
 	// await callTRPC()
 }

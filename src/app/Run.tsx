@@ -5,8 +5,9 @@ import toast from "react-hot-toast"
 
 const Run = () => {
 	let onClick = async () => {
-		await main()
-		toast.success("Action Done !")
+		let course = await main()
+		toast.success(`Course: ${course?.title} was created successfully!`)
+		// toast.success("Action Done !")
 	}
 	return (
 		<>
