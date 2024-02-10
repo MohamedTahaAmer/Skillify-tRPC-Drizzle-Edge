@@ -11,6 +11,7 @@ export async function checkout({
 	courseId,
 	db,
 }: {
+	// - you only need the id and emailAddresses fields from the user, no need to send the hole User object over the wire
 	user: User
 	courseId: schema.CoursesSelect["id"]
 	db: PlanetScaleDatabase<typeof schema>

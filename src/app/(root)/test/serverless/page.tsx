@@ -1,4 +1,4 @@
-import Run from "@/app/Run"
+import Run from "../../Run"
 
 const Page = () => {
 	return (
