@@ -2,6 +2,7 @@ import { schema } from "@/server/db"
 import { TRPCError } from "@trpc/server"
 import { and, eq } from "drizzle-orm"
 import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
+import { revalidatePath } from "next/cache"
 
 export async function unpublish({
 	courseId,
@@ -64,6 +65,7 @@ export async function unpublish({
 			.where(eq(schema.courses.id, courseId))
 	}
 
+	revalidatePath("/")
 	return unpublishedChapter
 }
 
@@ -143,5 +145,6 @@ export async function publish({
 			),
 		)
 
+	revalidatePath("/")
 	return publishedChapter
 }

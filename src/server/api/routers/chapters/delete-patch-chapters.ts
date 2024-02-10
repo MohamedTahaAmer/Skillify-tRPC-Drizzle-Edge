@@ -6,6 +6,7 @@ import { schema } from "@/server/db"
 import { and, eq } from "drizzle-orm"
 import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
 import { z } from "zod"
+import { revalidatePath } from "next/cache"
 
 const { Video } = new Mux(env.MUX_TOKEN_ID, env.MUX_TOKEN_SECRET)
 export async function deleteChapter({
@@ -83,6 +84,7 @@ export async function deleteChapter({
 			.where(eq(schema.courses.id, courseId))
 	}
 
+	revalidatePath("/")
 	return deletedChapter
 }
 

@@ -6,6 +6,7 @@ import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
 
 import { env } from "@/env"
 import { z } from "zod"
+import { revalidatePath } from "next/cache"
 
 const { Video } = new Mux(env.MUX_TOKEN_ID, env.MUX_TOKEN_SECRET)
 export async function deleteCourse({
@@ -50,6 +51,7 @@ export async function deleteCourse({
 
 	await db.delete(schema.courses).where(eq(schema.courses.id, courseId))
 
+	revalidatePath("/")
 	return deletedCourse
 }
 

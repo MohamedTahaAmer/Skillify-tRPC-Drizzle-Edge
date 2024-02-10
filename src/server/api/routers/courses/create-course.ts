@@ -1,6 +1,7 @@
 import { schema } from "@/server/db"
 import { and, eq } from "drizzle-orm"
 import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
+import { revalidatePath } from "next/cache"
 
 export async function createCourse({
 	title,
@@ -24,5 +25,6 @@ export async function createCourse({
 			)
 	)[0]
 
+	revalidatePath("/")
 	return course
 }

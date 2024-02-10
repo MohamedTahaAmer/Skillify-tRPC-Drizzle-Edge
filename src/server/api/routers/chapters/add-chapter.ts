@@ -2,6 +2,7 @@ import { schema } from "@/server/db"
 import { TRPCError } from "@trpc/server"
 import { and, desc, eq } from "drizzle-orm"
 import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
+import { revalidatePath } from "next/cache"
 export async function addChapter({
 	courseId,
 	title,
@@ -49,6 +50,6 @@ export async function addChapter({
 				),
 			)
 	)[0]
-
+	revalidatePath('/')
 	return chapter
 }
