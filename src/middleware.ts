@@ -9,6 +9,7 @@ export default authMiddleware({
 		"/api/uploadthing",
 		"/",
 		"/courses/:path*",
+		"/test/:path*",
 		"/api/trpc/:path*",
 	],
 })
