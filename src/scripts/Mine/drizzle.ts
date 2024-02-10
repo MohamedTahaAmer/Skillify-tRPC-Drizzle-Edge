@@ -37,7 +37,7 @@ export async function getUserCoursesProgress(userId: string) {
 		let numOfCompletedCourses = courses.reduce((acc, course) => {
 			let numOfAllChapters = course.chapters.length
 			let numOfCompletedChapters = course.chapters.reduce((acc, chapter) => {
-				if (chapter.userProgress.length > 0) {
+				if (chapter.userProgress[0]?.isCompleted) {
 					acc++
 				}
 				return acc

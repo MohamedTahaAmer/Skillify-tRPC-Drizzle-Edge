@@ -2,7 +2,6 @@ import { auth } from "@clerk/nextjs"
 import { Menu } from "lucide-react"
 import { redirect } from "next/navigation"
 
-import { getProgress } from "@/actions/get-progress"
 import {
 	Sheet,
 	SheetClose,
@@ -36,6 +35,9 @@ const CourseLayout = async ({
 				},
 				orderBy: asc(schema.chapters.position),
 			},
+			purchases: userId
+				? { where: eq(schema.purchases.userId, userId) }
+				: undefined,
 		},
 	})
 
@@ -43,15 +45,11 @@ const CourseLayout = async ({
 		return redirect("/")
 	}
 
-	const { progressPercentage } = userId
-		? await getProgress(userId, course.id)
-		: { progressPercentage: 0 }
-
 	return (
 		<div className="h-full">
 			{/* Desctop Sidebar */}
 			<div className="inset-y-0 hidden h-full w-80 flex-col pt-14 xl:fixed xl:flex">
-				<CourseSidebar course={course} progressCount={progressPercentage} />
+				<CourseSidebar course={course} />
 			</div>
 
 			{/* Mobile Sidebar */}
@@ -64,10 +62,7 @@ const CourseLayout = async ({
 					<SheetContent side="left" className="w-72 bg-white p-0">
 						<SheetClose asChild>
 							<div>
-								<CourseSidebar
-									course={course}
-									progressCount={progressPercentage}
-								/>
+								<CourseSidebar course={course} />
 							</div>
 						</SheetClose>
 					</SheetContent>

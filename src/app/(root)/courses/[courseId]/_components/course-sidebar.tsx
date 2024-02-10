@@ -1,33 +1,29 @@
-import { auth } from "@clerk/nextjs"
-
 import { CourseProgress } from "@/components/course-progress"
-import { db, schema } from "@/server/db"
-import { and, eq } from "drizzle-orm"
+import type { schema } from "@/server/db"
 import { CourseSidebarItem } from "./course-sidebar-item"
 
 interface CourseSidebarProps {
 	course: schema.CoursesSelect & {
 		chapters: (schema.ChaptersSelect & {
-			userProgress: schema.UserProgressSelect[] | null
+			userProgress: schema.UserProgressSelect[]
 		})[]
+		purchases: schema.PurchasesSelect[]
 	}
-	progressCount?: number
 }
 
-export const CourseSidebar = async ({
-	course,
-	progressCount,
-}: CourseSidebarProps) => {
-	let { userId } = auth()
+export const CourseSidebar = async ({ course }: CourseSidebarProps) => {
+	let purchase = course.purchases.length !== 0
+	let numOfCompletedChapters = course.chapters.reduce((acc, chapter) => {
+		if (chapter.userProgress[0]?.isCompleted) {
+			acc++
+		}
+		return acc
+	}, 0)
+	let numOfChapters = course.chapters.length
 
-	let purchase = userId
-		? await db.query.purchases.findFirst({
-				where: and(
-					eq(schema.purchases.userId, userId),
-					eq(schema.purchases.courseId, course.id),
-				),
-			})
-		: undefined
+	let progressPercentage = Math.floor(
+		(numOfCompletedChapters / numOfChapters) * 100,
+	)
 	return (
 		<div className="flex h-full flex-col border-r shadow-sm">
 			<div className="flex flex-col border-b p-4">
@@ -36,7 +32,7 @@ export const CourseSidebar = async ({
 				</h1>
 				{purchase && (
 					<div className="pt-2">
-						<CourseProgress variant="success" value={progressCount ?? 0} />
+						<CourseProgress variant="success" value={progressPercentage} />
 					</div>
 				)}
 			</div>

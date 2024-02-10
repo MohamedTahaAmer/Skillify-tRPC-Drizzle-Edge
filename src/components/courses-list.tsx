@@ -47,7 +47,7 @@ export const CoursesList = ({ items }: CoursesListProps) => {
 		(acc, course) => {
 			let totalNumOfChapters = course.chapters.length
 			let numOfCompletedChapters = course.chapters.reduce((acc, chapter) => {
-				if (chapter.userProgress.length > 0) {
+				if (chapter.userProgress[0]?.isCompleted) {
 					acc++
 				}
 				return acc
