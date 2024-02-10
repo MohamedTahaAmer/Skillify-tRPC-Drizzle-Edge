@@ -10,6 +10,7 @@ export default authMiddleware({
 		"/",
 		"/courses/:path*",
 		"/test/:path*",
+		// "/r-test/:path*",
 		"/api/trpc/:path*",
 	],
 })
