@@ -11,6 +11,7 @@ import { CategoryItem } from "./category-item"
 import ClearFilters from "./clear-filters"
 import { MobileCategoryItem } from "./mobile-category-items"
 import ShowPurchased from "./show-purchased"
+import { Suspense } from "react"
 
 interface CategoriesProps {
 	items: (CategoriesSelect | null)[]
@@ -31,12 +32,13 @@ export const Categories = ({ items }: CategoriesProps) => {
 								{items.map(
 									(item) =>
 										item && (
-											<MobileCategoryItem
-												key={item.id}
-												label={item.name}
-												iconName={item.name}
-												value={item.id}
-											/>
+											<Suspense key={item.id} fallback={<div>Loading...</div>}>
+												<MobileCategoryItem
+													label={item.name}
+													iconName={item.name}
+													value={item.id}
+												/>
+											</Suspense>
 										),
 								)}
 							</div>
@@ -50,12 +52,13 @@ export const Categories = ({ items }: CategoriesProps) => {
 				{items.map(
 					(item) =>
 						item && (
-							<CategoryItem
-								key={item.id}
-								label={item.name}
-								iconName={item.name}
-								value={item.id}
-							/>
+							<Suspense key={item.id} fallback={<div>Loading...</div>}>
+								<CategoryItem
+									label={item.name}
+									iconName={item.name}
+									value={item.id}
+								/>
+							</Suspense>
 						),
 				)}
 			</div>
