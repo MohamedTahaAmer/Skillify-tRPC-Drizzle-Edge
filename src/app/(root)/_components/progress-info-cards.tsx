@@ -12,9 +12,14 @@ const ProgressInfoCards = ({
 	categoryId?: string
 	title?: string
 }) => {
-	let { data: courses } = api.get.getUserCoursesWithProgress.useQuery({
-		userId,
-	})
+	let { data: courses } = api.get.getUserCoursesWithProgress.useQuery(
+		{
+			userId,
+		},
+		{
+			refetchOnMount: false,
+		},
+	)
 	categoryId &&
 		(courses = courses?.filter((course) => course.categoryId === categoryId))
 	title?.length &&

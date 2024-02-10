@@ -38,7 +38,10 @@ export const CoursesList = ({ items }: CoursesListProps) => {
 		{
 			userId: userId ?? "",
 		},
-		{ enabled: !!userId },
+		{
+			enabled: !!userId,
+			refetchOnMount: false,
+		},
 	)
 	let progressMap = courses?.reduce(
 		(acc, course) => {
