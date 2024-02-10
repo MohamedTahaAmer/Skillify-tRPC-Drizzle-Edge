@@ -12,11 +12,12 @@ import { Suspense } from "react"
 import { Categories } from "./_components/categories"
 import ShowProgressInfoCards from "./_components/show-progress-info-cards"
 
-const SearchPage = async () => {
+const HomePage = async () => {
 	type Courses = (CoursesSelect & {
 		category: CategoriesSelect | null
 		chapters: { id: ChaptersSelect["id"] }[]
 	})[]
+	console.log(`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`)
 	let res = await fetch(
 		`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`,
 	)
@@ -60,4 +61,4 @@ const SearchPage = async () => {
 	)
 }
 
-export default SearchPage
+export default HomePage
