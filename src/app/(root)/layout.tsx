@@ -4,6 +4,7 @@ import { TRPCReactProvider } from "@/trpc/react"
 import ClientClerkProvider from "./_components/client-clerk-provider"
 import { Navbar } from "./_components/navbar"
 import { Suspense } from "react"
+import NavbarSkeleton from "./_components/skeletons/navbar"
 
 export default function RootLayout({
 	children,
@@ -16,7 +17,7 @@ export default function RootLayout({
 			<ToastProvider />
 			<TRPCReactProvider>
 				<div className="fixed inset-x-0 top-0 z-10 h-14 w-full">
-					<Suspense fallback={<div>Loading...</div>}>
+					<Suspense fallback={<NavbarSkeleton />}>
 						<ClientClerkProvider>
 							<Navbar />
 						</ClientClerkProvider>

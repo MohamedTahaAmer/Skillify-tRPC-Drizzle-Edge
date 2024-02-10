@@ -11,6 +11,9 @@ import { CategoryItem } from "./category-item"
 import ClearFilters from "./clear-filters"
 import { MobileCategoryItem } from "./mobile-category-items"
 import ShowPurchased from "./show-purchased"
+import { Suspense } from "react"
+import { MobileCategoryItemSkeleton } from "./skeletons/mobile-category-item"
+import { CategoryItemSkeleton } from "./skeletons/category-item"
 
 interface CategoriesProps {
 	items: (CategoriesSelect | null)[]
@@ -31,12 +34,21 @@ export const Categories = ({ items }: CategoriesProps) => {
 								{items.map(
 									(item) =>
 										item && (
-											<MobileCategoryItem
+											<Suspense
 												key={item.id}
-												label={item.name}
-												iconName={item.name}
-												value={item.id}
-											/>
+												fallback={
+													<MobileCategoryItemSkeleton
+														label={item.name}
+														iconName={item.name}
+													/>
+												}
+											>
+												<MobileCategoryItem
+													label={item.name}
+													iconName={item.name}
+													value={item.id}
+												/>
+											</Suspense>
 										),
 								)}
 							</div>
@@ -50,18 +62,29 @@ export const Categories = ({ items }: CategoriesProps) => {
 				{items.map(
 					(item) =>
 						item && (
-							<CategoryItem
+							<Suspense
 								key={item.id}
-								label={item.name}
-								iconName={item.name}
-								value={item.id}
-							/>
+								fallback={
+									<CategoryItemSkeleton
+										label={item.name}
+										iconName={item.name}
+									/>
+								}
+							>
+								<CategoryItem
+									label={item.name}
+									iconName={item.name}
+									value={item.id}
+								/>
+							</Suspense>
 						),
 				)}
 			</div>
 
 			<div className="flex items-center gap-2 ">
-				<ShowPurchased />
+				<Suspense fallback={null}>
+					<ShowPurchased />
+				</Suspense>
 				<ClearFilters />
 			</div>
 		</div>

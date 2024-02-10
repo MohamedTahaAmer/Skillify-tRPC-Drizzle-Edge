@@ -11,13 +11,17 @@ import uniqBy from "lodash.uniqby"
 import { Suspense } from "react"
 import { Categories } from "./_components/categories"
 import ShowProgressInfoCards from "./_components/show-progress-info-cards"
+import { SearchInputSkeleton } from "./_components/skeletons/search-input"
+import { CoursesListSkeleton } from "./_components/skeletons/courses-list"
 
 const HomePage = async () => {
 	type Courses = (CoursesSelect & {
 		category: CategoriesSelect | null
 		chapters: { id: ChaptersSelect["id"] }[]
 	})[]
-	console.log(`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`)
+	console.log(
+		`Revalidating : ${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`,
+	)
 	let res = await fetch(
 		`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`,
 	)
@@ -34,10 +38,12 @@ const HomePage = async () => {
 	categories = uniqBy(categories, (c) => c?.name)
 
 	return (
-		<Suspense fallback={<div>Loading...</div>}>
+		<>
 			{/* search input */}
 			<div className="fixed left-1/2 top-2  z-20 block  w-[65%] -translate-x-1/2 px-6 md:w-1/2 ">
-				<SearchInput />
+				<Suspense fallback={<SearchInputSkeleton />}>
+					<SearchInput />
+				</Suspense>
 			</div>
 
 			{/* main Content */}
@@ -46,12 +52,18 @@ const HomePage = async () => {
 				<Categories items={categories} />
 
 				{/* progress info cards */}
-				{allCourses.length > 0 && <ShowProgressInfoCards />}
+				{allCourses.length > 0 && (
+					<Suspense fallback={null}>
+						<ShowProgressInfoCards />
+					</Suspense>
+				)}
 
 				{/* courses list */}
-				<CoursesList items={allCourses} />
+				<Suspense fallback={<CoursesListSkeleton items={allCourses} />}>
+					<CoursesList items={allCourses} />
+				</Suspense>
 			</div>
-		</Suspense>
+		</>
 	)
 }
 
