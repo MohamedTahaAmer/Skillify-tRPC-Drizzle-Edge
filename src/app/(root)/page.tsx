@@ -34,12 +34,10 @@ const HomePage = async () => {
 	categories = uniqBy(categories, (c) => c?.name)
 
 	return (
-		<>
+		<Suspense fallback={<div>Loading...</div>}>
 			{/* search input */}
 			<div className="fixed left-1/2 top-2  z-20 block  w-[65%] -translate-x-1/2 px-6 md:w-1/2 ">
-				<Suspense fallback={<div>Loading...</div>}>
-					<SearchInput />
-				</Suspense>
+				<SearchInput />
 			</div>
 
 			{/* main Content */}
@@ -48,18 +46,12 @@ const HomePage = async () => {
 				<Categories items={categories} />
 
 				{/* progress info cards */}
-				{allCourses.length > 0 && (
-					<Suspense fallback={<div>Loading...</div>}>
-						<ShowProgressInfoCards />
-					</Suspense>
-				)}
+				{allCourses.length > 0 && <ShowProgressInfoCards />}
 
 				{/* courses list */}
-				<Suspense fallback={<div>Loading...</div>}>
-					<CoursesList items={allCourses} />
-				</Suspense>
+				<CoursesList items={allCourses} />
 			</div>
-		</>
+		</Suspense>
 	)
 }
 

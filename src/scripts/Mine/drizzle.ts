@@ -70,8 +70,10 @@ export async function addFitnessCourse() {
 			...course,
 			id: undefined,
 			title: "Fitness Course - test" + Math.random().toFixed(2),
+			createdAt: undefined,
 		})
 	}
+	console.log(course)
 	logTime({ title: "3- Time to add fitness course", startTime })
 	revalidatePath("/")
 	return course
