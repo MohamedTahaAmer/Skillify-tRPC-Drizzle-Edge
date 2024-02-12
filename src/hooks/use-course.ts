@@ -2,12 +2,14 @@ import type { AttachmentsSelect } from "@/server/db/schema"
 import { create } from "zustand"
 
 type CourseStore = {
+	courseId?: string
 	nextChapterId?: string
 	isPurchased: boolean
 	isLastChapterToFinishTheCourse: boolean
 	attachments: AttachmentsSelect[]
 	coursePrice?: number
 
+	setCourseId: (chapter: string) => void
 	setNextChapterId: (chapter: string) => void
 	setIsPurchased: (isPurchased: boolean) => void
 	setIsLastChapterToFinishTheCourse: (
@@ -18,6 +20,9 @@ type CourseStore = {
 }
 
 export const useCourse = create<CourseStore>((set) => ({
+	courseId: undefined,
+	setCourseId: (courseId: string) => set({ courseId }),
+
 	nextChapterId: undefined,
 	setNextChapterId: (nextChapterId: string) => set({ nextChapterId }),
 

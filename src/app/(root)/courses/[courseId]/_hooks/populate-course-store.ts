@@ -15,9 +15,12 @@ export default function usePopbulateCourseStore({
 		setNextChapterId,
 		setAttachments,
 		setCoursePrice,
+		setCourseId
 	} = useCourse()
 	useEffect(() => {
 		setAttachments(course.attachments)
+		setCourseId(course.id)
+
 
 		let purchase = course.purchases.length !== 0
 		setIsPurchased(purchase)
@@ -56,5 +59,6 @@ export default function usePopbulateCourseStore({
 		setNextChapterId,
 		setAttachments,
 		setCoursePrice,
+		setCourseId
 	])
 }

@@ -12,7 +12,6 @@ import { api } from "@/trpc/react"
 
 interface VideoPlayerProps {
 	playbackId: string
-	courseId: string
 	chapterId: string
 	isFreeChapter: boolean
 	isCompleted: boolean
@@ -21,7 +20,6 @@ interface VideoPlayerProps {
 
 export const VideoPlayer = ({
 	playbackId,
-	courseId,
 	chapterId,
 	isFreeChapter,
 	isCompleted,
@@ -29,8 +27,9 @@ export const VideoPlayer = ({
 }: VideoPlayerProps) => {
 	const [isReady, setIsReady] = useState(false)
 	const router = useRouter()
+
 	const confetti = useConfettiStore()
-	let { isPurchased, isLastChapterToFinishTheCourse, nextChapterId } =
+	let { isPurchased, isLastChapterToFinishTheCourse, nextChapterId, courseId } =
 		useCourse()
 
 	let isLocked = !isFreeChapter && !isPurchased

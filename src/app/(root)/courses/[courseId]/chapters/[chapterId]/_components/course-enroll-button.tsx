@@ -6,17 +6,11 @@ import { formatPrice } from "@/lib/format"
 import { api } from "@/trpc/react"
 import { TRPCClientError } from "@trpc/client"
 import { useUser } from "@/hooks/useUser"
+import { useCourse } from "@/hooks/use-course"
 
-interface CourseEnrollButtonProps {
-	price: number
-	courseId: string
-}
-
-export const CourseEnrollButton = ({
-	price,
-	courseId,
-}: CourseEnrollButtonProps) => {
+export const CourseEnrollButton = () => {
 	let { user } = useUser()
+	let { courseId, coursePrice } = useCourse()
 	let userId = user?.id
 	let checkout = api.courses.checkout.useMutation({
 		onSuccess(data, _variables, _context) {
@@ -30,6 +24,8 @@ export const CourseEnrollButton = ({
 	})
 	let handleClick = () => {
 		if (!userId) return toast.error("You Need to Sign In to Enroll.")
+		if (!courseId) return null
+
 		checkout.mutate({ courseId })
 	}
 
@@ -40,7 +36,7 @@ export const CourseEnrollButton = ({
 			disabled={checkout.isLoading}
 			className="w-full md:w-auto"
 		>
-			Enroll for {formatPrice(price)}
+			Enroll for {formatPrice(coursePrice ?? 0)}
 		</Button>
 	)
 }

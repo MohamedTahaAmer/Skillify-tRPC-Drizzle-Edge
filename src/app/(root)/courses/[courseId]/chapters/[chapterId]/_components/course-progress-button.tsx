@@ -12,7 +12,6 @@ import { useCourse } from "@/hooks/use-course"
 
 interface CourseProgressButtonProps {
 	chapterId: string
-	courseId: string
 	isCompleted?: boolean
 	nextChapterId?: string
 	isLastChapterToFinishTheCourse?: boolean
@@ -20,14 +19,13 @@ interface CourseProgressButtonProps {
 
 export const CourseProgressButton = ({
 	chapterId,
-	courseId,
 	isCompleted,
 	isLastChapterToFinishTheCourse,
 }: CourseProgressButtonProps) => {
 	const router = useRouter()
 	const confetti = useConfettiStore()
 	const [isLoading, setIsLoading] = useState(false)
-	let { nextChapterId } = useCourse()
+	let { nextChapterId, courseId } = useCourse()
 	let updateProgress = api.courses.updateProgress.useMutation({
 		onMutate: () => {
 			setIsLoading(true)
