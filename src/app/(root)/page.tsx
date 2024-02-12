@@ -1,7 +1,7 @@
 import { SearchInput } from "@/components/search-input"
 
 import { CoursesList } from "@/components/courses-list"
-import { logTime } from "@/lib/logTime"
+import { logObjSize, logTime } from "@/lib/helpers"
 import { db, schema } from "@/server/db"
 import { and, desc, eq } from "drizzle-orm"
 import uniqBy from "lodash.uniqby"
@@ -48,6 +48,7 @@ const HomePage = async () => {
 		orderBy: desc(schema.courses.createdAt),
 	})
 	logTime({ title: "1- Time to get all courses", startTime })
+	logObjSize({ title: "1- allCourses", obj: allCourses })
 
 	allCourses.splice(4)
 	let categories = allCourses.map((course) => course.category)

@@ -1,4 +1,4 @@
-import { logTime } from "@/lib/logTime"
+import { logTime } from "@/lib/helpers"
 import { db, schema } from "@/server/db"
 import { and, eq, inArray } from "drizzle-orm"
 export default async function getUserCoursesWithProgress({

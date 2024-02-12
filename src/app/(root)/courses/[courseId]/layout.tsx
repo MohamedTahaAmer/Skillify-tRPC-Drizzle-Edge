@@ -8,10 +8,10 @@ import {
 	SheetContent,
 	SheetTrigger,
 } from "@/components/ui/sheet"
-import { db, schema } from "@/server/db"
-import { and, asc, eq } from "drizzle-orm"
+import { logObjSize } from "@/lib/helpers"
 import { CourseSidebar } from "./_components/course-sidebar"
 import RedirectOnCourse from "./_components/redirect-on-course"
+import cachedGetCourseWithChapters from "./_utils/get-courses-with-chapters"
 
 const CourseLayout = async ({
 	children,
@@ -21,26 +21,10 @@ const CourseLayout = async ({
 	params: { courseId: string }
 }) => {
 	let { userId } = auth()
+	let courseId = params.courseId
 
-	let course = await db.query.courses.findFirst({
-		where: eq(schema.courses.id, params.courseId),
-		with: {
-			chapters: {
-				where: and(eq(schema.chapters.isPublished, true)),
-				with: {
-					userProgress: userId
-						? {
-								where: eq(schema.userProgress.userId, userId),
-							}
-						: undefined,
-				},
-				orderBy: asc(schema.chapters.position),
-			},
-			purchases: userId
-				? { where: eq(schema.purchases.userId, userId) }
-				: undefined,
-		},
-	})
+	let course = await cachedGetCourseWithChapters({ userId, courseId })
+	logObjSize({ title: "course", obj: course })
 
 	if (!course) {
 		return redirect("/")

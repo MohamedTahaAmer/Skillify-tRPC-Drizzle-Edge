@@ -14,12 +14,14 @@ import { VideoPlayer } from "./_components/video-player"
 import { CourseEnrollButton } from "./_components/course-enroll-button"
 import { CourseProgressButton } from "./_components/course-progress-button"
 import { getProgress } from "@/actions/get-progress"
+import { logTime } from "@/lib/helpers"
 
 const ChapterIdPage = async ({
 	params,
 }: {
 	params: { courseId: string; chapterId: string }
 }) => {
+	let startTime = Date.now()
 	let { userId } = auth()
 
 	const {
@@ -51,7 +53,10 @@ const ChapterIdPage = async ({
 		numOfPublishedChapters - numOfCompletedChapters === 1
 
 	const isLocked = !chapter?.isFree && !purchase
+	// - if the chapter wasn't completed, then mark as completed when the video ends
 	const completeOnEnd = !!purchase && !userProgress?.isCompleted
+
+	logTime({ title: "ChapterIdPage", startTime })
 
 	return (
 		<div>
