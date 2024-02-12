@@ -3,18 +3,17 @@ export const preferredRegion = "cle1"
 
 import { auth } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
-import { File } from "lucide-react"
 
 import { getChapter } from "@/actions/get-chapter"
 import { Banner } from "@/components/banner"
-import { Separator } from "@/components/ui/separator"
 import { Preview } from "@/components/preview"
+import { Separator } from "@/components/ui/separator"
 
-import { VideoPlayer } from "./_components/video-player"
-import { CourseEnrollButton } from "./_components/course-enroll-button"
-import { CourseProgressButton } from "./_components/course-progress-button"
-import { getProgress } from "@/actions/get-progress"
 import { logTime } from "@/lib/helpers"
+import ChapterButton from "./_components/chapter-button"
+import ShowBanner from "./_components/show-banner"
+import { VideoPlayer } from "./_components/video-player"
+import ShowAttachments from "./_components/show-attachments"
 
 const ChapterIdPage = async ({
 	params,
@@ -24,38 +23,18 @@ const ChapterIdPage = async ({
 	let startTime = Date.now()
 	let { userId } = auth()
 
-	const {
-		chapter,
-		course,
-		muxData,
-		attachments,
-		nextChapter,
-		userProgress,
-		purchase,
-	} = await getChapter({
+	const { chapter, muxData, userProgress } = await getChapter({
 		userId,
 		chapterId: params.chapterId,
 		courseId: params.courseId,
 	})
 
-	if (!chapter || !course) {
+	if (!chapter) {
 		return redirect("/")
 	}
 
-	let { numOfCompletedChapters, numOfPublishedChapters } = userId
-		? await getProgress(userId, course.id)
-		: {
-				numOfCompletedChapters: 0,
-				numOfPublishedChapters: 0,
-			}
-
-	let lastChapterToFinishTheCourse =
-		numOfPublishedChapters - numOfCompletedChapters === 1
-
-	const isLocked = !chapter?.isFree && !purchase
-	// - if the chapter wasn't completed, then mark as completed when the video ends
-	const completeOnEnd = !!purchase && !userProgress?.isCompleted
-
+	let isCompleted = !userProgress?.isCompleted
+	let isFreeChapter = chapter.isFree ?? false
 	logTime({ title: "ChapterIdPage", startTime })
 
 	return (
@@ -63,67 +42,32 @@ const ChapterIdPage = async ({
 			{userProgress?.isCompleted && (
 				<Banner variant="success" label="You already completed this chapter." />
 			)}
-			{isLocked && (
-				<Banner
-					variant="warning"
-					label="You need to purchase this course to watch this chapter."
-				/>
-			)}
+			{!isFreeChapter && <ShowBanner />}
 			<div className="mx-auto flex max-w-4xl flex-col pb-20">
 				<div className="p-4">
 					<VideoPlayer
 						chapterId={params.chapterId}
 						title={chapter.title}
 						courseId={params.courseId}
-						nextChapterId={nextChapter?.id}
 						// >(11-1-2024:3)
 						playbackId={muxData?.playbackId ?? ""}
-						isLocked={isLocked}
-						completeOnEnd={completeOnEnd}
-						lastChapterToFinishTheCourse={lastChapterToFinishTheCourse}
+						isFreeChapter={isFreeChapter}
+						isCompleted={isCompleted}
 					/>
 				</div>
 				<div>
 					<div className="flex flex-col items-center justify-between p-4 md:flex-row">
 						<h2 className="mb-2 text-2xl font-semibold">{chapter.title}</h2>
-						{purchase ? (
-							<CourseProgressButton
-								chapterId={params.chapterId}
-								courseId={params.courseId}
-								nextChapterId={nextChapter?.id}
-								isCompleted={!!userProgress?.isCompleted}
-								lastChapterToFinishTheCourse={lastChapterToFinishTheCourse}
-							/>
-						) : (
-							<CourseEnrollButton
-								courseId={params.courseId}
-								price={course.price!}
-								userId={userId}
-							/>
-						)}
+						<ChapterButton
+							chapterId={chapter.id}
+							isCompleted={userProgress?.isCompleted ?? false}
+						/>
 					</div>
 					<Separator />
 					<div>
 						<Preview value={chapter?.description ?? ""} />
 					</div>
-					{!!attachments.length && (
-						<>
-							<Separator />
-							<div className="p-4">
-								{attachments.map((attachment) => (
-									<a
-										href={attachment.url}
-										target="_blank"
-										key={attachment.id}
-										className="flex w-full items-center gap-2 rounded-md border bg-sky-200 p-3 text-sky-700 hover:underline"
-									>
-										<File />
-										<p className="line-clamp-1">{attachment.name}</p>
-									</a>
-								))}
-							</div>
-						</>
-					)}
+					<ShowAttachments />
 				</div>
 			</div>
 		</div>

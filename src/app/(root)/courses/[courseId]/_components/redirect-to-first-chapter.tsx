@@ -3,7 +3,11 @@
 import type { Route } from "next"
 import { usePathname, useRouter } from "next/navigation"
 
-const RedirectOnCourse = ({ firstChapterId }: { firstChapterId: string }) => {
+const RedirectToFirstChapter = ({
+	firstChapterId,
+}: {
+	firstChapterId: string
+}) => {
 	let path = usePathname()
 	let router = useRouter()
 
@@ -13,4 +17,4 @@ const RedirectOnCourse = ({ firstChapterId }: { firstChapterId: string }) => {
 	return null
 }
 
-export default RedirectOnCourse
+export default RedirectToFirstChapter

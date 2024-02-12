@@ -5,18 +5,19 @@ import { Button } from "@/components/ui/button"
 import { formatPrice } from "@/lib/format"
 import { api } from "@/trpc/react"
 import { TRPCClientError } from "@trpc/client"
+import { useUser } from "@/hooks/useUser"
 
 interface CourseEnrollButtonProps {
 	price: number
 	courseId: string
-	userId: string | null
 }
 
 export const CourseEnrollButton = ({
 	price,
 	courseId,
-	userId,
 }: CourseEnrollButtonProps) => {
+	let { user } = useUser()
+	let userId = user?.id
 	let checkout = api.courses.checkout.useMutation({
 		onSuccess(data, _variables, _context) {
 			window.location.assign(data.url ?? "")

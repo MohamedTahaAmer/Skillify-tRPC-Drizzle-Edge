@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/sheet"
 import { logObjSize } from "@/lib/helpers"
 import { CourseSidebar } from "./_components/course-sidebar"
-import RedirectOnCourse from "./_components/redirect-on-course"
+import PopulateCourseStore from "./_components/populate-course-store"
+import RedirectToFirstChapter from "./_components/redirect-to-first-chapter"
 import cachedGetCourseWithChapters from "./_utils/get-courses-with-chapters"
 
 const CourseLayout = async ({
@@ -54,7 +55,10 @@ const CourseLayout = async ({
 					</SheetContent>
 				</Sheet>
 			</div>
-			{firstChapterId && <RedirectOnCourse firstChapterId={firstChapterId} />}
+			{firstChapterId && (
+				<RedirectToFirstChapter firstChapterId={firstChapterId} />
+			)}
+			<PopulateCourseStore course={course} />
 			<main className="h-full xl:pl-80">{children}</main>
 		</div>
 	)

@@ -1,41 +1,46 @@
 "use client"
 import MuxPlayer from "@mux/mux-player-react"
+import { Loader2, Lock } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
-import { useRouter } from "next/navigation"
-import { Loader2, Lock } from "lucide-react"
 
-import { cn } from "@/lib/utils"
 import { useConfettiStore } from "@/hooks/use-confetti-store"
+import { useCourse } from "@/hooks/use-course"
+import { cn } from "@/lib/utils"
 import { api } from "@/trpc/react"
 
 interface VideoPlayerProps {
 	playbackId: string
 	courseId: string
 	chapterId: string
-	nextChapterId?: string
-	isLocked: boolean
-	completeOnEnd: boolean
+	isFreeChapter: boolean
+	isCompleted: boolean
 	title: string
-	lastChapterToFinishTheCourse: boolean
 }
 
 export const VideoPlayer = ({
 	playbackId,
 	courseId,
 	chapterId,
-	nextChapterId,
-	isLocked,
-	completeOnEnd,
+	isFreeChapter,
+	isCompleted,
 	title,
-	lastChapterToFinishTheCourse,
 }: VideoPlayerProps) => {
 	const [isReady, setIsReady] = useState(false)
 	const router = useRouter()
 	const confetti = useConfettiStore()
+	let { isPurchased, isLastChapterToFinishTheCourse, nextChapterId } =
+		useCourse()
+
+	let isLocked = !isFreeChapter && !isPurchased
+
+	// - if there is a purchase and the chapter wasn't completed, then mark as completed when the video ends
+	let completeOnEnd = !isCompleted && isPurchased
+
 	let updateProgress = api.courses.updateProgress.useMutation({
 		onSuccess: () => {
-			if (!nextChapterId && lastChapterToFinishTheCourse) {
+			if (!nextChapterId && isLastChapterToFinishTheCourse) {
 				confetti.onOpen()
 			}
 

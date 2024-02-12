@@ -8,25 +8,26 @@ import toast from "react-hot-toast"
 import { Button } from "@/components/ui/button"
 import { useConfettiStore } from "@/hooks/use-confetti-store"
 import { api } from "@/trpc/react"
+import { useCourse } from "@/hooks/use-course"
 
 interface CourseProgressButtonProps {
 	chapterId: string
 	courseId: string
 	isCompleted?: boolean
 	nextChapterId?: string
-	lastChapterToFinishTheCourse?: boolean
+	isLastChapterToFinishTheCourse?: boolean
 }
 
 export const CourseProgressButton = ({
 	chapterId,
 	courseId,
 	isCompleted,
-	nextChapterId,
-	lastChapterToFinishTheCourse,
+	isLastChapterToFinishTheCourse,
 }: CourseProgressButtonProps) => {
 	const router = useRouter()
 	const confetti = useConfettiStore()
 	const [isLoading, setIsLoading] = useState(false)
+	let { nextChapterId } = useCourse()
 	let updateProgress = api.courses.updateProgress.useMutation({
 		onMutate: () => {
 			setIsLoading(true)
@@ -35,7 +36,7 @@ export const CourseProgressButton = ({
 			setIsLoading(false)
 		},
 		onSuccess: () => {
-			if (!isCompleted && lastChapterToFinishTheCourse) {
+			if (!isCompleted && isLastChapterToFinishTheCourse) {
 				confetti.onOpen()
 			}
 

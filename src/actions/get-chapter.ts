@@ -13,32 +13,6 @@ export const getChapter = async ({
 	chapterId,
 }: GetChapterProps) => {
 	try {
-		let purchase = userId
-			? (
-					await db
-						.selectDistinct()
-						.from(schema.purchases)
-						.where(
-							and(
-								eq(schema.purchases.userId, userId),
-								eq(schema.purchases.courseId, courseId),
-							),
-						)
-				)[0]
-			: undefined
-
-		let course = (
-			await db
-				.selectDistinct()
-				.from(schema.courses)
-				.where(
-					and(
-						eq(schema.courses.id, courseId),
-						eq(schema.courses.isPublished, true),
-					),
-				)
-		)[0]
-
 		let chapter = (
 			await db
 				.selectDistinct()
@@ -51,7 +25,7 @@ export const getChapter = async ({
 				)
 		)[0]
 
-		if (!chapter || !course) {
+		if (!chapter) {
 			throw new Error("Chapter or course not found")
 		}
 
@@ -59,14 +33,12 @@ export const getChapter = async ({
 		let attachments: schema.AttachmentsSelect[] = []
 		let nextChapter: schema.ChaptersSelect | undefined = undefined
 
-		if (purchase) {
-			attachments = await db
-				.select()
-				.from(schema.attachments)
-				.where(eq(schema.attachments.courseId, courseId))
-		}
+		attachments = await db
+			.select()
+			.from(schema.attachments)
+			.where(eq(schema.attachments.courseId, courseId))
 
-		if (!!chapter?.isFree || purchase) {
+		if (!!chapter?.isFree) {
 			muxData = (
 				await db
 					.selectDistinct()
@@ -106,23 +78,19 @@ export const getChapter = async ({
 
 		return {
 			chapter,
-			course,
 			muxData,
 			attachments,
 			nextChapter,
 			userProgress,
-			purchase,
 		}
 	} catch (error) {
 		console.log("[GET_CHAPTER]", error)
 		return {
 			chapter: null,
-			course: null,
 			muxData: null,
 			attachments: [],
 			nextChapter: null,
 			userProgress: null,
-			purchase: null,
 		}
 	}
 }

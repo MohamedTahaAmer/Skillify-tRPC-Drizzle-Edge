@@ -1,17 +1,8 @@
 import { CourseProgress } from "@/components/course-progress"
-import type { schema } from "@/server/db"
 import { CourseSidebarItem } from "./course-sidebar-item"
+import type { Course } from "@/types"
 
-interface CourseSidebarProps {
-	course: schema.CoursesSelect & {
-		chapters: (schema.ChaptersSelect & {
-			userProgress: schema.UserProgressSelect[]
-		})[]
-		purchases: schema.PurchasesSelect[]
-	}
-}
-
-export const CourseSidebar = async ({ course }: CourseSidebarProps) => {
+export const CourseSidebar = async ({ course }: { course: Course }) => {
 	let purchase = course.purchases.length !== 0
 	let numOfCompletedChapters = course.chapters.reduce((acc, chapter) => {
 		if (chapter.userProgress[0]?.isCompleted) {
