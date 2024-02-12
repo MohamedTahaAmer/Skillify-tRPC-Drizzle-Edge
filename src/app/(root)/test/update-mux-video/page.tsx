@@ -1,6 +1,9 @@
 import updateMuxDate from "@/scripts/Mine/update-mux-data"
+import { unstable_noStore } from "next/cache"
 
 const Page = async () => {
+	unstable_noStore()
+
 	await updateMuxDate()
 	return (
 		<>
