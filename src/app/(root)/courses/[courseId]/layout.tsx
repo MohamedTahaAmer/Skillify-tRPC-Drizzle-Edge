@@ -11,6 +11,7 @@ import {
 import { db, schema } from "@/server/db"
 import { and, asc, eq } from "drizzle-orm"
 import { CourseSidebar } from "./_components/course-sidebar"
+import RedirectOnCourse from "./_components/redirect-on-course"
 
 const CourseLayout = async ({
 	children,
@@ -44,6 +45,7 @@ const CourseLayout = async ({
 	if (!course) {
 		return redirect("/")
 	}
+	let firstChapterId = course.chapters[0]?.id
 
 	return (
 		<div className="h-full">
@@ -68,6 +70,7 @@ const CourseLayout = async ({
 					</SheetContent>
 				</Sheet>
 			</div>
+			{firstChapterId && <RedirectOnCourse firstChapterId={firstChapterId} />}
 			<main className="h-full xl:pl-80">{children}</main>
 		</div>
 	)

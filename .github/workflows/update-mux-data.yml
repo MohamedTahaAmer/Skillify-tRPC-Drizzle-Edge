@@ -2,13 +2,14 @@ name: Call Endpoint
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Schedule the job every day at midnight
+    - cron: "0 0 * * *" # Schedule the job every day at midnight
+  workflow_dispatch:
 
 jobs:
   call-endpoint:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Call Endpoint
-      run: |
-        curl -X GET https://skillify-trpc-drizzle-edge.vercel.app/test/update-mux-video
+      - name: Call Endpoint
+        run: |
+          curl -X GET https://skillify-trpc-drizzle-edge.vercel.app/test/update-mux-video

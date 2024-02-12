@@ -1,39 +1,55 @@
 import { SearchInput } from "@/components/search-input"
 
 import { CoursesList } from "@/components/courses-list"
-import { env } from "@/env"
-import type {
-	CategoriesSelect,
-	ChaptersSelect,
-	CoursesSelect,
-} from "@/server/db/schema"
+import { logTime } from "@/lib/logTime"
+import { db, schema } from "@/server/db"
+import { and, desc, eq } from "drizzle-orm"
 import uniqBy from "lodash.uniqby"
 import { Suspense } from "react"
 import { Categories } from "./_components/categories"
 import ShowProgressInfoCards from "./_components/show-progress-info-cards"
-import { SearchInputSkeleton } from "./_components/skeletons/search-input"
 import { CoursesListSkeleton } from "./_components/skeletons/courses-list"
+import { SearchInputSkeleton } from "./_components/skeletons/search-input"
 
 const HomePage = async () => {
-	type Courses = (CoursesSelect & {
-		category: CategoriesSelect | null
-		chapters: { id: ChaptersSelect["id"] }[]
-	})[]
-	console.log(
-		`Revalidating : ${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`,
-	)
-	let res = await fetch(
-		`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`,
-	)
-	if (!res.ok) {
-		console.log("Failed to fetch courses")
-		return
-	}
-	let { result } = (await res.json()) as {
-		result: { data: { json: Courses } }
-	}
-	let allCourses = result.data.json
+	//#region // < Allow route revalidation, by using fetch instead of direct db call
+	// - I'm commenting the fetch request, as it makes development slower, by making an http request with each file save
+	// type Courses = (CoursesSelect & {
+	// 	category: CategoriesSelect | null
+	// 	chapters: { id: ChaptersSelect["id"] }[]
+	// })[]
+	// console.log(
+	// 	`Revalidating : ${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`,
+	// )
+	// let res = await fetch(
+	// 	`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`,
+	// )
+	// if (!res.ok) {
+	// 	console.log("Failed to fetch courses")
+	// 	return
+	// }
+	// let { result } = (await res.json()) as {
+	// 	result: { data: { json: Courses } }
+	// }
+	// let allCourses = result.data.json
+	//#endregion
+	let startTime = Date.now()
+	const allCourses = await db.query.courses.findMany({
+		where: and(eq(schema.courses.isPublished, true)),
+		with: {
+			category: true,
+			chapters: {
+				where: eq(schema.chapters.isPublished, true),
+				columns: {
+					id: true,
+				},
+			},
+		},
+		orderBy: desc(schema.courses.createdAt),
+	})
+	logTime({ title: "1- Time to get all courses", startTime })
 
+	allCourses.splice(4)
 	let categories = allCourses.map((course) => course.category)
 	categories = uniqBy(categories, (c) => c?.name)
 

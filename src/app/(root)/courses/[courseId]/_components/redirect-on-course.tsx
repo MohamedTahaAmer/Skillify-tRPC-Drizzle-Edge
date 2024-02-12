@@ -1,15 +1,16 @@
 "use client"
 
-import { usePathname } from "next/navigation"
+import type { Route } from "next"
+import { usePathname, useRouter } from "next/navigation"
 
-const RedirectOnCourse = () => {
+const RedirectOnCourse = ({ firstChapterId }: { firstChapterId: string }) => {
 	let path = usePathname()
-	console.log(path)
-	return (
-		<>
-			<div className="">redirect-on-course</div>
-		</>
-	)
+	let router = useRouter()
+
+	if (path.includes("chapters") === false) {
+		router.push(`${path}/chapters/${firstChapterId}` as Route)
+	}
+	return null
 }
 
 export default RedirectOnCourse
