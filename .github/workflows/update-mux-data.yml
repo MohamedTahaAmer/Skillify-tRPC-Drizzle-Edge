@@ -2,7 +2,7 @@ name: Call Endpoint
 
 on:
   schedule:
-    - cron: "0 0 * * *" # Schedule the job every day at midnight
+    - cron: "0 22 * * *" # Schedule the job every day at midnight
   workflow_dispatch:
 
 jobs:
