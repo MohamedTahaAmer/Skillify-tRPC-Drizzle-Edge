@@ -7,8 +7,10 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint",
-		"test": "vitest"
+		"test": "vitest",
+		"format": "prettier --write .",
+		"lint": "eslint --fix --max-warnings=0 .",
+		"type-check": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@clerk/nextjs": "^4.29.2",
