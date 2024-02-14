@@ -50,6 +50,6 @@ export async function addChapter({
 				),
 			)
 	)[0]
-	revalidatePath('/')
+	revalidatePath("/")
 	return chapter
 }

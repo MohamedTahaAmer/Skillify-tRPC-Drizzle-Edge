@@ -149,7 +149,10 @@ export let seedMuxData = async () => {
 
 export let openFirstVideo = async () => {
 	try {
-		await db.update(schema.chapters).set({ isFree: true }).where(eq(schema.chapters.position, 1))
+		await db
+			.update(schema.chapters)
+			.set({ isFree: true })
+			.where(eq(schema.chapters.position, 1))
 		console.log("opened first video")
 	} catch (error) {
 		console.log("Error opening the first video", error)

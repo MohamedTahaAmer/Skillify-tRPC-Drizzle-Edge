@@ -13,7 +13,7 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormMessage
+	FormMessage,
 } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -24,17 +24,17 @@ import type { CategoriesSelect, CoursesSelect } from "@/server/db/schema"
 interface CategoryFormProps {
 	initialCategoryId: CategoriesSelect["id"]
 	courseId: CoursesSelect["id"]
-	options: { label: CategoriesSelect['name']; value: CategoriesSelect['id'] }[]
+	options: { label: CategoriesSelect["name"]; value: CategoriesSelect["id"] }[]
 }
 
 const formSchema = z.object({
-	categoryId: z.string().min(1)
+	categoryId: z.string().min(1),
 })
 
 export const CategoryForm = ({
 	initialCategoryId,
 	courseId,
-	options
+	options,
 }: CategoryFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 
@@ -45,16 +45,16 @@ export const CategoryForm = ({
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			categoryId: initialCategoryId 
-		}
+			categoryId: initialCategoryId,
+		},
 	})
 
 	const { isSubmitting, isValid } = form.formState
-  let patchCourse = api.courses.patchCourse.useMutation()
+	let patchCourse = api.courses.patchCourse.useMutation()
 
 	const onSubmit = async (courseNewValues: z.infer<typeof formSchema>) => {
 		try {
-      await patchCourse.mutateAsync({ courseId, courseNewValues })
+			await patchCourse.mutateAsync({ courseId, courseNewValues })
 			toast.success("Course updated")
 			toggleEdit()
 			router.refresh()
@@ -64,7 +64,7 @@ export const CategoryForm = ({
 	}
 
 	const selectedOption = options.find(
-		(option) => option.value === initialCategoryId
+		(option) => option.value === initialCategoryId,
 	)
 
 	return (
@@ -86,7 +86,7 @@ export const CategoryForm = ({
 				<p
 					className={cn(
 						"mt-2 text-sm",
-						!initialCategoryId && "italic text-slate-500"
+						!initialCategoryId && "italic text-slate-500",
 					)}
 				>
 					{selectedOption?.label ?? "No category"}
@@ -104,10 +104,7 @@ export const CategoryForm = ({
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
-										<Combobox
-                      options={...options}
-                      {...field}
-                    />
+										<Combobox options={{ ...options }} {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>

@@ -1,13 +1,13 @@
 {
-  "version": "5",
-  "dialect": "mysql",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "5",
-      "when": 1707068961187,
-      "tag": "0000_yummy_corsair",
-      "breakpoints": true
-    }
-  ]
+	"version": "5",
+	"dialect": "mysql",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "5",
+			"when": 1707068961187,
+			"tag": "0000_yummy_corsair",
+			"breakpoints": true
+		}
+	]
 }

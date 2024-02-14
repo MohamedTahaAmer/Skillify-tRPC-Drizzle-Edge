@@ -8,6 +8,7 @@ describe("CourseProgress", () => {
 		let courseProgress = render(<CourseProgress value={value} />)
 		let regex = new RegExp(`${value}% Complete`, "i")
 		expect(courseProgress.getByText(regex)).toBeDefined()
+
 		let progressBar = screen.getByRole("progressbar")
 		let firstChild = progressBar.firstChild as HTMLElement
 		expect(firstChild.style).toHaveProperty("_values", {
@@ -16,13 +17,12 @@ describe("CourseProgress", () => {
 		courseProgress.unmount()
 	})
 
-	test("renders the progress bar with the correct variant", async () => {
-		// await for 10 md
-		await new Promise((r) => setTimeout(r, 10))
+	test("renders the progress bar with the correct variant", () => {
 		let value = 50
 		let courseProgress = render(
 			<CourseProgress value={value} variant="success" />,
 		)
+
 		let progressBar = courseProgress.getByRole("progressbar")
 		let firstChild = progressBar.firstChild as HTMLElement
 		expect(firstChild.classList).toContain("bg-emerald-700")
@@ -34,6 +34,7 @@ describe("CourseProgress", () => {
 		let courseProgress = render(
 			<CourseProgress variant="success" size="sm" value={value} />,
 		)
+
 		let text = courseProgress.getByText(`${value}% Complete`)
 		expect(text).toBeDefined()
 		expect(text.classList).toContain("text-xs")

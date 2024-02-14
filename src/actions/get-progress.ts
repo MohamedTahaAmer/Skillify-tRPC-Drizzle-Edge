@@ -37,9 +37,17 @@ export const getProgress = async (
 		const progressPercentage =
 			(numOfCompletedChapters / numOfPublishedChapters) * 100
 
-		return {progressPercentage, numOfCompletedChapters, numOfPublishedChapters}
+		return {
+			progressPercentage,
+			numOfCompletedChapters,
+			numOfPublishedChapters,
+		}
 	} catch (error) {
 		console.log("[GET_PROGRESS]", error)
-		return {progressPercentage: 0, numOfCompletedChapters: 0, numOfPublishedChapters: 0}
+		return {
+			progressPercentage: 0,
+			numOfCompletedChapters: 0,
+			numOfPublishedChapters: 0,
+		}
 	}
 }

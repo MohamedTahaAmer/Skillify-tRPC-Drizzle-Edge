@@ -26,7 +26,6 @@ export const MobileCategoryItemSkeleton = ({
 	label,
 	iconName,
 }: MobileCategoryItemSkeletonProps) => {
-
 	let Icon = iconMap[iconName]
 
 	return (

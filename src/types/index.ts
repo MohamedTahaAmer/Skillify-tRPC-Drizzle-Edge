@@ -6,5 +6,5 @@ export type ChapterWithProgress = schema.ChaptersSelect & {
 export type Course = schema.CoursesSelect & {
 	chapters: ChapterWithProgress[]
 	purchases: schema.PurchasesSelect[]
-  attachments: schema.AttachmentsSelect[]
+	attachments: schema.AttachmentsSelect[]
 }
