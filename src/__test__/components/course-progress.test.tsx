@@ -1,5 +1,5 @@
 import { CourseProgress } from "@/components/course-progress"
-import { render, screen } from "@testing-library/react"
+import { render } from "@testing-library/react"
 import { describe, expect, test } from "vitest"
 
 describe("CourseProgress", () => {
@@ -9,7 +9,7 @@ describe("CourseProgress", () => {
 		let regex = new RegExp(`${value}% Complete`, "i")
 		expect(courseProgress.getByText(regex)).toBeDefined()
 
-		let progressBar = screen.getByRole("progressbar")
+		let progressBar = courseProgress.getByRole("progressbar")
 		let firstChild = progressBar.firstChild as HTMLElement
 		expect(firstChild.style).toHaveProperty("_values", {
 			transform: `translateX(-${value}%)`,
