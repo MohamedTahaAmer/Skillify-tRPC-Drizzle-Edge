@@ -1,7 +1,7 @@
 import { CourseCard } from "@/components/course-card"
 import { formatPrice } from "@/lib/format"
 import { render } from "@testing-library/react"
-import { describe, expect, it } from "vitest"
+import { describe, expect, test } from "vitest"
 let course: {
 	id: string
 	title: string
@@ -20,7 +20,7 @@ let course: {
 }
 
 describe("CourseCard component", () => {
-	it("renders the card with basic information", () => {
+	test("renders the card with basic information", () => {
 		let courseCard = render(<CourseCard {...course} />)
 
 		expect(courseCard.getByRole("img")).toHaveAttribute("alt", course.title)
@@ -32,21 +32,21 @@ describe("CourseCard component", () => {
 		courseCard.unmount()
 	})
 
-	it("renders the price for courses without progress", () => {
+	test("renders the price for courses without progress", () => {
 		course = { ...course, progress: undefined }
 		let courseCard = render(<CourseCard {...course} />)
 		expect(courseCard.getByText(formatPrice(course.price))).toBeVisible()
 		courseCard.unmount()
 	})
 
-	it("renders the course progress for courses with progress", () => {
+	test("renders the course progress for courses with progress", () => {
 		course = { ...course, progress: 50 }
 		let courseCard = render(<CourseCard {...course} />)
 		expect(courseCard.getByText(/50% Complete/i)).toBeVisible()
 		courseCard.unmount()
 	})
 
-	it("navigates to the course page when clicked", () => {
+	test("navigates to the course page when clicked", () => {
 		let courseCard = render(<CourseCard {...course} />)
 		expect(courseCard.getByRole("link")).toHaveAttribute(
 			"href",

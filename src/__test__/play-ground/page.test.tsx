@@ -1,6 +1,19 @@
-import { expect, test } from "vitest"
+import { expect, test, vi } from "vitest"
 import { render, screen } from "@testing-library/react"
 import Page from "./Page"
+
+vi.mock("next/navigation", () => {
+	const params: Map<string, string | number> = new Map<string, string | number>(
+		[
+			["foo", "bar"],
+			["baz", 42],
+		],
+	)
+
+	return {
+		useSearchParams: () => params,
+	}
+})
 
 test("Page", () => {
 	render(<Page />)
