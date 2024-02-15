@@ -7,13 +7,11 @@ describe("CourseProgress", () => {
 		let value = 50
 		let courseProgress = render(<CourseProgress value={value} />)
 		let regex = new RegExp(`${value}% Complete`, "i")
-		expect(courseProgress.getByText(regex)).toBeDefined()
+		expect(courseProgress.getByText(regex)).toBeVisible()
 
-		let progressBar = courseProgress.getByRole("progressbar")
-		let firstChild = progressBar.firstChild as HTMLElement
-		expect(firstChild.style).toHaveProperty("_values", {
-			transform: `translateX(-${value}%)`,
-		})
+		expect(courseProgress.getByRole("progressbar").firstChild).toHaveStyle(
+			"transform: translateX(-50%);",
+		)
 		courseProgress.unmount()
 	})
 
@@ -23,9 +21,9 @@ describe("CourseProgress", () => {
 			<CourseProgress value={value} variant="success" />,
 		)
 
-		let progressBar = courseProgress.getByRole("progressbar")
-		let firstChild = progressBar.firstChild as HTMLElement
-		expect(firstChild.classList).toContain("bg-emerald-700")
+		expect(courseProgress.getByRole("progressbar").firstChild).toHaveClass(
+			"bg-emerald-700",
+		)
 		courseProgress.unmount()
 	})
 
@@ -35,9 +33,9 @@ describe("CourseProgress", () => {
 			<CourseProgress variant="success" size="sm" value={value} />,
 		)
 
-		let text = courseProgress.getByText(`${value}% Complete`)
-		expect(text).toBeDefined()
-		expect(text.classList).toContain("text-xs")
+		expect(courseProgress.getByText(`${value}% Complete`)).toHaveClass(
+			"text-xs",
+		)
 		courseProgress.unmount()
 	})
 })

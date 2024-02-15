@@ -1,6 +1,6 @@
 import { CourseCard } from "@/components/course-card"
 import { formatPrice } from "@/lib/format"
-import { render, screen } from "@testing-library/react"
+import { render } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 let course: {
 	id: string
@@ -23,34 +23,30 @@ describe("CourseCard component", () => {
 	it("renders the card with basic information", () => {
 		let courseCard = render(<CourseCard {...course} />)
 
-		// test that the course card has an img with alt text of the course title
-		expect(courseCard.getByAltText(course.title)).toBeDefined()
-		expect(screen.getByText(course.title)).toBeDefined()
-		expect(screen.getByText(course.category)).toBeDefined()
-		expect(screen.getByText("20 Chapters")).toBeDefined()
-		expect(screen.getByText("$19.99")).toBeDefined()
-		screen.debug()
-		expect(screen.queryByText(/ % Complete/i)).toBeNull()
+		expect(courseCard.getByRole("img")).toHaveAttribute("alt", course.title)
+		expect(courseCard.getByText(course.title)).toBeVisible()
+		expect(courseCard.getByText(course.category)).toBeVisible()
+		expect(courseCard.getByText("20 Chapters")).toBeVisible()
+		expect(courseCard.getByText("$19.99")).toBeVisible()
+		expect(courseCard.queryByText(/ % Complete/i)).toBeNull()
 		courseCard.unmount()
 	})
 
 	it("renders the price for courses without progress", () => {
 		course = { ...course, progress: undefined }
 		let courseCard = render(<CourseCard {...course} />)
-		expect(screen.getByText(formatPrice(course.price))).toBeDefined()
+		expect(courseCard.getByText(formatPrice(course.price))).toBeVisible()
 		courseCard.unmount()
 	})
 
 	it("renders the course progress for courses with progress", () => {
 		course = { ...course, progress: 50 }
 		let courseCard = render(<CourseCard {...course} />)
-		screen.debug()
-
-		expect(screen.getByText(/50% Complete/i)).toBeDefined()
+		expect(courseCard.getByText(/50% Complete/i)).toBeVisible()
 		courseCard.unmount()
 	})
 
-	it("navigates to the course page when clicked", async () => {
+	it("navigates to the course page when clicked", () => {
 		let courseCard = render(<CourseCard {...course} />)
 		expect(courseCard.getByRole("link")).toHaveAttribute(
 			"href",
