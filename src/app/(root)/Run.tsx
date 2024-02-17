@@ -7,7 +7,6 @@ const Run = () => {
 	let onClick = async () => {
 		let course = await main()
 		toast.success(`Course: ${course?.title} was created successfully!`)
-		// toast.success("Action Done !")
 	}
 	return (
 		<>

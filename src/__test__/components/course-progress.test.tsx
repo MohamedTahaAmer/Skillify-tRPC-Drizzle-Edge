@@ -4,13 +4,13 @@ import { describe, expect, test } from "vitest"
 
 describe("CourseProgress", () => {
 	test("renders the progress bar with the correct value", () => {
-		let value = 50
+		let value = 40
 		let courseProgress = render(<CourseProgress value={value} />)
 		let regex = new RegExp(`${value}% Complete`, "i")
 		expect(courseProgress.getByText(regex)).toBeVisible()
 
 		expect(courseProgress.getByRole("progressbar").firstChild).toHaveStyle(
-			"transform: translateX(-50%);",
+			`transform: translateX(-${100 - value}%);`,
 		)
 		courseProgress.unmount()
 	})

@@ -44,16 +44,11 @@ export let seedCourses = async () => {
 			// @ts-expect-error
 			return Object.keys(categories).find((key) => categories[key] === value)
 		}
-		let { imageUrls } = await import("./image-urls")
-		let { coursesTitles } = await import("./courses-titels")
-		let { coursesDescriptions } = await import("./courses-descriptions")
+		let { imageUrls } = await import("./Mine/image-urls")
+		let { coursesTitles } = await import("./Mine/courses-titels")
+		let { coursesDescriptions } = await import("./Mine/courses-descriptions")
 
 		for (let category of dbCategories) {
-			// console.log(category.name)
-			// console.log(category.name === "Computer Science")
-			// console.log(coursesTitles[category.name])
-			// console.log(coursesTitles[getKeyFromValue(category.name, categories)])
-
 			let categoryKey = getKeyFromValue(category.name, categories)
 			for (let title of coursesTitles[categoryKey]) {
 				let index = coursesTitles[categoryKey].indexOf(title)

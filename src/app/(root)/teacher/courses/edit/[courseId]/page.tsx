@@ -35,24 +35,32 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
 			eq(schema.courses.userId, userId),
 		),
 		with: {
-			// chapters: {
-			// 	orderBy: asc(schema.chapters.position),
-			// },
-			attachments: {
-				orderBy: desc(schema.attachments.createdAt),
+			chapters: {
+				orderBy: asc(schema.chapters.position),
 			},
-			chapters: true,
-			// attachments: true,
+			// chapters: true,
+			// attachments: {
+			// 	orderBy: desc(schema.attachments.createdAt),
+			// },
+			attachments: true,
 		},
-	})
-
-	let categories = await db.query.categories.findMany({
-		orderBy: asc(schema.categories.name),
 	})
 
 	if (!course) {
 		return redirect("/")
 	}
+	// reorder the course attachments by the created date
+	let sortedAttachments = course.attachments.sort(
+		(a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+	)
+	course = {
+		...course,
+		attachments: sortedAttachments,
+	}
+
+	let categories = await db.query.categories.findMany({
+		orderBy: asc(schema.categories.name),
+	})
 
 	const requiredFields = [
 		course.title,

@@ -28,7 +28,9 @@ export const courses = mysqlTable(
 		price: float("price"),
 		isPublished: boolean("is_published").default(false),
 		categoryId: char("category_id", { length: 24 }),
-		createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+		createdAt: timestamp("created_at")
+			.default(sql`CURRENT_TIMESTAMP`)
+			.notNull(),
 		updatedAt: timestamp("updated_at").onUpdateNow(),
 	},
 	(example) => ({
@@ -69,7 +71,9 @@ export const attachments = mysqlTable(
 		name: varchar("name", { length: 255 }).notNull(),
 		url: varchar("url", { length: 255 }).notNull(),
 		courseId: char("course_id", { length: 24 }).notNull(),
-		createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+		createdAt: timestamp("created_at")
+			.default(sql`CURRENT_TIMESTAMP`)
+			.notNull(),
 		updatedAt: timestamp("updated_at").onUpdateNow(),
 	},
 	(example) => ({
@@ -92,10 +96,12 @@ export const chapters = mysqlTable(
 		description: text("description"),
 		videoUrl: varchar("video_url", { length: 255 }),
 		position: int("position").notNull(),
-		isPublished: boolean("is_published").default(false),
+		isPublished: boolean("is_published").default(false).notNull(),
 		isFree: boolean("is_free").default(false),
 		courseId: char("course_id", { length: 24 }).notNull(),
-		createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+		createdAt: timestamp("created_at")
+			.default(sql`CURRENT_TIMESTAMP`)
+			.notNull(),
 		updatedAt: timestamp("updated_at").onUpdateNow(),
 	},
 	(example) => ({
@@ -136,7 +142,9 @@ export const userProgress = mysqlTable(
 		userId: varchar("user_id", { length: 255 }).notNull(),
 		chapterId: char("chapter_id", { length: 24 }).notNull(),
 		isCompleted: boolean("is_completed").default(false),
-		createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+		createdAt: timestamp("created_at")
+			.default(sql`CURRENT_TIMESTAMP`)
+			.notNull(),
 		updatedAt: timestamp("updated_at").onUpdateNow(),
 	},
 	(example) => ({
@@ -158,7 +166,9 @@ export const purchases = mysqlTable(
 	{
 		userId: varchar("user_id", { length: 255 }).notNull(),
 		courseId: char("course_id", { length: 24 }).notNull(),
-		createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+		createdAt: timestamp("created_at")
+			.default(sql`CURRENT_TIMESTAMP`)
+			.notNull(),
 		updatedAt: timestamp("updated_at").onUpdateNow(),
 	},
 	(example) => ({
@@ -183,7 +193,9 @@ export const stripeCustomers = mysqlTable(
 			.$defaultFn(() => createId()),
 		userId: varchar("user_id", { length: 255 }).unique(),
 		stripeCustomerId: varchar("stripe_customer_id", { length: 255 }).unique(),
-		createdAt: timestamp("created_at").default(sql`now()`),
+		createdAt: timestamp("created_at")
+			.default(sql`now()`)
+			.notNull(),
 		updatedAt: timestamp("updated_at").onUpdateNow(),
 	},
 	(example) => ({
