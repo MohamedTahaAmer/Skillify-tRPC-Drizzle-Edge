@@ -1,6 +1,6 @@
-import { CourseProgress } from "@/components/course-progress"
-import { CourseSidebarItem } from "./course-sidebar-item"
 import type { Course } from "@/types"
+import { CourseSidebarItem } from "./course-sidebar-item"
+import CourseSidebarProgress from "./course-sidebar-progress"
 
 export const CourseSidebar = async ({ course }: { course: Course }) => {
 	let purchase = course.purchases.length !== 0
@@ -23,7 +23,7 @@ export const CourseSidebar = async ({ course }: { course: Course }) => {
 				</h1>
 				{purchase && (
 					<div className="pt-2">
-						<CourseProgress variant="success" value={progressPercentage} />
+						<CourseSidebarProgress value={progressPercentage} />
 					</div>
 				)}
 			</div>

@@ -1,5 +1,6 @@
 "use client"
 import { CourseCard } from "@/components/course-card"
+import { useProgressMap } from "@/hooks/use-progress-map"
 import { useUser } from "@/hooks/useUser"
 import type {
 	CategoriesSelect,
@@ -34,34 +35,43 @@ export const CoursesList = ({ items }: CoursesListProps) => {
 
 	let { user } = useUser()
 	let userId = user?.id
-	let { data: courses } = api.get.getUserCoursesWithProgress.useQuery(
+	let { progressMap, setProgressMap } = useProgressMap()
+
+	api.get.getUserCoursesWithProgress.useQuery(
 		{
 			userId: userId ?? "",
 		},
 		{
 			enabled: !!userId,
 			refetchOnMount: false,
+			onSuccess: (data) => {
+				let originalProgressMap = data.reduce(
+					(acc, course) => {
+						let totalNumOfChapters = course.chapters.length
+						let numOfCompletedChapters = course.chapters.reduce(
+							(acc, chapter) => {
+								if (chapter.userProgress[0]?.isCompleted) {
+									acc++
+								}
+								return acc
+							},
+							0,
+						)
+						let progress = Math.round(
+							(numOfCompletedChapters / totalNumOfChapters) * 100,
+						)
+						acc[course.id] = progress
+						return acc
+					},
+					{} as Record<string, number>,
+				)
+				setProgressMap(originalProgressMap)
+			},
 		},
 	)
-	let progressMap = courses?.reduce(
-		(acc, course) => {
-			let totalNumOfChapters = course.chapters.length
-			let numOfCompletedChapters = course.chapters.reduce((acc, chapter) => {
-				if (chapter.userProgress[0]?.isCompleted) {
-					acc++
-				}
-				return acc
-			}, 0)
-			let progress = Math.round(
-				(numOfCompletedChapters / totalNumOfChapters) * 100,
-			)
-			acc[course.id] = progress
-			return acc
-		},
-		{} as Record<string, number>,
-	)
+
 	return (
-		<div className="">
+		<>
 			<div className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4">
 				{items.map((item) => (
 					<CourseCard
@@ -81,6 +91,6 @@ export const CoursesList = ({ items }: CoursesListProps) => {
 					No courses found
 				</div>
 			)}
-		</div>
+		</>
 	)
 }

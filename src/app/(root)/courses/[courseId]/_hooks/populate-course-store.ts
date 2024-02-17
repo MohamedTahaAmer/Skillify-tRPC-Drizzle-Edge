@@ -16,6 +16,7 @@ export default function usePopbulateCourseStore({
 		setAttachments,
 		setCoursePrice,
 		setCourseId,
+		setNumberOfChapters,
 	} = useCourse()
 	useEffect(() => {
 		setAttachments(course.attachments)
@@ -41,15 +42,13 @@ export default function usePopbulateCourseStore({
 		let currentChapterIndex = course.chapters.findIndex(
 			(chapter) => chapter.id === chapterId,
 		)
-		let nextChapter = course.chapters.find((_) => {
-			if (!course) return
-
-			return course.chapters[currentChapterIndex + 1]
-		})
+		let nextChapter = course.chapters[currentChapterIndex + 1]
 
 		if (nextChapter) {
 			setNextChapterId(nextChapter.id)
 		}
+
+		setNumberOfChapters(course.chapters.length)
 	}, [
 		course,
 		chapterId,
@@ -59,5 +58,6 @@ export default function usePopbulateCourseStore({
 		setAttachments,
 		setCoursePrice,
 		setCourseId,
+		setNumberOfChapters,
 	])
 }

@@ -7,8 +7,9 @@ import toast from "react-hot-toast"
 
 import { Button } from "@/components/ui/button"
 import { useConfettiStore } from "@/hooks/use-confetti-store"
-import { api } from "@/trpc/react"
 import { useCourse } from "@/hooks/use-course"
+import { useProgressMap } from "@/hooks/use-progress-map"
+import { api } from "@/trpc/react"
 
 interface CourseProgressButtonProps {
 	chapterId: string
@@ -25,7 +26,10 @@ export const CourseProgressButton = ({
 	const router = useRouter()
 	const confetti = useConfettiStore()
 	const [isLoading, setIsLoading] = useState(false)
-	let { nextChapterId, courseId } = useCourse()
+
+	let { nextChapterId, courseId, numberOfChapters } = useCourse()
+	let { progressMap, setProgressMap } = useProgressMap()
+
 	let updateProgress = api.courses.updateProgress.useMutation({
 		onMutate: () => {
 			setIsLoading(true)
@@ -43,6 +47,19 @@ export const CourseProgressButton = ({
 			}
 
 			toast.success("Progress updated")
+			if (progressMap && courseId) {
+				let shouldDecrease = isCompleted ? 1 : -1
+				let newCoursePregress = Math.floor(
+					progressMap[courseId]! - (shouldDecrease / numberOfChapters) * 100,
+				)
+
+				let newProgressMap = {
+					...progressMap,
+					[courseId]: newCoursePregress,
+				}
+
+				setProgressMap(newProgressMap)
+			}
 			router.refresh()
 		},
 		onError: (error) => {

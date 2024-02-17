@@ -1,7 +1,7 @@
 import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
 
-interface CourseProgressProps {
+export interface CourseProgressProps {
 	value: number
 	variant?: "default" | "success"
 	size?: "default" | "sm"
