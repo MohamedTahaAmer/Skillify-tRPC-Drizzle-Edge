@@ -50,7 +50,7 @@ const HomePage = async () => {
 	logTime({ title: "1- Time to get all courses", startTime })
 	logObjSize({ title: "1- allCourses", obj: allCourses })
 
-	allCourses.splice(4)
+	// allCourses.splice(4)
 	let categories = allCourses.map((course) => course.category)
 	categories = uniqBy(categories, (c) => c?.name)
 
@@ -64,7 +64,7 @@ const HomePage = async () => {
 			</div>
 
 			{/* main Content */}
-			<div className="container space-y-4 py-4 lg:px-6">
+			<div className="container space-y-4 px-2 py-4 lg:px-6">
 				{/* category, purchased and clear badges */}
 				<Categories items={categories} />
 

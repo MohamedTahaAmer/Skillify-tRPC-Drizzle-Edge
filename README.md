@@ -10,21 +10,19 @@
 
 > Scadcn-ui, zustand, recharts, react-quill(rich text editor), @tanstack/react-table, uploadthing
 
+> Github Actions, Vercel, Vitest, React Testing Library
+
 [Live Demo](https://skillify-trpc-drizzle-edge.vercel.app/)
 
-![Sharp Home Dark Mode](com/dqe9ksk0p/image/upload/v1696299864/Sharp/2_c8uv90.png)
-
-# Light Mode
-
-![Sharp suits Light Mode](com/dqe9ksk0p/image/upload/v1696299867/Sharp/7_tg4frt.png)
+![Skillify Home Page](https://res.cloudinary.com/dqe9ksk0p/image/upload/v1708261605/Skillify/2/Skillify_pbqecn.jpg)
 
 # Small Screens
 
-![Sharp Small Screens](com/dqe9ksk0p/image/upload/v1696299861/Sharp/10_czmxgv.jpg)
+![Skillify Small Screens](https://res.cloudinary.com/dqe9ksk0p/image/upload/v1708261799/Skillify/2/Skillify_small_screens_big_phkn0h.jpg)
 
-# Dashboard
+# Tablets Screens
 
-![Sharp Admin Area](com/dqe9ksk0p/image/upload/v1696300021/Sharp/12_plfhpj.png)
+![Skillify Tablet Screens](https://res.cloudinary.com/dqe9ksk0p/image/upload/v1708261798/Skillify/2/Skillify_tablet_screen_dslq81.jpg)
 
 ## Features:
 
@@ -43,6 +41,8 @@
 - [x] Drag and Drop sorting with React DnD.
 - [x] Dashboard and data visualization using Recharts.
 - [x] Shadcn UI for Radix UI and Tailwind CSS for styling.
+- [x] CI/CD with Github actions and Vercel.
+- [x] Unite Testing with Vitest and React Testing Library.
 - [ ] Real-Time Chats between students.
 - [ ] Students reviews section.
 
