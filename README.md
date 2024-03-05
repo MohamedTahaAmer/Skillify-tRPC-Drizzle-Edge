@@ -1,8 +1,8 @@
 # Welcome to <span style="color: #87CEEB;">Skillify!</span>
 
-# Skillify is a cutting-edge video-based courses SaaS, empowering creators to share their expertise seamlessly.
+# Skillify is a cutting-edge SAAS for video-based courses, empowering creators to share their expertise seamlessly.
 
-# Full Stack | Next.js 14 | T3 Stack
+# Full Stack | Next.js 14 | MySQL | T3 Stack
 
 > TypeScript, tRPC, Edge runtime, MUX, Clerk
 

@@ -12,7 +12,7 @@ import { redirect } from "next/navigation"
 import { Banner } from "@/components/banner"
 import { IconBadge } from "@/components/icon-badge"
 import { db, schema } from "@/server/db"
-import { and, asc, desc, eq } from "drizzle-orm"
+import { and, asc, eq } from "drizzle-orm"
 import { Actions } from "./_components/actions"
 import { AttachmentForm } from "./_components/attachment-form"
 import { CategoryForm } from "./_components/category-form"
@@ -39,6 +39,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
 				orderBy: asc(schema.chapters.position),
 			},
 			// chapters: true,
+			// - wierd thing in drizzle, you can only sort one of the joined tables, not both
 			// attachments: {
 			// 	orderBy: desc(schema.attachments.createdAt),
 			// },
