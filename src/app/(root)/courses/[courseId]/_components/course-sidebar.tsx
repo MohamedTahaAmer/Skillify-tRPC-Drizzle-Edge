@@ -3,18 +3,21 @@ import { CourseSidebarItem } from "./course-sidebar-item"
 import CourseSidebarProgress from "./course-sidebar-progress"
 
 export const CourseSidebar = async ({ course }: { course: Course }) => {
-	let purchase = course.purchases.length !== 0
-	let numOfCompletedChapters = course.chapters.reduce((acc, chapter) => {
-		if (chapter.userProgress[0]?.isCompleted) {
-			acc++
-		}
-		return acc
-	}, 0)
-	let numOfChapters = course.chapters.length
+	let purchase = course.purchases
+	let getProgressPercentage = () => {
+		let numOfCompletedChapters = course.chapters.reduce((acc, chapter) => {
+			if (chapter.userProgress[0]?.isCompleted) {
+				acc++
+			}
+			return acc
+		}, 0)
+		let numOfChapters = course.chapters.length
 
-	let progressPercentage = Math.floor(
-		(numOfCompletedChapters / numOfChapters) * 100,
-	)
+		let progressPercentage = Math.floor(
+			(numOfCompletedChapters / numOfChapters) * 100,
+		)
+		return progressPercentage
+	}
 	return (
 		<div className="flex h-full flex-col border-r shadow-sm">
 			<div className="flex flex-col border-b p-4">
@@ -23,7 +26,7 @@ export const CourseSidebar = async ({ course }: { course: Course }) => {
 				</h1>
 				{purchase && (
 					<div className="pt-2">
-						<CourseSidebarProgress value={progressPercentage} />
+						<CourseSidebarProgress value={getProgressPercentage()} />
 					</div>
 				)}
 			</div>
