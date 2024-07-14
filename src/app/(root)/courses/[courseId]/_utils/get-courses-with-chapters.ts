@@ -10,7 +10,7 @@ let getCourseWithChapters = async ({
 	userId: schema.UserProgressSelect["userId"] | null
 }) => {
 	let startTimer = Date.now()
-	let courses = await db.query.courses.findFirst({
+	let course = await db.query.courses.findFirst({
 		where: eq(schema.courses.id, courseId),
 		with: {
 			chapters: {
@@ -32,7 +32,7 @@ let getCourseWithChapters = async ({
 	})
 
 	logTime({ title: "getCourseWithChapters", startTime: startTimer })
-	return courses
+	return course
 }
 
 let cachedGetCourseWithChapters = cache(getCourseWithChapters)

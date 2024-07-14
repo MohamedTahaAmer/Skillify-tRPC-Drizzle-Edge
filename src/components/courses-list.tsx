@@ -25,13 +25,18 @@ export const CoursesList = ({ items }: CoursesListProps) => {
 	let categoryId = searchParams.categoryId
 	let title = searchParams.title
 
+	let filteredItems = items
 	categoryId &&
-		(items = items.filter((course) => course.categoryId === categoryId))
+		(filteredItems = filteredItems.filter(
+			(course) => course.categoryId === categoryId,
+		))
 
 	// - weird TS error, it should be able to infer the title will be string only after && check
 	// this is happening only in this file, in 'progress-info-cards.tsx' it works fine
 	title?.length &&
-		(items = items.filter((course) => course.title.includes(title!)))
+		(filteredItems = filteredItems.filter((course) => {
+			return course.title.includes(title!)
+		}))
 
 	let { user } = useUser()
 	let userId = user?.id
