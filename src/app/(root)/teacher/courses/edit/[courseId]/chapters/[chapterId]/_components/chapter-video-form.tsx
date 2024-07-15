@@ -52,6 +52,16 @@ export const ChapterVideoForm = ({
 		<div className="mt-6 rounded-md border bg-slate-100 p-4">
 			<div className="flex items-center justify-between font-medium">
 				Chapter video
+				{/* <Button
+					onClick={() =>
+						onSubmit({
+							videoUrl:
+								"https://utfs.io/f/7dd21ead-e5ce-4630-8f21-e1ad2ede9098-6zwtsa.mp4",
+						})
+					}
+				>
+					Testing
+				</Button> */}
 				<Button onClick={toggleEdit} variant="ghost">
 					{isEditing && <>Cancel</>}
 					{!isEditing && !initialData.videoUrl && (

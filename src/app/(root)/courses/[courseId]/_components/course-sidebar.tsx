@@ -3,7 +3,7 @@ import { CourseSidebarItem } from "./course-sidebar-item"
 import CourseSidebarProgress from "./course-sidebar-progress"
 
 export const CourseSidebar = async ({ course }: { course: Course }) => {
-	let purchase = course.purchases
+	let purchase = !!course.purchases.length
 	let getProgressPercentage = () => {
 		let numOfCompletedChapters = course.chapters.reduce((acc, chapter) => {
 			if (chapter.userProgress[0]?.isCompleted) {

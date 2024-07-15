@@ -2,7 +2,7 @@ import { schema } from "@/server/db"
 import Mux from "@mux/mux-node"
 import { TRPCError } from "@trpc/server"
 import { and, eq } from "drizzle-orm"
-import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
+import type { MySql2Database } from "drizzle-orm/mysql2"
 
 import { env } from "@/env"
 import { z } from "zod"
@@ -16,7 +16,7 @@ export async function deleteCourse({
 }: {
 	courseId: schema.CoursesSelect["id"]
 	userId: schema.CoursesSelect["userId"]
-	db: PlanetScaleDatabase<typeof schema>
+	db: MySql2Database<typeof schema>
 }) {
 	let course = (
 		await db.query.courses.findMany({
@@ -72,7 +72,7 @@ export async function patchCourse({
 	courseId: schema.CoursesSelect["id"]
 	userId: schema.CoursesSelect["userId"]
 	courseNewValues: courseValidatorType
-	db: PlanetScaleDatabase<typeof schema>
+	db: MySql2Database<typeof schema>
 }) {
 	await db
 		.update(schema.courses)

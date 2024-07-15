@@ -22,7 +22,7 @@ export default function usePopbulateCourseStore({
 		setAttachments(course.attachments)
 		setCourseId(course.id)
 
-		let purchase = course.purchases ? true : false
+		let purchase = !!course.purchases.length
 		setIsPurchased(purchase)
 
 		let coursePrice = course.price

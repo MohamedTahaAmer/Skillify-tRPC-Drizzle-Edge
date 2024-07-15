@@ -4,9 +4,9 @@ import { TRPCError } from "@trpc/server"
 import { env } from "@/env"
 import { schema } from "@/server/db"
 import { and, eq } from "drizzle-orm"
-import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
-import { z } from "zod"
+import type { MySql2Database } from "drizzle-orm/mysql2"
 import { revalidatePath } from "next/cache"
+import { z } from "zod"
 
 const { Video } = new Mux(env.MUX_TOKEN_ID, env.MUX_TOKEN_SECRET)
 export async function deleteChapter({
@@ -18,7 +18,7 @@ export async function deleteChapter({
 	courseId: schema.CoursesSelect["id"]
 	userId: schema.CoursesSelect["userId"]
 	chapterId: schema.ChaptersSelect["id"]
-	db: PlanetScaleDatabase<typeof schema>
+	db: MySql2Database<typeof schema>
 }) {
 	let ownCourse = (
 		await db
@@ -106,7 +106,7 @@ export async function patchChapter({
 	chapterId: schema.ChaptersSelect["id"]
 	userId: schema.CoursesSelect["userId"]
 	chapterNewValues: chapterValidatorType
-	db: PlanetScaleDatabase<typeof schema>
+	db: MySql2Database<typeof schema>
 }) {
 	let ownCourse = (
 		await db
@@ -116,20 +116,7 @@ export async function patchChapter({
 				and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)),
 			)
 	)[0]
-
 	if (!ownCourse) throw new TRPCError({ code: "FORBIDDEN" })
-
-	let chapter = (
-		await db
-			.selectDistinct()
-			.from(schema.chapters)
-			.where(
-				and(
-					eq(schema.chapters.id, chapterId),
-					eq(schema.chapters.courseId, courseId),
-				),
-			)
-	)[0]
 
 	await db
 		.update(schema.chapters)
@@ -150,7 +137,11 @@ export async function patchChapter({
 		)[0]
 
 		if (existingMuxData) {
-			await Video.Assets.del(existingMuxData.assetId)
+			try {
+				await Video.Assets.del(existingMuxData.assetId)
+			} catch (error) {
+				console.error("Error deleting MUX asset", error)
+			}
 			await db
 				.delete(schema.muxData)
 				.where(eq(schema.muxData.id, existingMuxData.id))
@@ -168,6 +159,4 @@ export async function patchChapter({
 			playbackId: asset.playback_ids?.[0]?.id,
 		})
 	}
-
-	return chapter
 }

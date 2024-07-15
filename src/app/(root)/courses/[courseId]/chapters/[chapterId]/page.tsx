@@ -43,16 +43,15 @@ const ChapterIdPage = async ({ params }: { params: { chapterId: string } }) => {
 	}
 	let { muxData } = chapter
 	let userProgress = chapter.userProgress?.[0]
-	console.log("userProgress", userProgress)
 
-	let isCompleted = !userProgress?.isCompleted
-	console.log("isCompleted", isCompleted)
-	let isFreeChapter = chapter.isFree ?? false
+	let isCompleted = !!userProgress?.isCompleted
+	let isFreeChapter = !!chapter.isFree
+	//
 	logTime({ title: "ChapterIdPage", startTime })
 
 	return (
 		<div>
-			{userProgress?.isCompleted && (
+			{isCompleted && (
 				<Banner variant="success" label="You already completed this chapter." />
 			)}
 			{!isFreeChapter && <ShowBanner />}
@@ -72,14 +71,14 @@ const ChapterIdPage = async ({ params }: { params: { chapterId: string } }) => {
 						<h2 className="mb-2 text-2xl font-semibold">{chapter.title}</h2>
 						<ChapterButton
 							chapterId={chapter.id}
-							isCompleted={userProgress?.isCompleted ?? false}
+							isCompleted={isCompleted ?? false}
 						/>
 					</div>
 					<Separator />
 					<div>
 						<Preview value={chapter?.description ?? ""} />
 					</div>
-					<ShowAttachments />
+					{isFreeChapter && <ShowAttachments />}
 				</div>
 			</div>
 		</div>

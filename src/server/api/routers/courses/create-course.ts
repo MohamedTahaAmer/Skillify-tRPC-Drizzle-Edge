@@ -1,6 +1,6 @@
 import { schema } from "@/server/db"
 import { and, eq } from "drizzle-orm"
-import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
+import type { MySql2Database } from "drizzle-orm/mysql2"
 import { revalidatePath } from "next/cache"
 
 export async function createCourse({
@@ -10,7 +10,7 @@ export async function createCourse({
 }: {
 	title: schema.CoursesInsert["title"]
 	userId: schema.CoursesInsert["userId"]
-	db: PlanetScaleDatabase<typeof schema>
+	db: MySql2Database<typeof schema>
 }) {
 	await db.insert(schema.courses).values({
 		userId,

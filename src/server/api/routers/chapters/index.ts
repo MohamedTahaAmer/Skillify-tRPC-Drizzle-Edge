@@ -62,14 +62,13 @@ export const chaptersRouter = createTRPCRouter({
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
-			let res = await patchChapter({
+			await patchChapter({
 				userId: ctx.user.id,
 				courseId: input.courseId,
 				db: ctx.db,
 				chapterId: input.chapterId,
 				chapterNewValues: input.chapterNewValues,
 			})
-			return { res }
 		}),
 	publishChapter: protectedProcedure
 		.input(

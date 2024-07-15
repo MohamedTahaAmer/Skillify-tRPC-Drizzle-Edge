@@ -1,7 +1,8 @@
 import { schema } from "@/server/db"
 import { TRPCError } from "@trpc/server"
 import { and, desc, eq } from "drizzle-orm"
-import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
+
+import type { MySql2Database } from "drizzle-orm/mysql2"
 import { revalidatePath } from "next/cache"
 export async function addChapter({
 	courseId,
@@ -12,7 +13,7 @@ export async function addChapter({
 	courseId: schema.CoursesSelect["id"]
 	userId: schema.CoursesSelect["userId"]
 	title: schema.ChaptersSelect["title"]
-	db: PlanetScaleDatabase<typeof schema>
+	db: MySql2Database<typeof schema>
 }) {
 	let courseOwner = (
 		await db

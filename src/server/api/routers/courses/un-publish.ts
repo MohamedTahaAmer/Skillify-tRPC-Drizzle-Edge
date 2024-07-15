@@ -1,7 +1,7 @@
 import { schema } from "@/server/db"
 import { TRPCError } from "@trpc/server"
 import { and, eq } from "drizzle-orm"
-import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
+import type { MySql2Database } from "drizzle-orm/mysql2"
 import { revalidatePath } from "next/cache"
 
 export async function unpublish({
@@ -11,7 +11,7 @@ export async function unpublish({
 }: {
 	courseId: schema.CoursesSelect["id"]
 	userId: schema.CoursesSelect["userId"]
-	db: PlanetScaleDatabase<typeof schema>
+	db: MySql2Database<typeof schema>
 }) {
 	let course = (
 		await db.query.courses.findMany({
@@ -55,7 +55,7 @@ export async function publish({
 }: {
 	courseId: schema.CoursesSelect["id"]
 	userId: schema.CoursesSelect["userId"]
-	db: PlanetScaleDatabase<typeof schema>
+	db: MySql2Database<typeof schema>
 }) {
 	let course = (
 		await db.query.courses.findMany({

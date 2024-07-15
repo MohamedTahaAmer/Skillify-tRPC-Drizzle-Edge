@@ -1,6 +1,6 @@
 import { schema } from "@/server/db"
 import { and, eq } from "drizzle-orm"
-import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
+import type { MySql2Database } from "drizzle-orm/mysql2"
 
 export default async function updateProgress({
 	userId,
@@ -11,7 +11,7 @@ export default async function updateProgress({
 	isCompleted: schema.UserProgressInsert["isCompleted"]
 	chapterId: schema.UserProgressInsert["chapterId"]
 	userId: schema.UserProgressInsert["userId"]
-	db: PlanetScaleDatabase<typeof schema>
+	db: MySql2Database<typeof schema>
 }) {
 	let userProgress = (
 		await db

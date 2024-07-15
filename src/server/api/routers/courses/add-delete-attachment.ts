@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server"
 import { schema } from "@/server/db"
 import { and, eq } from "drizzle-orm"
-import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
+import type { MySql2Database } from "drizzle-orm/mysql2"
 export async function addAttachment({
 	courseId,
 	url,
@@ -13,7 +13,7 @@ export async function addAttachment({
 	userId: schema.CoursesSelect["userId"]
 	url: schema.AttachmentsSelect["url"]
 	name: schema.AttachmentsSelect["url"]
-	db: PlanetScaleDatabase<typeof schema>
+	db: MySql2Database<typeof schema>
 }) {
 	let ownCourse = (
 		await db
@@ -54,7 +54,7 @@ export async function deleteAttachment({
 	attachmentId: schema.AttachmentsSelect["id"]
 	courseId: schema.CoursesSelect["id"]
 	userId: schema.CoursesSelect["userId"]
-	db: PlanetScaleDatabase<typeof schema>
+	db: MySql2Database<typeof schema>
 }) {
 	let ownCourse = (
 		await db

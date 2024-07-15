@@ -10,8 +10,10 @@ import { Categories } from "./_components/categories"
 import ShowProgressInfoCards from "./_components/show-progress-info-cards"
 import { CoursesListSkeleton } from "./_components/skeletons/courses-list"
 import { SearchInputSkeleton } from "./_components/skeletons/search-input"
+import { auth } from "@clerk/nextjs/server"
 
 const HomePage = async () => {
+	let { userId } = auth()
 	//#region // < Allow route revalidation, by using fetch instead of direct db call
 	// - I'm commenting the fetch request, as it makes development slower, by making an http request with each file save
 	// type Courses = (CoursesSelect & {

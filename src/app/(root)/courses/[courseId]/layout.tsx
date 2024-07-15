@@ -34,7 +34,7 @@ const CourseLayout = async ({
 
 	return (
 		<div className="h-full">
-			{/* Desctop Sidebar */}
+			{/* Desktop Sidebar */}
 			<div className="inset-y-0 hidden h-full w-80 flex-col pt-14 xl:fixed xl:flex">
 				<CourseSidebar course={course} />
 			</div>

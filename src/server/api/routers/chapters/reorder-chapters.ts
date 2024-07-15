@@ -1,7 +1,7 @@
 import { schema } from "@/server/db"
 import { TRPCError } from "@trpc/server"
 import { and, eq } from "drizzle-orm"
-import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
+import type { MySql2Database } from "drizzle-orm/mysql2"
 export async function reorderChapters({
 	courseId,
 	list,
@@ -14,7 +14,7 @@ export async function reorderChapters({
 		id: schema.ChaptersSelect["id"]
 		position: schema.ChaptersSelect["position"]
 	}[]
-	db: PlanetScaleDatabase<typeof schema>
+	db: MySql2Database<typeof schema>
 }) {
 	const ownCourse = (
 		await db

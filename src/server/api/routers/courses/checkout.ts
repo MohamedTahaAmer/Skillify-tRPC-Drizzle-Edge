@@ -4,7 +4,7 @@ import type { User } from "@clerk/nextjs/server"
 import { TRPCError } from "@trpc/server"
 import { and, eq } from "drizzle-orm"
 import { schema } from "@/server/db"
-import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
+import type { MySql2Database } from "drizzle-orm/mysql2"
 import type Stripe from "stripe"
 export async function checkout({
 	user,
@@ -14,7 +14,7 @@ export async function checkout({
 	// - you only need the id and emailAddresses fields from the user, no need to send the hole User object over the wire
 	user: User
 	courseId: schema.CoursesSelect["id"]
-	db: PlanetScaleDatabase<typeof schema>
+	db: MySql2Database<typeof schema>
 }) {
 	if (!user?.id || !user.emailAddresses?.[0]?.emailAddress)
 		throw new TRPCError({ code: "UNAUTHORIZED" })
