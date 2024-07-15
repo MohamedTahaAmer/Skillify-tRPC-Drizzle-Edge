@@ -1,34 +1,24 @@
 import { env } from "@/env"
 import { stripe } from "@/lib/stripe"
-import type { User } from "@clerk/nextjs/server"
+import { schema } from "@/server/db"
 import { TRPCError } from "@trpc/server"
 import { and, eq } from "drizzle-orm"
-import { schema } from "@/server/db"
-import type { MySql2Database } from "drizzle-orm/mysql2"
 import type Stripe from "stripe"
-export async function checkout({
-	user,
-	courseId,
-	db,
-}: {
-	// - you only need the id and emailAddresses fields from the user, no need to send the hole User object over the wire
-	user: User
-	courseId: schema.CoursesSelect["id"]
-	db: MySql2Database<typeof schema>
-}) {
-	if (!user?.id || !user.emailAddresses?.[0]?.emailAddress)
-		throw new TRPCError({ code: "UNAUTHORIZED" })
+import { z } from "zod"
+import { ProtectedCTX } from "../../trpc"
+
+export let checkoutDTO = z.object({ courseId: z.string().min(1) })
+type CheckoutDTO = z.infer<typeof checkoutDTO>
+export async function checkout({ ctx, input }: { ctx: ProtectedCTX; input: CheckoutDTO }) {
+	let { db, user } = ctx
+	let { courseId } = input
+	if (!user?.id || !user.emailAddresses?.[0]?.emailAddress) throw new TRPCError({ code: "UNAUTHORIZED" })
 
 	let course = (
 		await db
 			.selectDistinct()
 			.from(schema.courses)
-			.where(
-				and(
-					eq(schema.courses.id, courseId),
-					eq(schema.courses.isPublished, true),
-				),
-			)
+			.where(and(eq(schema.courses.id, courseId), eq(schema.courses.isPublished, true)))
 	)[0]
 
 	if (!course) throw new TRPCError({ code: "NOT_FOUND" })
@@ -37,12 +27,7 @@ export async function checkout({
 		await db
 			.selectDistinct()
 			.from(schema.purchases)
-			.where(
-				and(
-					eq(schema.purchases.userId, user.id),
-					eq(schema.purchases.courseId, courseId),
-				),
-			)
+			.where(and(eq(schema.purchases.userId, user.id), eq(schema.purchases.courseId, courseId)))
 	)[0]
 
 	if (purchase) throw new TRPCError({ code: "CONFLICT" })

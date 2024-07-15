@@ -1,20 +1,26 @@
+import { ProtectedCTX } from "@/server/api/trpc"
 import { schema } from "@/server/db"
 import { TRPCError } from "@trpc/server"
 import { and, desc, eq } from "drizzle-orm"
 
-import type { MySql2Database } from "drizzle-orm/mysql2"
 import { revalidatePath } from "next/cache"
+import { z } from "zod"
+
+export let addChapterDTO = z.object({
+	courseId: z.string().min(1),
+	title: z.string().min(1),
+})
+type AddChapterDTO = z.infer<typeof addChapterDTO>
 export async function addChapter({
-	courseId,
-	title,
-	userId,
-	db,
+	ctx,
+	input,
 }: {
-	courseId: schema.CoursesSelect["id"]
-	userId: schema.CoursesSelect["userId"]
-	title: schema.ChaptersSelect["title"]
-	db: MySql2Database<typeof schema>
+	ctx: ProtectedCTX
+	input: AddChapterDTO
 }) {
+	let { db, user } = ctx
+	let userId = user.id
+	let { courseId, title } = input
 	let courseOwner = (
 		await db
 			.selectDistinct()

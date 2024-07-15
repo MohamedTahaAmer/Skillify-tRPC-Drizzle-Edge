@@ -1,7 +1,7 @@
 import { createTRPCRouter } from "@/server/api/trpc"
-import { chaptersRouter } from "./routers/chapters"
-import { coursesRouter } from "./routers/courses"
-import { getRouter } from "./routers/get"
+import { chaptersRouter } from "./routers/chapters/_routes"
+import { coursesRouter } from "./routers/courses/_routes"
+import { getRouter } from "./routers/get/_routes"
 
 /**
  * This is the primary router for your server.

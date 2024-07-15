@@ -35,6 +35,8 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
 		...opts,
 	}
 }
+export type CTX = Awaited<ReturnType<typeof createTRPCContext>>
+export type ProtectedCTX = CTX & { user: NonNullable<CTX["user"]> }
 
 /**
  * 2. INITIALIZATION
