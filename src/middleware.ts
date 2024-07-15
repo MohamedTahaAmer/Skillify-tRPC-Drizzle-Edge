@@ -1,21 +1,28 @@
-import { clerkMiddleware } from "@clerk/nextjs/server"
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
 
-export default clerkMiddleware((auth, req) => {
-	console.log("\x1b[1;33m%s\x1b[1;36m", req.url)
-	// auth().protect()
+const isPublicRoute = createRouteMatcher([
+	"/sign-in(.*)",
+	"/sign-up(.*)",
+	"/api/webhook",
+	"/api/uploadthing",
+	"/",
+	"/courses/:path*",
+	"/test/:path*",
+	"/r-test/:path*",
+
+	// - here we are running the middleware on all of the backend trpc routs, even though not all the routes are protected, this will add unnecessary cost of calling vercel's edge middleware without needing them on public trpc routes
+	"/api/trpc/:path*",
+])
+
+export default clerkMiddleware((auth, request) => {
+	if (!isPublicRoute(request)) {
+		auth().protect()
+	}
 })
+
 export const config = {
-	matcher: [
-		"/((?!.*\\..*|_next).*)",
-		"/",
-		"/(api|trpc)(.*)",
-		// "^(?!/api/uploadthing).*$",
-		// "^(?!/api/webhook).*$",
-		// "^(?!/api/courses).*$",
-		// "^(?!/api/test).*$",
-		// "^(?!/api/trpc).*$",
-		// "/.*",
-	],
+	// - here the first elements prevents the middleware from running on any route with . in it, and our trpc endpoints all have . in them, so that we need the third element to allow the middle ware to run on any route with trpc even if it has a . in it
+	matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 }
 
 /*

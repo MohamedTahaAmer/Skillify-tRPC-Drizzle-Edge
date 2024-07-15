@@ -28,7 +28,7 @@ export const courses = mysqlTable(
 		imageUrl: varchar("image_url", { length: 255 }),
 		price: float("price"),
 		isPublished: boolean("is_published").default(false),
-		categoryId: char("category_id", { length: 24 }).unique().notNull(),
+		categoryId: char("category_id", { length: 24 }).unique(),
 		createdAt: timestamp("created_at")
 			.default(sql`CURRENT_TIMESTAMP`)
 			.notNull(),

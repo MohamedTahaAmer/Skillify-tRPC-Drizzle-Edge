@@ -22,7 +22,7 @@ export const Actions = ({ disabled, courseId, isPublished }: ActionsProps) => {
 	const [isLoading, setIsLoading] = useState(false)
 
 	let publish = api.courses.publish.useMutation({})
-	let unpublish = api.courses.unpushlish.useMutation({})
+	let unpublish = api.courses.unpublish.useMutation({})
 
 	const onClick = async () => {
 		try {

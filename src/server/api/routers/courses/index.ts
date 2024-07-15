@@ -52,7 +52,7 @@ export const coursesRouter = createTRPCRouter({
 			return { publishedCourse }
 		}),
 
-	unpushlish: protectedProcedure
+	unpublish: protectedProcedure
 		.input(z.object({ courseId: z.string().min(1) }))
 		.mutation(async ({ ctx, input }) => {
 			let unpublishedCourse = await unpublish({

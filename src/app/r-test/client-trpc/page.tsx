@@ -16,6 +16,7 @@ const HomePage = async () => {
 	let res = await fetch(
 		`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`,
 	)
+	console.log(res)
 	if (!res.ok) {
 		console.log("Failed to fetch courses")
 		return
