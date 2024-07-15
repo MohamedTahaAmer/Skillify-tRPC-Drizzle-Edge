@@ -48,9 +48,6 @@ describe("CourseCard component", () => {
 
 	test("navigates to the course page when clicked", () => {
 		let courseCard = render(<CourseCard {...course} />)
-		expect(courseCard.getByRole("link")).toHaveAttribute(
-			"href",
-			`/courses/${course.id}`,
-		)
+		expect(courseCard.getByRole("link")).toHaveAttribute("href", `/courses/${course.id}`)
 	})
 })

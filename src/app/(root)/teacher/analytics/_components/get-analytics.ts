@@ -24,10 +24,7 @@ export const getAnalytics = async (userId: string) => {
 		let purchases = await db.query.purchases.findMany({
 			where: inArray(
 				schema.purchases.courseId,
-				db
-					.select({ id: schema.courses.id })
-					.from(schema.courses)
-					.where(eq(schema.courses.userId, userId)),
+				db.select({ id: schema.courses.id }).from(schema.courses).where(eq(schema.courses.userId, userId)),
 			),
 			with: {
 				course: true,
@@ -35,12 +32,10 @@ export const getAnalytics = async (userId: string) => {
 		})
 
 		const groupedEarnings = groupErningsByCourse(purchases)
-		const data = Object.entries(groupedEarnings).map(
-			([courseTitle, total]) => ({
-				name: courseTitle,
-				total: total,
-			}),
-		)
+		const data = Object.entries(groupedEarnings).map(([courseTitle, total]) => ({
+			name: courseTitle,
+			total: total,
+		}))
 
 		const totalRevenue = data.reduce((acc, curr) => acc + curr.total, 0)
 		const totalSales = purchases.length
@@ -61,12 +56,10 @@ export const getAnalytics = async (userId: string) => {
 
 		let groupedCoursesPurchase = groupPurchaesNumberByCourse(purchases)
 
-		let coursesPurchasesData = Object.entries(groupedCoursesPurchase).map(
-			([courseTitle, total]) => ({
-				name: courseTitle,
-				total: total,
-			}),
-		)
+		let coursesPurchasesData = Object.entries(groupedCoursesPurchase).map(([courseTitle, total]) => ({
+			name: courseTitle,
+			total: total,
+		}))
 
 		return {
 			data,

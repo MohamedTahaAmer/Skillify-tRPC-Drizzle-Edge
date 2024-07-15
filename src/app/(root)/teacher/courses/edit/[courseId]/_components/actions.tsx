@@ -65,12 +65,7 @@ export const Actions = ({ disabled, courseId, isPublished }: ActionsProps) => {
 
 	return (
 		<div className="flex items-center gap-x-2">
-			<Button
-				onClick={onClick}
-				disabled={disabled ?? isLoading}
-				variant="outline"
-				size="sm"
-			>
+			<Button onClick={onClick} disabled={disabled ?? isLoading} variant="outline" size="sm">
 				{isPublished ? "Unpublish" : "Publish"}
 			</Button>
 			<ConfirmModal onConfirm={onDelete}>

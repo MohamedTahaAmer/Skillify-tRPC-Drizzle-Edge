@@ -1,13 +1,6 @@
 "use client"
 
-import {
-	Bar,
-	BarChart,
-	ResponsiveContainer,
-	XAxis,
-	YAxis,
-	Tooltip,
-} from "recharts"
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
 
 import { Card } from "@/components/ui/card"
 
@@ -33,9 +26,7 @@ export const Chart = ({ data, title }: ChartProps) => {
 	// 	.flat()
 	return (
 		<Card className="p-6 pb-2 pl-0 pt-3">
-			<h1 className="pb-3 text-center text-xl font-bold text-sky-800">
-				{title}
-			</h1>
+			<h1 className="pb-3 text-center text-xl font-bold text-sky-800">{title}</h1>
 			<ResponsiveContainer width="100%" height={350}>
 				<BarChart data={randData ?? data}>
 					<Tooltip trigger="hover" />

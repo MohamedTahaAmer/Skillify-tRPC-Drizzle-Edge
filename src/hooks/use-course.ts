@@ -13,9 +13,7 @@ type CourseStore = {
 	setCourseId: (chapter: string) => void
 	setNextChapterId: (chapter: string) => void
 	setIsPurchased: (isPurchased: boolean) => void
-	setIsLastChapterToFinishTheCourse: (
-		islastChapterToFinishTheCourse: boolean,
-	) => void
+	setIsLastChapterToFinishTheCourse: (islastChapterToFinishTheCourse: boolean) => void
 	setAttachments: (attachments: AttachmentsSelect[]) => void
 	setCoursePrice: (coursePrice: number) => void
 	setNumberOfChapters: (numberOfChapters: number) => void
@@ -32,9 +30,8 @@ export const useCourse = create<CourseStore>((set) => ({
 	setIsPurchased: (isPurchased: boolean) => set({ isPurchased }),
 
 	isLastChapterToFinishTheCourse: false,
-	setIsLastChapterToFinishTheCourse: (
-		isLastChapterToFinishTheCourse: boolean,
-	) => set({ isLastChapterToFinishTheCourse }),
+	setIsLastChapterToFinishTheCourse: (isLastChapterToFinishTheCourse: boolean) =>
+		set({ isLastChapterToFinishTheCourse }),
 
 	attachments: [],
 	setAttachments: (attachments: AttachmentsSelect[]) => set({ attachments }),

@@ -45,14 +45,7 @@ export const LogoSVG = (props: LucideProps) => (
 				opacity="1"
 				data-original="#85d249"
 			></path>
-			<circle
-				cx="476.956"
-				cy="256"
-				r="8.25"
-				fill="#a2ebfc"
-				opacity="1"
-				data-original="#a2ebfc"
-			></circle>
+			<circle cx="476.956" cy="256" r="8.25" fill="#a2ebfc" opacity="1" data-original="#a2ebfc"></circle>
 			<ellipse
 				cx="444.432"
 				cy="206.931"

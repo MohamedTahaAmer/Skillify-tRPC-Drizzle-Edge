@@ -27,42 +27,11 @@ export const DollarsSVG = (props: LucideProps) => (
 				<stop offset="0" stopColor="#53ab46"></stop>
 				<stop offset="1" stopColor="#107300"></stop>
 			</linearGradient>
-			<linearGradient
-				id="d"
-				x1="199.68"
-				x2="312.33"
-				y1="199.67"
-				y2="312.32"
-			></linearGradient>
-			<linearGradient
-				id="e"
-				x1="215.57"
-				x2="296.43"
-				y1="215.57"
-				y2="296.43"
-			></linearGradient>
-			<linearGradient
-				id="f"
-				x1="334.8"
-				x2="353.06"
-				y1="158.94"
-				y2="177.2"
-			></linearGradient>
-			<linearGradient
-				id="g"
-				x1="158.94"
-				x2="177.2"
-				y1="334.8"
-				y2="353.06"
-			></linearGradient>
-			<linearGradient
-				id="c"
-				x1="67.14"
-				x2="444.86"
-				y1="67.14"
-				y2="444.86"
-				gradientUnits="userSpaceOnUse"
-			>
+			<linearGradient id="d" x1="199.68" x2="312.33" y1="199.67" y2="312.32"></linearGradient>
+			<linearGradient id="e" x1="215.57" x2="296.43" y1="215.57" y2="296.43"></linearGradient>
+			<linearGradient id="f" x1="334.8" x2="353.06" y1="158.94" y2="177.2"></linearGradient>
+			<linearGradient id="g" x1="158.94" x2="177.2" y1="334.8" y2="353.06"></linearGradient>
+			<linearGradient id="c" x1="67.14" x2="444.86" y1="67.14" y2="444.86" gradientUnits="userSpaceOnUse">
 				<stop offset="0" stopColor="#aeed64"></stop>
 				<stop offset="1" stopColor="#78c918"></stop>
 			</linearGradient>
@@ -74,41 +43,11 @@ export const DollarsSVG = (props: LucideProps) => (
 				y2="417.44"
 				gradientTransform="rotate(-90 256 256)"
 			></linearGradient>
-			<linearGradient
-				id="i"
-				x1="134.24"
-				x2="377.82"
-				y1="134.18"
-				y2="377.76"
-			></linearGradient>
-			<linearGradient
-				id="j"
-				x1="212.11"
-				x2="299.89"
-				y1="212.11"
-				y2="299.89"
-			></linearGradient>
-			<linearGradient
-				id="k"
-				x1="381.1"
-				x2="400.92"
-				y1="246.09"
-				y2="265.91"
-			></linearGradient>
-			<linearGradient
-				id="l"
-				x1="111.08"
-				x2="130.9"
-				y1="246.09"
-				y2="265.91"
-			></linearGradient>
-			<linearGradient
-				id="m"
-				x1="231.68"
-				x2="280.84"
-				y1="230.56"
-				y2="279.71"
-			></linearGradient>
+			<linearGradient id="i" x1="134.24" x2="377.82" y1="134.18" y2="377.76"></linearGradient>
+			<linearGradient id="j" x1="212.11" x2="299.89" y1="212.11" y2="299.89"></linearGradient>
+			<linearGradient id="k" x1="381.1" x2="400.92" y1="246.09" y2="265.91"></linearGradient>
+			<linearGradient id="l" x1="111.08" x2="130.9" y1="246.09" y2="265.91"></linearGradient>
+			<linearGradient id="m" x1="231.68" x2="280.84" y1="230.56" y2="279.71"></linearGradient>
 			<path
 				d="M183.4 512c-3.85 0-7.48-1.5-10.2-4.22L4.22 338.8C1.5 336.08 0 332.45 0 328.6s1.5-7.48 4.22-10.2L318.4 4.23C321.12 1.51 324.75 0 328.6 0s7.48 1.5 10.2 4.23l168.98 168.98c5.62 5.62 5.62 14.77 0 20.4L193.6 507.78a14.342 14.342 0 0 1-10.2 4.22z"
 				fill="#000000"
@@ -157,14 +96,7 @@ export const DollarsSVG = (props: LucideProps) => (
 				opacity="1"
 				data-original="#000000"
 			></path>
-			<circle
-				cx="256"
-				cy="256"
-				r="57.17"
-				fill="url(#e)"
-				opacity="1"
-				data-original="url(#e)"
-			></circle>
+			<circle cx="256" cy="256" r="57.17" fill="url(#e)" opacity="1" data-original="url(#e)"></circle>
 			<path
 				d="M343.93 190.98c-6.13 0-11.88-2.38-16.2-6.71-4.32-4.32-6.71-10.08-6.71-16.2s2.38-11.88 6.71-16.2c4.32-4.32 10.08-6.71 16.21-6.71s11.88 2.38 16.2 6.71c8.93 8.94 8.93 23.47 0 32.41a22.777 22.777 0 0 1-16.2 6.71z"
 				fill="#000000"
@@ -240,44 +172,16 @@ export const DollarsSVG = (props: LucideProps) => (
 					opacity="1"
 					data-original="url(#c)"
 				></path>
-				<circle
-					cx="256"
-					cy="256"
-					r="72.07"
-					fill="#000000"
-					opacity="1"
-					data-original="#000000"
-				></circle>
-				<circle
-					cx="256"
-					cy="256"
-					r="62.07"
-					fill="url(#j)"
-					opacity="1"
-					data-original="url(#j)"
-				></circle>
-				<circle
-					cx="391.01"
-					cy="256"
-					r="24.02"
-					fill="#000000"
-					opacity="1"
-					data-original="#000000"
-				></circle>
+				<circle cx="256" cy="256" r="72.07" fill="#000000" opacity="1" data-original="#000000"></circle>
+				<circle cx="256" cy="256" r="62.07" fill="url(#j)" opacity="1" data-original="url(#j)"></circle>
+				<circle cx="391.01" cy="256" r="24.02" fill="#000000" opacity="1" data-original="#000000"></circle>
 				<path
 					fill="url(#b)"
 					d="M391.01 270.02c-7.73 0-14.02-6.29-14.02-14.02s6.29-14.02 14.02-14.02 14.02 6.29 14.02 14.02-6.29 14.02-14.02 14.02z"
 					opacity="1"
 					data-original="url(#b)"
 				></path>
-				<circle
-					cx="120.99"
-					cy="256"
-					r="24.02"
-					fill="#000000"
-					opacity="1"
-					data-original="#000000"
-				></circle>
+				<circle cx="120.99" cy="256" r="24.02" fill="#000000" opacity="1" data-original="#000000"></circle>
 				<path
 					fill="url(#b)"
 					d="M120.99 270.02c-7.73 0-14.02-6.29-14.02-14.02s6.29-14.02 14.02-14.02 14.02 6.29 14.02 14.02-6.29 14.02-14.02 14.02z"

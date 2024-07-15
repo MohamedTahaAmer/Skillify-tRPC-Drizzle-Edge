@@ -8,13 +8,7 @@ import { useState } from "react"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormMessage,
-} from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { api } from "@/trpc/react"
@@ -81,21 +75,14 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
 			{!isEditing && <p className="mt-2 text-sm">{initialData.title}</p>}
 			{isEditing && (
 				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(onSubmit)}
-						className="mt-4 space-y-4"
-					>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
 						<FormField
 							control={form.control}
 							name="title"
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
-										<Input
-											disabled={isSubmitting}
-											placeholder="e.g. 'Advanced web development'"
-											{...field}
-										/>
+										<Input disabled={isSubmitting} placeholder="e.g. 'Advanced web development'" {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>

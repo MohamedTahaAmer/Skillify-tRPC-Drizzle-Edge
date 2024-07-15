@@ -8,12 +8,7 @@ const ShowBanner = () => {
 	// I think it's that zustand update works fine with SSR, and I'm updating the courseStore without wrapping it with suspense, so the server will also run the store update hook
 	let { isPurchased } = useCourse()
 	if (isPurchased) return null
-	return (
-		<Banner
-			variant="warning"
-			label="You need to purchase this course to watch this chapter."
-		/>
-	)
+	return <Banner variant="warning" label="You need to purchase this course to watch this chapter." />
 }
 
 export default ShowBanner

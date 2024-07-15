@@ -49,13 +49,11 @@ export const CourseProgressButton = ({
 			toast.success("Progress updated")
 			if (progressMap && courseId) {
 				let shouldDecrease = isCompleted ? 1 : -1
-				let newCoursePregress = Math.floor(
-					progressMap[courseId]! - (shouldDecrease / numberOfChapters) * 100,
-				)
+				let newCourseProgress = Math.floor(progressMap[courseId]! - (shouldDecrease / numberOfChapters) * 100)
 
 				let newProgressMap = {
 					...progressMap,
-					[courseId]: newCoursePregress,
+					[courseId]: newCourseProgress,
 				}
 
 				setProgressMap(newProgressMap)
@@ -71,9 +69,7 @@ export const CourseProgressButton = ({
 
 	return (
 		<Button
-			onClick={() =>
-				updateProgress.mutate({ chapterId, isCompleted: !isCompleted })
-			}
+			onClick={() => updateProgress.mutate({ chapterId, isCompleted: !isCompleted })}
 			disabled={isLoading}
 			type="button"
 			variant={isCompleted ? "outline" : "success"}

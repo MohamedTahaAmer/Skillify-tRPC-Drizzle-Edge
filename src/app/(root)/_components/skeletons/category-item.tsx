@@ -1,13 +1,7 @@
 import type { IconType } from "react-icons"
 
 import { cn } from "@/lib/utils"
-import {
-	FcEngineering,
-	FcMultipleDevices,
-	FcOldTimeCamera,
-	FcSalesPerformance,
-	FcSportsMode,
-} from "react-icons/fc"
+import { FcEngineering, FcMultipleDevices, FcOldTimeCamera, FcSalesPerformance, FcSportsMode } from "react-icons/fc"
 
 const iconMap: Record<string, IconType> = {
 	Photography: FcOldTimeCamera as IconType,
@@ -21,10 +15,7 @@ interface CategoryItemSkeletonProps {
 	iconName: string
 }
 
-export const CategoryItemSkeleton = ({
-	label,
-	iconName,
-}: CategoryItemSkeletonProps) => {
+export const CategoryItemSkeleton = ({ label, iconName }: CategoryItemSkeletonProps) => {
 	let Icon = iconMap[iconName]
 
 	return (

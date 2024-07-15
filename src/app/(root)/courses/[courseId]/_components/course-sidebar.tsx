@@ -13,17 +13,13 @@ export const CourseSidebar = async ({ course }: { course: Course }) => {
 		}, 0)
 		let numOfChapters = course.chapters.length
 
-		let progressPercentage = Math.floor(
-			(numOfCompletedChapters / numOfChapters) * 100,
-		)
+		let progressPercentage = Math.floor((numOfCompletedChapters / numOfChapters) * 100)
 		return progressPercentage
 	}
 	return (
 		<div className="flex h-full flex-col border-r shadow-sm">
 			<div className="flex flex-col border-b p-4">
-				<h1 className="truncate text-lg font-bold text-emerald-700">
-					{course.title}
-				</h1>
+				<h1 className="truncate text-lg font-bold text-emerald-700">{course.title}</h1>
 				{purchase && (
 					<div className="pt-2">
 						<CourseSidebarProgress value={getProgressPercentage()} />

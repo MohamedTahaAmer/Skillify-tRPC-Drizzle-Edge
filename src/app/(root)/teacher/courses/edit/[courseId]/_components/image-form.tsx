@@ -65,12 +65,7 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 					</div>
 				) : (
 					<div className="relative mt-2 aspect-video">
-						<Image
-							alt="Upload"
-							fill
-							className="rounded-md object-cover"
-							src={img}
-						/>
+						<Image alt="Upload" fill className="rounded-md object-cover" src={img} />
 					</div>
 				))}
 			{isEditing && (
@@ -86,9 +81,7 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 							}
 						}}
 					/>
-					<div className="mt-4 text-xs text-muted-foreground">
-						16:9 aspect ratio recommended
-					</div>
+					<div className="mt-4 text-xs text-muted-foreground">16:9 aspect ratio recommended</div>
 				</div>
 			)}
 		</div>

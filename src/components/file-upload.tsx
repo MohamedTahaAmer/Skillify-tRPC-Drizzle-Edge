@@ -10,12 +10,7 @@ interface FileUploadProps {
 	className?: string
 }
 
-export const FileUpload = ({
-	onUploadComplete,
-	on100percent,
-	endpoint,
-	className,
-}: FileUploadProps) => {
+export const FileUpload = ({ onUploadComplete, on100percent, endpoint, className }: FileUploadProps) => {
 	return (
 		<UploadDropzone
 			appearance={{

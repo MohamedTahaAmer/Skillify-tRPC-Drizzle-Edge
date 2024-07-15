@@ -16,12 +16,7 @@ interface ChapterActionsProps {
 	isPublished: boolean
 }
 
-export const ChapterActions = ({
-	disabled,
-	courseId,
-	chapterId,
-	isPublished,
-}: ChapterActionsProps) => {
+export const ChapterActions = ({ disabled, courseId, chapterId, isPublished }: ChapterActionsProps) => {
 	const router = useRouter()
 	const [isLoading, setIsLoading] = useState(false)
 
@@ -74,12 +69,7 @@ export const ChapterActions = ({
 
 	return (
 		<div className="flex items-center gap-x-2">
-			<Button
-				onClick={onClick}
-				disabled={disabled ?? isLoading}
-				variant="outline"
-				size="sm"
-			>
+			<Button onClick={onClick} disabled={disabled ?? isLoading} variant="outline" size="sm">
 				{isPublished ? "Unpublish" : "Publish"}
 			</Button>
 			<ConfirmModal onConfirm={onDelete}>

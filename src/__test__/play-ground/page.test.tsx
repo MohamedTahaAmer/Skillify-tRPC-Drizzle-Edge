@@ -3,12 +3,10 @@ import { render, screen } from "@testing-library/react"
 import Page from "./Page"
 
 vi.mock("next/navigation", () => {
-	const params: Map<string, string | number> = new Map<string, string | number>(
-		[
-			["foo", "bar"],
-			["baz", 42],
-		],
-	)
+	const params: Map<string, string | number> = new Map<string, string | number>([
+		["foo", "bar"],
+		["baz", 42],
+	])
 
 	return {
 		useSearchParams: () => params,

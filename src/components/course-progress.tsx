@@ -17,11 +17,7 @@ const sizeByVariant = {
 	sm: "text-xs",
 }
 
-export const CourseProgress = ({
-	value,
-	variant,
-	size,
-}: CourseProgressProps) => {
+export const CourseProgress = ({ value, variant, size }: CourseProgressProps) => {
 	return (
 		<div>
 			{/* // >(12-1-2024:1) */}

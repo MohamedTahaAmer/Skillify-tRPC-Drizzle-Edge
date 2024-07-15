@@ -2,25 +2,14 @@ import { auth } from "@clerk/nextjs/server"
 import { Menu } from "lucide-react"
 import { redirect } from "next/navigation"
 
-import {
-	Sheet,
-	SheetClose,
-	SheetContent,
-	SheetTrigger,
-} from "@/components/ui/sheet"
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { logObjSize } from "@/lib/helpers"
 import { CourseSidebar } from "./_components/course-sidebar"
 import PopulateCourseStore from "./_components/populate-course-store"
 import RedirectToFirstChapter from "./_components/redirect-to-first-chapter"
 import cachedGetCourseWithChapters from "./_utils/get-courses-with-chapters"
 
-const CourseLayout = async ({
-	children,
-	params,
-}: {
-	children: React.ReactNode
-	params: { courseId: string }
-}) => {
+const CourseLayout = async ({ children, params }: { children: React.ReactNode; params: { courseId: string } }) => {
 	let { userId } = auth()
 	let courseId = params.courseId
 
@@ -55,9 +44,7 @@ const CourseLayout = async ({
 					</SheetContent>
 				</Sheet>
 			</div>
-			{firstChapterId && (
-				<RedirectToFirstChapter firstChapterId={firstChapterId} />
-			)}
+			{firstChapterId && <RedirectToFirstChapter firstChapterId={firstChapterId} />}
 			<PopulateCourseStore course={course} />
 			<main className="h-full xl:pl-80">{children}</main>
 		</div>

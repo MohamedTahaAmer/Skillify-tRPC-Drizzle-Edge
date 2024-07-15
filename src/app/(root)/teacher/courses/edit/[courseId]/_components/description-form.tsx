@@ -9,13 +9,7 @@ import toast from "react-hot-toast"
 import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormMessage,
-} from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import type { CoursesSelect } from "@/server/db/schema"
@@ -32,10 +26,7 @@ const formSchema = z.object({
 	}),
 })
 
-export const DescriptionForm = ({
-	initialData,
-	courseId,
-}: DescriptionFormProps) => {
+export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 
 	const toggleEdit = () => setIsEditing((current) => !current)
@@ -79,32 +70,20 @@ export const DescriptionForm = ({
 				</Button>
 			</div>
 			{!isEditing && (
-				<p
-					className={cn(
-						"mt-2 text-sm",
-						!initialData.description && "italic text-slate-500",
-					)}
-				>
+				<p className={cn("mt-2 text-sm", !initialData.description && "italic text-slate-500")}>
 					{initialData.description ?? "No description"}
 				</p>
 			)}
 			{isEditing && (
 				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(onSubmit)}
-						className="mt-4 space-y-4"
-					>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
 						<FormField
 							control={form.control}
 							name="description"
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
-										<Textarea
-											disabled={isSubmitting}
-											placeholder="e.g. 'This course is about...'"
-											{...field}
-										/>
+										<Textarea disabled={isSubmitting} placeholder="e.g. 'This course is about...'" {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>

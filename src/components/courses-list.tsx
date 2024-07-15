@@ -2,11 +2,7 @@
 import { CourseCard } from "@/components/course-card"
 import { useProgressMap } from "@/hooks/use-progress-map"
 import { useUser } from "@/hooks/useUser"
-import type {
-	CategoriesSelect,
-	ChaptersSelect,
-	CoursesSelect,
-} from "@/server/db/schema"
+import type { CategoriesSelect, ChaptersSelect, CoursesSelect } from "@/server/db/schema"
 import { api } from "@/trpc/react"
 import { useSearchParams } from "next/navigation"
 
@@ -26,10 +22,7 @@ export const CoursesList = ({ items }: CoursesListProps) => {
 	let title = searchParams.title
 
 	let filteredItems = items
-	categoryId &&
-		(filteredItems = filteredItems.filter(
-			(course) => course.categoryId === categoryId,
-		))
+	categoryId && (filteredItems = filteredItems.filter((course) => course.categoryId === categoryId))
 
 	// - weird TS error, it should be able to infer the title will be string only after && check
 	// this is happening only in this file, in 'progress-info-cards.tsx' it works fine
@@ -40,40 +33,30 @@ export const CoursesList = ({ items }: CoursesListProps) => {
 
 	let { user } = useUser()
 	let userId = user?.id
+	if (!userId) return null
 	let { progressMap, setProgressMap } = useProgressMap()
 
-	api.get.getUserCoursesWithProgress.useQuery(
-		{
-			userId: userId ?? "",
-		},
-		{
-			enabled: !!userId,
-			refetchOnMount: false,
-			onSuccess: (data) => {
-				let originalProgressMap = data.reduce(
-					(acc, course) => {
-						let totalNumOfChapters = course.chapters.length
-						let numOfCompletedChapters = course.chapters.reduce(
-							(acc, chapter) => {
-								if (chapter.userProgress[0]?.isCompleted) {
-									acc++
-								}
-								return acc
-							},
-							0,
-						)
-						let progress = Math.round(
-							(numOfCompletedChapters / totalNumOfChapters) * 100,
-						)
-						acc[course.id] = progress
+	api.get.getUserCoursesWithProgress.useQuery(undefined, {
+		refetchOnMount: false,
+		onSuccess: (data) => {
+			let originalProgressMap = data.reduce(
+				(acc, course) => {
+					let totalNumOfChapters = course.chapters.length
+					let numOfCompletedChapters = course.chapters.reduce((acc, chapter) => {
+						if (chapter.userProgress[0]?.isCompleted) {
+							acc++
+						}
 						return acc
-					},
-					{} as Record<string, number>,
-				)
-				setProgressMap(originalProgressMap)
-			},
+					}, 0)
+					let progress = Math.round((numOfCompletedChapters / totalNumOfChapters) * 100)
+					acc[course.id] = progress
+					return acc
+				},
+				{} as Record<string, number>,
+			)
+			setProgressMap(originalProgressMap)
 		},
-	)
+	})
 
 	return (
 		<>
@@ -91,11 +74,7 @@ export const CoursesList = ({ items }: CoursesListProps) => {
 					/>
 				))}
 			</div>
-			{items.length === 0 && (
-				<div className="mt-10 text-center text-sm text-muted-foreground">
-					No courses found
-				</div>
-			)}
+			{items.length === 0 && <div className="mt-10 text-center text-sm text-muted-foreground">No courses found</div>}
 		</>
 	)
 }

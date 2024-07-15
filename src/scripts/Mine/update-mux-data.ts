@@ -6,8 +6,7 @@ const { Video } = new Mux(env.MUX_TOKEN_ID, env.MUX_TOKEN_SECRET)
 export default async function updateMuxDate() {
 	try {
 		const asset = await Video.Assets.create({
-			input:
-				"https://utfs.io/f/29dc41e5-d9a2-4ef7-93f0-5d243cb4aaa4-nae63u.mp4",
+			input: "https://utfs.io/f/29dc41e5-d9a2-4ef7-93f0-5d243cb4aaa4-nae63u.mp4",
 			playback_policy: "public",
 			test: false,
 		})

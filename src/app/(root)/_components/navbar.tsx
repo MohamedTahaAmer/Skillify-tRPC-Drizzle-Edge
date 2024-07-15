@@ -28,12 +28,9 @@ export const Navbar = () => {
 		href: Route
 		text: string
 	} | null = null
-	if (isTeacherCourses)
-		navRightLink = { href: "/teacher/analytics", text: "Analytics" }
-	if (isTeacherAnalytics || isCreateCourse || isEditCourse)
-		navRightLink = { href: "/teacher/courses", text: "Courses" }
-	if (!insideTeacherRoutes && isTeacher(user?.id))
-		navRightLink = { href: "/teacher/courses", text: "Teacher mode" }
+	if (isTeacherCourses) navRightLink = { href: "/teacher/analytics", text: "Analytics" }
+	if (isTeacherAnalytics || isCreateCourse || isEditCourse) navRightLink = { href: "/teacher/courses", text: "Courses" }
+	if (!insideTeacherRoutes && isTeacher(user?.id)) navRightLink = { href: "/teacher/courses", text: "Teacher mode" }
 
 	return (
 		<div className="flex h-full items-center border-b bg-white px-6 shadow-sm">
@@ -43,10 +40,7 @@ export const Navbar = () => {
 
 			<div className="ml-auto flex gap-x-2">
 				{navRightLink && (
-					<Link
-						className={cn(buttonVariants({ variant: "secondary" }))}
-						href={navRightLink.href}
-					>
+					<Link className={cn(buttonVariants({ variant: "secondary" }))} href={navRightLink.href}>
 						{navRightLink.text}
 					</Link>
 				)}

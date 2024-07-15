@@ -24,10 +24,7 @@ const config = {
 				fixStyle: "inline-type-imports",
 			},
 		],
-		"@typescript-eslint/no-unused-vars": [
-			"warn",
-			{ argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
-		],
+		"@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
 		"@typescript-eslint/no-unnecessary-type-assertion": "off",
 		"@typescript-eslint/require-await": "off",
 		"prefer-const": "off",

@@ -1,10 +1,6 @@
 import SearchParam from "@/app/(root)/test/courses-num/search-param"
 import { env } from "@/env"
-import type {
-	CategoriesSelect,
-	ChaptersSelect,
-	CoursesSelect,
-} from "@/server/db/schema"
+import type { CategoriesSelect, ChaptersSelect, CoursesSelect } from "@/server/db/schema"
 import { Suspense } from "react"
 
 const HomePage = async () => {
@@ -13,9 +9,7 @@ const HomePage = async () => {
 		chapters: { id: ChaptersSelect["id"] }[]
 	})[]
 	console.log(`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`)
-	let res = await fetch(
-		`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`,
-	)
+	let res = await fetch(`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`)
 	console.log(res)
 	if (!res.ok) {
 		console.log("Failed to fetch courses")

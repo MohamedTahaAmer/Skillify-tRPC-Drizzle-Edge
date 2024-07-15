@@ -17,8 +17,7 @@ export const CourseEnrollButton = () => {
 			window.location.assign(data.url ?? "")
 		},
 		onError(error, _variables, _context) {
-			if (error instanceof TRPCClientError)
-				return toast.error("You Need to Sign In to Enroll.")
+			if (error instanceof TRPCClientError) return toast.error("You Need to Sign In to Enroll.")
 			toast.error(error.message)
 		},
 	})
@@ -30,12 +29,7 @@ export const CourseEnrollButton = () => {
 	}
 
 	return (
-		<Button
-			onClick={handleClick}
-			size="sm"
-			disabled={checkout.isPending}
-			className="w-full md:w-auto"
-		>
+		<Button onClick={handleClick} size="sm" disabled={checkout.isPending} className="w-full md:w-auto">
 			Enroll for {formatPrice(coursePrice ?? 0)}
 		</Button>
 	)

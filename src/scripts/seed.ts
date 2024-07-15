@@ -78,8 +78,7 @@ export let seedAttachments = async () => {
 		let courses = await db.query.courses.findMany()
 		for (let course of courses) {
 			let name = "Attachment - Build - Logs - Edge"
-			let url =
-				"https://utfs.io/f/d19a7595-4ebe-418c-9eed-99ad408f73a2-m477hg.jpg"
+			let url = "https://utfs.io/f/d19a7595-4ebe-418c-9eed-99ad408f73a2-m477hg.jpg"
 			let courseId = course.id
 			await db.insert(schema.attachments).values({
 				name,
@@ -100,8 +99,7 @@ export let seedChapters = async () => {
 			for (let i = 0; i < 5; i++) {
 				let title = `${course.title} - Chapter ${i + 1}`
 				let courseId = course.id
-				let videoUrl =
-					"https://utfs.io/f/29dc41e5-d9a2-4ef7-93f0-5d243cb4aaa4-nae63u.mp4"
+				let videoUrl = "https://utfs.io/f/29dc41e5-d9a2-4ef7-93f0-5d243cb4aaa4-nae63u.mp4"
 				let position = i + 1
 				let isPublished = true
 				let isFree = i === 0
@@ -144,10 +142,7 @@ export let seedMuxData = async () => {
 
 export let openFirstVideo = async () => {
 	try {
-		await db
-			.update(schema.chapters)
-			.set({ isFree: true })
-			.where(eq(schema.chapters.position, 1))
+		await db.update(schema.chapters).set({ isFree: true }).where(eq(schema.chapters.position, 1))
 		console.log("opened first video")
 	} catch (error) {
 		console.log("Error opening the first video", error)

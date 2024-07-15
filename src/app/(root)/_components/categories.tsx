@@ -1,9 +1,4 @@
-import {
-	Sheet,
-	SheetClose,
-	SheetContent,
-	SheetTrigger,
-} from "@/components/ui/sheet"
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 import type { CategoriesSelect } from "@/server/db/schema"
 import { Menu } from "lucide-react"
@@ -36,18 +31,9 @@ export const Categories = ({ items }: CategoriesProps) => {
 										item && (
 											<Suspense
 												key={item.id}
-												fallback={
-													<MobileCategoryItemSkeleton
-														label={item.name}
-														iconName={item.name}
-													/>
-												}
+												fallback={<MobileCategoryItemSkeleton label={item.name} iconName={item.name} />}
 											>
-												<MobileCategoryItem
-													label={item.name}
-													iconName={item.name}
-													value={item.id}
-												/>
+												<MobileCategoryItem label={item.name} iconName={item.name} value={item.id} />
 											</Suspense>
 										),
 								)}
@@ -62,20 +48,8 @@ export const Categories = ({ items }: CategoriesProps) => {
 				{items.map(
 					(item) =>
 						item && (
-							<Suspense
-								key={item.id}
-								fallback={
-									<CategoryItemSkeleton
-										label={item.name}
-										iconName={item.name}
-									/>
-								}
-							>
-								<CategoryItem
-									label={item.name}
-									iconName={item.name}
-									value={item.id}
-								/>
+							<Suspense key={item.id} fallback={<CategoryItemSkeleton label={item.name} iconName={item.name} />}>
+								<CategoryItem label={item.name} iconName={item.name} value={item.id} />
 							</Suspense>
 						),
 				)}

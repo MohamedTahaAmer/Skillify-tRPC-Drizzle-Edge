@@ -9,11 +9,7 @@ const ShowProgressInfoCards = () => {
 	return (
 		<>
 			{searchParams.purchased && user?.id && (
-				<ProgressInfoCards
-					userId={user.id}
-					categoryId={searchParams.categoryId}
-					title={searchParams.title}
-				/>
+				<ProgressInfoCards categoryId={searchParams.categoryId} title={searchParams.title} />
 			)}
 		</>
 	)

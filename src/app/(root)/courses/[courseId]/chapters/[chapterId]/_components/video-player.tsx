@@ -18,19 +18,12 @@ interface VideoPlayerProps {
 	title: string
 }
 
-export const VideoPlayer = ({
-	playbackId,
-	chapterId,
-	isFreeChapter,
-	isCompleted,
-	title,
-}: VideoPlayerProps) => {
+export const VideoPlayer = ({ playbackId, chapterId, isFreeChapter, isCompleted, title }: VideoPlayerProps) => {
 	const [isReady, setIsReady] = useState(false)
 	const router = useRouter()
 
 	const confetti = useConfettiStore()
-	let { isPurchased, isLastChapterToFinishTheCourse, nextChapterId, courseId } =
-		useCourse()
+	let { isPurchased, isLastChapterToFinishTheCourse, nextChapterId, courseId } = useCourse()
 
 	let isLocked = !isFreeChapter && !isPurchased
 

@@ -6,13 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 import { cn } from "@/lib/utils"
 import type { Route } from "next"
-import {
-	FcEngineering,
-	FcMultipleDevices,
-	FcOldTimeCamera,
-	FcSalesPerformance,
-	FcSportsMode,
-} from "react-icons/fc"
+import { FcEngineering, FcMultipleDevices, FcOldTimeCamera, FcSalesPerformance, FcSportsMode } from "react-icons/fc"
 
 const iconMap: Record<string, IconType> = {
 	Photography: FcOldTimeCamera as IconType,
@@ -28,11 +22,7 @@ interface MobileCategoryItemProps {
 	iconName: string
 }
 
-export const MobileCategoryItem = ({
-	label,
-	value,
-	iconName,
-}: MobileCategoryItemProps) => {
+export const MobileCategoryItem = ({ label, value, iconName }: MobileCategoryItemProps) => {
 	const pathname = usePathname()
 	const router = useRouter()
 	const searchParams = useSearchParams()
@@ -63,8 +53,7 @@ export const MobileCategoryItem = ({
 			onClick={onClick}
 			className={cn(
 				"flex items-center justify-between gap-x-2 pl-6 text-sm font-[500] text-slate-500 transition-all hover:bg-slate-300/20 hover:text-slate-600",
-				isSelected &&
-					"bg-sky-200/20 text-sky-700 hover:bg-sky-200/40 hover:text-sky-700",
+				isSelected && "bg-sky-200/20 text-sky-700 hover:bg-sky-200/40 hover:text-sky-700",
 			)}
 			type="button"
 		>

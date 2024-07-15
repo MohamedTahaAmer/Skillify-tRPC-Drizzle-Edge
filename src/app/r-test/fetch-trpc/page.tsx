@@ -6,12 +6,8 @@ import { Button } from "@/components/ui/button"
 
 const HomePage = () => {
 	async function fetchCourses() {
-		console.log(
-			`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`,
-		)
-		const res = await fetch(
-			`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`,
-		)
+		console.log(`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`)
+		const res = await fetch(`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`)
 		console.log(res)
 		if (!res.ok) {
 			console.log("Failed to fetch courses")

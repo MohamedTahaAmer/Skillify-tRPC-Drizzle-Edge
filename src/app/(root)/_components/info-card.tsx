@@ -9,12 +9,7 @@ interface InfoCardProps {
 	icon: LucideIcon
 }
 
-export const InfoCard = ({
-	variant,
-	icon: Icon,
-	numberOfItems,
-	label,
-}: InfoCardProps) => {
+export const InfoCard = ({ variant, icon: Icon, numberOfItems, label }: InfoCardProps) => {
 	return (
 		<div className="flex items-center gap-x-2 rounded-md border p-3">
 			<IconBadge variant={variant} icon={Icon} />

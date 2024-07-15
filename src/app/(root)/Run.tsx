@@ -10,11 +10,7 @@ const Run = () => {
 	}
 	return (
 		<>
-			<Button
-				onClick={onClick}
-				className="fixed left-48 top-0 z-[51]"
-				variant="ghost"
-			>
+			<Button onClick={onClick} className="fixed left-48 top-0 z-[51]" variant="ghost">
 				Run
 			</Button>
 		</>

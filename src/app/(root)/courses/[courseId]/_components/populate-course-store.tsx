@@ -12,13 +12,7 @@ const PopulateCourseStore = ({ course }: { course: Course }) => {
 }
 
 // - you can't call a hook after an early return, so we need to create a separate component to call the hook
-const Populate = ({
-	course,
-	chapterId,
-}: {
-	course: Course
-	chapterId: string
-}) => {
+const Populate = ({ course, chapterId }: { course: Course; chapterId: string }) => {
 	usePopbulateCourseStore({ chapterId, course })
 	return null
 }

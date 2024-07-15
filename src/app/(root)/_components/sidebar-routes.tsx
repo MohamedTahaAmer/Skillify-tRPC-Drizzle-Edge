@@ -40,12 +40,7 @@ export const SidebarRoutes = () => {
 	return (
 		<div className="flex w-full flex-col">
 			{routes.map((route) => (
-				<SidebarItem
-					key={route.activePath}
-					icon={route.icon}
-					label={route.label}
-					activePath={route.activePath}
-				/>
+				<SidebarItem key={route.activePath} icon={route.icon} label={route.label} activePath={route.activePath} />
 			))}
 		</div>
 	)

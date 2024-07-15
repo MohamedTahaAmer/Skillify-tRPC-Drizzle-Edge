@@ -9,13 +9,7 @@ import toast from "react-hot-toast"
 import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormMessage,
-} from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
@@ -110,21 +104,14 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 			</div>
 			{isCreating && (
 				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(onSubmit)}
-						className="mt-4 space-y-4"
-					>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
 						<FormField
 							control={form.control}
 							name="title"
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
-										<Input
-											disabled={isSubmitting}
-											placeholder="e.g. 'Introduction to the course'"
-											{...field}
-										/>
+										<Input disabled={isSubmitting} placeholder="e.g. 'Introduction to the course'" {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -137,25 +124,12 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 				</Form>
 			)}
 			{!isCreating && (
-				<div
-					className={cn(
-						"mt-2 text-sm",
-						!initialData.chapters.length && "italic text-slate-500",
-					)}
-				>
+				<div className={cn("mt-2 text-sm", !initialData.chapters.length && "italic text-slate-500")}>
 					{!initialData.chapters.length && "No chapters"}
-					<ChaptersList
-						onEdit={onEdit}
-						onReorder={onReorder}
-						items={initialData.chapters ?? []}
-					/>
+					<ChaptersList onEdit={onEdit} onReorder={onReorder} items={initialData.chapters ?? []} />
 				</div>
 			)}
-			{!isCreating && (
-				<p className="mt-4 text-xs text-muted-foreground">
-					Drag and drop to reorder the chapters
-				</p>
-			)}
+			{!isCreating && <p className="mt-4 text-xs text-muted-foreground">Drag and drop to reorder the chapters</p>}
 		</div>
 	)
 }

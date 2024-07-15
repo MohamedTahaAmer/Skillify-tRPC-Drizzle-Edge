@@ -20,10 +20,7 @@ const formSchema = z.object({
 	name: z.string().min(1),
 })
 
-export const AttachmentForm = ({
-	initialData,
-	courseId,
-}: AttachmentFormProps) => {
+export const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 	const [deletingId, setDeletingId] = useState<string | null>(null)
 
@@ -79,9 +76,7 @@ export const AttachmentForm = ({
 			{!isEditing && (
 				<>
 					{initialData.attachments.length === 0 && (
-						<p className="mt-2 text-sm italic text-slate-500">
-							No attachments yet
-						</p>
+						<p className="mt-2 text-sm italic text-slate-500">No attachments yet</p>
 					)}
 					{initialData.attachments.length > 0 && (
 						<div className="space-y-2">
@@ -98,10 +93,7 @@ export const AttachmentForm = ({
 										</div>
 									)}
 									{deletingId !== attachment.id && (
-										<button
-											onClick={() => onDelete(attachment.id)}
-											className="ml-auto transition hover:opacity-75"
-										>
+										<button onClick={() => onDelete(attachment.id)} className="ml-auto transition hover:opacity-75">
 											<X className="size-4" />
 										</button>
 									)}

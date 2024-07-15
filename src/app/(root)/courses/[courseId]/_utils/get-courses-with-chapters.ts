@@ -24,9 +24,7 @@ let getCourseWithChapters = async ({
 				},
 				orderBy: asc(schema.chapters.position),
 			},
-			purchases: userId
-				? { where: eq(schema.purchases.userId, userId) }
-				: undefined,
+			purchases: userId ? { where: eq(schema.purchases.userId, userId) } : undefined,
 			attachments: true,
 		},
 	})

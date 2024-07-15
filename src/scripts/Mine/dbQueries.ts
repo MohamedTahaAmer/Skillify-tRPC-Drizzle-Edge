@@ -2,9 +2,7 @@
 import { db, schema } from "@/server/db"
 import { and, eq, inArray } from "drizzle-orm"
 
-export async function getUserPurchasedCoursesWithCompletedChapters(
-	userId: string,
-) {
+export async function getUserPurchasedCoursesWithCompletedChapters(userId: string) {
 	try {
 		let courses = await db.query.courses.findMany({
 			where: and(
@@ -26,12 +24,7 @@ export async function getUserPurchasedCoursesWithCompletedChapters(
 							db
 								.select({ chapterId: schema.userProgress.chapterId })
 								.from(schema.userProgress)
-								.where(
-									and(
-										eq(schema.userProgress.userId, userId),
-										eq(schema.userProgress.isCompleted, true),
-									),
-								),
+								.where(and(eq(schema.userProgress.userId, userId), eq(schema.userProgress.isCompleted, true))),
 						),
 					),
 				},

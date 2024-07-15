@@ -21,11 +21,7 @@ const formSchema = z.object({
 	videoUrl: z.string().min(1),
 })
 
-export const ChapterVideoForm = ({
-	initialData,
-	courseId,
-	chapterId,
-}: ChapterVideoFormProps) => {
+export const ChapterVideoForm = ({ initialData, courseId, chapterId }: ChapterVideoFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 
 	const toggleEdit = () => setIsEditing((current) => !current)
@@ -98,15 +94,12 @@ export const ChapterVideoForm = ({
 							}
 						}}
 					/>
-					<div className="mt-4 text-xs text-muted-foreground">
-						Upload this chapter&apos;s video
-					</div>
+					<div className="mt-4 text-xs text-muted-foreground">Upload this chapter&apos;s video</div>
 				</div>
 			)}
 			{initialData.videoUrl && !isEditing && (
 				<div className="mt-2 text-xs text-muted-foreground">
-					Videos can take a few minutes to process. Refresh the page if video
-					does not appear.
+					Videos can take a few minutes to process. Refresh the page if video does not appear.
 				</div>
 			)}
 		</div>

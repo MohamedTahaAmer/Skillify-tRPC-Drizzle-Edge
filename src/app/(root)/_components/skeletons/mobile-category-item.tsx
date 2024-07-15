@@ -1,13 +1,7 @@
 import type { IconType } from "react-icons"
 
 import { cn } from "@/lib/utils"
-import {
-	FcEngineering,
-	FcMultipleDevices,
-	FcOldTimeCamera,
-	FcSalesPerformance,
-	FcSportsMode,
-} from "react-icons/fc"
+import { FcEngineering, FcMultipleDevices, FcOldTimeCamera, FcSalesPerformance, FcSportsMode } from "react-icons/fc"
 
 const iconMap: Record<string, IconType> = {
 	Photography: FcOldTimeCamera as IconType,
@@ -22,10 +16,7 @@ interface MobileCategoryItemSkeletonProps {
 	iconName: string
 }
 
-export const MobileCategoryItemSkeleton = ({
-	label,
-	iconName,
-}: MobileCategoryItemSkeletonProps) => {
+export const MobileCategoryItemSkeleton = ({ label, iconName }: MobileCategoryItemSkeletonProps) => {
 	let Icon = iconMap[iconName]
 
 	return (
@@ -39,11 +30,7 @@ export const MobileCategoryItemSkeleton = ({
 				{Icon && <Icon size={20} />}
 				<div className="truncate">{label}</div>
 			</div>
-			<div
-				className={cn(
-					"w-0 self-stretch justify-self-end border-2 border-sky-700 opacity-0 transition-all",
-				)}
-			/>
+			<div className={cn("w-0 self-stretch justify-self-end border-2 border-sky-700 opacity-0 transition-all")} />
 		</button>
 	)
 }

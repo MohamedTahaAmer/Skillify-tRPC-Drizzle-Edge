@@ -149,10 +149,7 @@ export const userProgress = mysqlTable(
 		updatedAt: timestamp("updated_at").onUpdateNow(),
 	},
 	(example) => ({
-		userIdChapterIdIdx: index("user_id_chapter_id_idx").on(
-			example.userId,
-			example.chapterId,
-		),
+		userIdChapterIdIdx: index("user_id_chapter_id_idx").on(example.userId, example.chapterId),
 		pk: primaryKey({ columns: [example.userId, example.chapterId] }),
 	}),
 )
@@ -173,10 +170,7 @@ export const purchases = mysqlTable(
 		updatedAt: timestamp("updated_at").onUpdateNow(),
 	},
 	(example) => ({
-		userIdCourseIdIdx: index("user_id_course_id_idx").on(
-			example.userId,
-			example.courseId,
-		),
+		userIdCourseIdIdx: index("user_id_course_id_idx").on(example.userId, example.courseId),
 		pk: primaryKey({ columns: [example.userId, example.courseId] }),
 	}),
 )
@@ -201,9 +195,7 @@ export const stripeCustomers = mysqlTable(
 	},
 	(example) => ({
 		userIdIdx: index("user_id_idx").on(example.userId),
-		stripeCustomerIdIdx: index("stripe_customer_id_idx").on(
-			example.stripeCustomerId,
-		),
+		stripeCustomerIdIdx: index("stripe_customer_id_idx").on(example.stripeCustomerId),
 	}),
 )
 

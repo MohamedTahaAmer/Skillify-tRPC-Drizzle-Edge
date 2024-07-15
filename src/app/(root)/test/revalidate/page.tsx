@@ -31,11 +31,7 @@ const Page = () => {
 		>
 			<input type="text" name="name" className="border-4" />
 			<button className="bg-red-100 p-4">revalidate - server action</button>
-			<button
-				type="button"
-				onClick={handletRPCRevalidation}
-				className="bg-red-100 p-4"
-			>
+			<button type="button" onClick={handletRPCRevalidation} className="bg-red-100 p-4">
 				revalidate - trpc call
 			</button>
 		</form>

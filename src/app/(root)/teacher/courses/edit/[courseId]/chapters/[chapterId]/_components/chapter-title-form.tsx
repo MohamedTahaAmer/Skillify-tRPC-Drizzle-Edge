@@ -8,13 +8,7 @@ import { useState } from "react"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormMessage,
-} from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { api } from "@/trpc/react"
@@ -31,11 +25,7 @@ const formSchema = z.object({
 	title: z.string().min(1),
 })
 
-export const ChapterTitleForm = ({
-	initialData,
-	courseId,
-	chapterId,
-}: ChapterTitleFormProps) => {
+export const ChapterTitleForm = ({ initialData, courseId, chapterId }: ChapterTitleFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 
 	const toggleEdit = () => setIsEditing((current) => !current)
@@ -83,21 +73,14 @@ export const ChapterTitleForm = ({
 			{!isEditing && <p className="mt-2 text-sm">{initialData.title}</p>}
 			{isEditing && (
 				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(onSubmit)}
-						className="mt-4 space-y-4"
-					>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
 						<FormField
 							control={form.control}
 							name="title"
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
-										<Input
-											disabled={isSubmitting}
-											placeholder="e.g. 'Introduction to the course'"
-											{...field}
-										/>
+										<Input disabled={isSubmitting} placeholder="e.g. 'Introduction to the course'" {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>

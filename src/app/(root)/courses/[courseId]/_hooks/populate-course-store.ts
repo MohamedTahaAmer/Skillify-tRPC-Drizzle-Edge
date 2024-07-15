@@ -2,13 +2,7 @@ import { useCourse } from "@/hooks/use-course"
 import type { Course } from "@/types"
 import { useEffect } from "react"
 
-export default function usePopbulateCourseStore({
-	course,
-	chapterId,
-}: {
-	course: Course
-	chapterId: string
-}) {
+export default function usePopbulateCourseStore({ course, chapterId }: { course: Course; chapterId: string }) {
 	let {
 		setIsPurchased,
 		setIsLastChapterToFinishTheCourse,
@@ -36,14 +30,11 @@ export default function usePopbulateCourseStore({
 				return acc
 			}, 0)
 			let numOfPublishedChapters = course.chapters.length
-			let lastChapterToFinishTheCourse =
-				numOfPublishedChapters - numOfCompletedChapters === 1
+			let lastChapterToFinishTheCourse = numOfPublishedChapters - numOfCompletedChapters === 1
 			setIsLastChapterToFinishTheCourse(lastChapterToFinishTheCourse)
 		}
 
-		let currentChapterIndex = course.chapters.findIndex(
-			(chapter) => chapter.id === chapterId,
-		)
+		let currentChapterIndex = course.chapters.findIndex((chapter) => chapter.id === chapterId)
 		let nextChapter = course.chapters[currentChapterIndex + 1]
 
 		if (nextChapter) {

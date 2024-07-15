@@ -6,13 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 import { cn } from "@/lib/utils"
 import type { Route } from "next"
-import {
-	FcEngineering,
-	FcMultipleDevices,
-	FcOldTimeCamera,
-	FcSalesPerformance,
-	FcSportsMode,
-} from "react-icons/fc"
+import { FcEngineering, FcMultipleDevices, FcOldTimeCamera, FcSalesPerformance, FcSportsMode } from "react-icons/fc"
 
 const iconMap: Record<string, IconType> = {
 	Photography: FcOldTimeCamera as IconType,

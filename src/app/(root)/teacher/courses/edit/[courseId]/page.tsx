@@ -1,12 +1,7 @@
 export const runtime1 = "edge"
 export const preferredRegion = "cle1"
 import { auth } from "@clerk/nextjs/server"
-import {
-	CircleDollarSign,
-	File,
-	LayoutDashboard,
-	ListChecks,
-} from "lucide-react"
+import { CircleDollarSign, File, LayoutDashboard, ListChecks } from "lucide-react"
 import { redirect } from "next/navigation"
 
 import { Banner } from "@/components/banner"
@@ -30,10 +25,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
 	}
 
 	let course = await db.query.courses.findFirst({
-		where: and(
-			eq(schema.courses.id, params.courseId),
-			eq(schema.courses.userId, userId),
-		),
+		where: and(eq(schema.courses.id, params.courseId), eq(schema.courses.userId, userId)),
 		with: {
 			chapters: {
 				orderBy: asc(schema.chapters.position),
@@ -51,9 +43,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
 		return redirect("/")
 	}
 	// reorder the course attachments by the created date
-	let sortedAttachments = course.attachments.sort(
-		(a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
-	)
+	let sortedAttachments = course.attachments.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
 	course = {
 		...course,
 		attachments: sortedAttachments,
@@ -81,22 +71,14 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
 
 	return (
 		<>
-			{!course.isPublished && (
-				<Banner label="This course is unpublished. It will not be visible to the students." />
-			)}
+			{!course.isPublished && <Banner label="This course is unpublished. It will not be visible to the students." />}
 			<div className="p-6">
 				<div className="flex items-center justify-between">
 					<div className="flex flex-col gap-y-2">
 						<h1 className="text-2xl font-medium">Course setup</h1>
-						<span className="text-sm text-slate-700">
-							Complete all fields {completionText}
-						</span>
+						<span className="text-sm text-slate-700">Complete all fields {completionText}</span>
 					</div>
-					<Actions
-						disabled={!isComplete}
-						courseId={params.courseId}
-						isPublished={!!course.isPublished}
-					/>
+					<Actions disabled={!isComplete} courseId={params.courseId} isPublished={!!course.isPublished} />
 				</div>
 				<div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">
 					<div>

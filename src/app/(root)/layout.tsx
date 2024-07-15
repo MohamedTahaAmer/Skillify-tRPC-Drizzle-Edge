@@ -6,11 +6,7 @@ import { Navbar } from "./_components/navbar"
 import { Suspense } from "react"
 import NavbarSkeleton from "./_components/skeletons/navbar"
 
-export default function RootLayout({
-	children,
-}: {
-	children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<>
 			<ConfettiProvider />

@@ -23,10 +23,7 @@ export async function getUserCoursesProgress(userId: string) {
 					where: and(eq(schema.chapters.isPublished, true)),
 					with: {
 						userProgress: {
-							where: and(
-								eq(schema.userProgress.userId, userId),
-								eq(schema.userProgress.isCompleted, true),
-							),
+							where: and(eq(schema.userProgress.userId, userId), eq(schema.userProgress.isCompleted, true)),
 						},
 					},
 				},

@@ -1,9 +1,5 @@
 import { CourseCard } from "@/components/course-card"
-import type {
-	CategoriesSelect,
-	ChaptersSelect,
-	CoursesSelect,
-} from "@/server/db/schema"
+import type { CategoriesSelect, ChaptersSelect, CoursesSelect } from "@/server/db/schema"
 
 type CourseWithProgressWithCategory = CoursesSelect & {
 	category: CategoriesSelect | null
@@ -31,11 +27,7 @@ export const CoursesListSkeleton = ({ items }: CoursesListProps) => {
 					/>
 				))}
 			</div>
-			{items.length === 0 && (
-				<div className="mt-10 text-center text-sm text-muted-foreground">
-					No courses found
-				</div>
-			)}
+			{items.length === 0 && <div className="mt-10 text-center text-sm text-muted-foreground">No courses found</div>}
 		</div>
 	)
 }

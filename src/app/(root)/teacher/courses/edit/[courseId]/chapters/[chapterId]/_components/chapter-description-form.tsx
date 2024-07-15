@@ -11,13 +11,7 @@ import * as z from "zod"
 import { Editor } from "@/components/editor"
 import { Preview } from "@/components/preview"
 import { Button } from "@/components/ui/button"
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormMessage,
-} from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { quillHeightCalculator } from "@/lib/quill-height-calculator"
 import { cn } from "@/lib/utils"
 import type { ChaptersSelect } from "@/server/db/schema"
@@ -33,11 +27,7 @@ const formSchema = z.object({
 	description: z.string().min(1),
 })
 
-export const ChapterDescriptionForm = ({
-	initialData,
-	courseId,
-	chapterId,
-}: ChapterDescriptionFormProps) => {
+export const ChapterDescriptionForm = ({ initialData, courseId, chapterId }: ChapterDescriptionFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 
 	const toggleEdit = () => setIsEditing((current) => !current)
@@ -69,9 +59,7 @@ export const ChapterDescriptionForm = ({
 		}
 	}
 
-	let { previewHeight, editorHeight } = quillHeightCalculator(
-		initialData.description,
-	)
+	let { previewHeight, editorHeight } = quillHeightCalculator(initialData.description)
 
 	return (
 		<div className="mt-6 rounded-md border bg-slate-100 p-4">
@@ -89,12 +77,7 @@ export const ChapterDescriptionForm = ({
 				</Button>
 			</div>
 			{!isEditing && (
-				<div
-					className={cn(
-						"mt-2 text-sm",
-						!initialData.description && "italic text-slate-500",
-					)}
-				>
+				<div className={cn("mt-2 text-sm", !initialData.description && "italic text-slate-500")}>
 					{!initialData.description && "No description"}
 					{initialData.description && (
 						<>
@@ -107,10 +90,7 @@ export const ChapterDescriptionForm = ({
 			)}
 			{isEditing && (
 				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(onSubmit)}
-						className="mt-4 space-y-4"
-					>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
 						<FormField
 							control={form.control}
 							name="description"

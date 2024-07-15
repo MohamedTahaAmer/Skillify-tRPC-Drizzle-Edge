@@ -31,9 +31,7 @@ const ChapterIdPage = async ({ params }: { params: { chapterId: string } }) => {
 	let chapter = await db.query.chapters.findFirst({
 		where: eq(schema.chapters.id, chapterId),
 		with: {
-			userProgress: userId
-				? { where: eq(schema.userProgress.userId, userId) }
-				: undefined,
+			userProgress: userId ? { where: eq(schema.userProgress.userId, userId) } : undefined,
 			muxData: true,
 		},
 	})
@@ -51,9 +49,7 @@ const ChapterIdPage = async ({ params }: { params: { chapterId: string } }) => {
 
 	return (
 		<div>
-			{isCompleted && (
-				<Banner variant="success" label="You already completed this chapter." />
-			)}
+			{isCompleted && <Banner variant="success" label="You already completed this chapter." />}
 			{!isFreeChapter && <ShowBanner />}
 			<div className="mx-auto flex max-w-4xl flex-col pb-20">
 				<div className="p-4">
@@ -69,10 +65,7 @@ const ChapterIdPage = async ({ params }: { params: { chapterId: string } }) => {
 				<div>
 					<div className="flex flex-col items-center justify-between p-4 md:flex-row">
 						<h2 className="mb-2 text-2xl font-semibold">{chapter.title}</h2>
-						<ChapterButton
-							chapterId={chapter.id}
-							isCompleted={isCompleted ?? false}
-						/>
+						<ChapterButton chapterId={chapter.id} isCompleted={isCompleted ?? false} />
 					</div>
 					<Separator />
 					<div>

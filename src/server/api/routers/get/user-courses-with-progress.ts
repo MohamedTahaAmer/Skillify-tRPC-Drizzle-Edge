@@ -1,11 +1,10 @@
 import { logTime } from "@/lib/helpers"
-import { db, schema } from "@/server/db"
+import { schema } from "@/server/db"
 import { and, eq, inArray } from "drizzle-orm"
-export default async function getUserCoursesWithProgress({
-	userId,
-}: {
-	userId: string
-}) {
+import { ProtectedCTX } from "../../trpc"
+export default async function getUserCoursesWithProgress({ ctx }: { ctx: ProtectedCTX }) {
+	let { db, user } = ctx
+	let userId = user.id
 	let startTime = Date.now()
 
 	let courses = await db.query.courses.findMany({
@@ -24,10 +23,7 @@ export default async function getUserCoursesWithProgress({
 				where: and(eq(schema.chapters.isPublished, true)),
 				with: {
 					userProgress: {
-						where: and(
-							eq(schema.userProgress.userId, userId),
-							eq(schema.userProgress.isCompleted, true),
-						),
+						where: and(eq(schema.userProgress.userId, userId), eq(schema.userProgress.isCompleted, true)),
 					},
 				},
 			},

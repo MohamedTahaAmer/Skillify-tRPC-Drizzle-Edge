@@ -1,9 +1,4 @@
-import {
-	DragDropContext,
-	Draggable,
-	Droppable,
-	type DropResult,
-} from "@hello-pangea/dnd"
+import { DragDropContext, Draggable, Droppable, type DropResult } from "@hello-pangea/dnd"
 import { Grip, Pencil } from "lucide-react"
 import { useEffect, useState } from "react"
 
@@ -17,11 +12,7 @@ interface ChaptersListProps {
 	onEdit: (id: string) => void
 }
 
-export const ChaptersList = ({
-	items,
-	onReorder,
-	onEdit,
-}: ChaptersListProps) => {
+export const ChaptersList = ({ items, onReorder, onEdit }: ChaptersListProps) => {
 	const [isMounted, setIsMounted] = useState(false)
 	const [chapters, setChapters] = useState(items)
 
@@ -55,12 +46,7 @@ export const ChaptersList = ({
 						{chapter.title}
 						<div className="ml-auto flex items-center gap-x-2 pr-2">
 							{chapter.isFree && <Badge>Free</Badge>}
-							<Badge
-								className={cn(
-									"bg-slate-500",
-									chapter.isPublished && "bg-sky-700",
-								)}
-							>
+							<Badge className={cn("bg-slate-500", chapter.isPublished && "bg-sky-700")}>
 								{chapter.isPublished ? "Published" : "Draft"}
 							</Badge>
 							<Pencil
@@ -112,8 +98,7 @@ export const ChaptersList = ({
 									<div
 										className={cn(
 											"mb-4 flex items-center gap-x-2 rounded-md border border-slate-200 bg-slate-200 text-sm text-slate-700",
-											chapter.isPublished &&
-												"border-sky-200 bg-sky-100 text-sky-700",
+											chapter.isPublished && "border-sky-200 bg-sky-100 text-sky-700",
 										)}
 										ref={draggable.innerRef}
 										{...draggable.draggableProps}
@@ -121,8 +106,7 @@ export const ChaptersList = ({
 										<div
 											className={cn(
 												"rounded-l-md border-r border-r-slate-200 px-2 py-3 transition hover:bg-slate-300",
-												chapter.isPublished &&
-													"border-r-sky-200 hover:bg-sky-200",
+												chapter.isPublished && "border-r-sky-200 hover:bg-sky-200",
 											)}
 											{...draggable.dragHandleProps}
 										>
@@ -131,12 +115,7 @@ export const ChaptersList = ({
 										{chapter.title}
 										<div className="ml-auto flex items-center gap-x-2 pr-2">
 											{chapter.isFree && <Badge>Free</Badge>}
-											<Badge
-												className={cn(
-													"bg-slate-500",
-													chapter.isPublished && "bg-sky-700",
-												)}
-											>
+											<Badge className={cn("bg-slate-500", chapter.isPublished && "bg-sky-700")}>
 												{chapter.isPublished ? "Published" : "Draft"}
 											</Badge>
 											<Pencil

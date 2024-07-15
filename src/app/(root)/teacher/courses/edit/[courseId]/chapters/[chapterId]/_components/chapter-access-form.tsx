@@ -10,13 +10,7 @@ import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import {
-	Form,
-	FormControl,
-	FormDescription,
-	FormField,
-	FormItem,
-} from "@/components/ui/form"
+import { Form, FormControl, FormDescription, FormField, FormItem } from "@/components/ui/form"
 import { cn } from "@/lib/utils"
 import type { ChaptersSelect } from "@/server/db/schema"
 import { api } from "@/trpc/react"
@@ -31,11 +25,7 @@ const formSchema = z.object({
 	isFree: z.boolean().default(false),
 })
 
-export const ChapterAccessForm = ({
-	initialData,
-	courseId,
-	chapterId,
-}: ChapterAccessFormProps) => {
+export const ChapterAccessForm = ({ initialData, courseId, chapterId }: ChapterAccessFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 
 	const toggleEdit = () => setIsEditing((current) => !current)
@@ -82,41 +72,23 @@ export const ChapterAccessForm = ({
 				</Button>
 			</div>
 			{!isEditing && (
-				<p
-					className={cn(
-						"mt-2 text-sm",
-						!initialData.isFree && "italic text-slate-500",
-					)}
-				>
-					{initialData.isFree ? (
-						<>This chapter is free for preview.</>
-					) : (
-						<>This chapter is not free.</>
-					)}
+				<p className={cn("mt-2 text-sm", !initialData.isFree && "italic text-slate-500")}>
+					{initialData.isFree ? <>This chapter is free for preview.</> : <>This chapter is not free.</>}
 				</p>
 			)}
 			{isEditing && (
 				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(onSubmit)}
-						className="mt-4 space-y-4"
-					>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
 						<FormField
 							control={form.control}
 							name="isFree"
 							render={({ field }) => (
 								<FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
 									<FormControl>
-										<Checkbox
-											checked={field.value}
-											onCheckedChange={field.onChange}
-										/>
+										<Checkbox checked={field.value} onCheckedChange={field.onChange} />
 									</FormControl>
 									<div className="space-y-1 leading-none">
-										<FormDescription>
-											Check this box if you want to make this chapter free for
-											preview
-										</FormDescription>
+										<FormDescription>Check this box if you want to make this chapter free for preview</FormDescription>
 									</div>
 								</FormItem>
 							)}

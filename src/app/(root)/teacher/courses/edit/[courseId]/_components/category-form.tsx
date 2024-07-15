@@ -8,13 +8,7 @@ import { useState } from "react"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormMessage,
-} from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Combobox } from "@/components/ui/combobox"
@@ -31,11 +25,7 @@ const formSchema = z.object({
 	categoryId: z.string().min(1),
 })
 
-export const CategoryForm = ({
-	initialCategoryId,
-	courseId,
-	options,
-}: CategoryFormProps) => {
+export const CategoryForm = ({ initialCategoryId, courseId, options }: CategoryFormProps) => {
 	const [isEditing, setIsEditing] = useState(false)
 
 	const toggleEdit = () => setIsEditing((current) => !current)
@@ -63,9 +53,7 @@ export const CategoryForm = ({
 		}
 	}
 
-	const selectedOption = options.find(
-		(option) => option.value === initialCategoryId,
-	)
+	const selectedOption = options.find((option) => option.value === initialCategoryId)
 
 	return (
 		<div className="mt-6 rounded-md border bg-slate-100 p-4">
@@ -83,21 +71,13 @@ export const CategoryForm = ({
 				</Button>
 			</div>
 			{!isEditing && (
-				<p
-					className={cn(
-						"mt-2 text-sm",
-						!initialCategoryId && "italic text-slate-500",
-					)}
-				>
+				<p className={cn("mt-2 text-sm", !initialCategoryId && "italic text-slate-500")}>
 					{selectedOption?.label ?? "No category"}
 				</p>
 			)}
 			{isEditing && (
 				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(onSubmit)}
-						className="mt-4 space-y-4"
-					>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
 						<FormField
 							control={form.control}
 							name="categoryId"

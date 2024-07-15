@@ -11,13 +11,7 @@ export let addChapterDTO = z.object({
 	title: z.string().min(1),
 })
 type AddChapterDTO = z.infer<typeof addChapterDTO>
-export async function addChapter({
-	ctx,
-	input,
-}: {
-	ctx: ProtectedCTX
-	input: AddChapterDTO
-}) {
+export async function addChapter({ ctx, input }: { ctx: ProtectedCTX; input: AddChapterDTO }) {
 	let { db, user } = ctx
 	let userId = user.id
 	let { courseId, title } = input
@@ -25,9 +19,7 @@ export async function addChapter({
 		await db
 			.selectDistinct()
 			.from(schema.courses)
-			.where(
-				and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)),
-			)
+			.where(and(eq(schema.courses.id, courseId), eq(schema.courses.userId, userId)))
 	)[0]
 
 	if (!courseOwner) throw new TRPCError({ code: "FORBIDDEN" })
@@ -42,9 +34,7 @@ export async function addChapter({
 
 	const newPosition = lastChapter ? lastChapter.position + 1 : 1
 
-	await db
-		.insert(schema.chapters)
-		.values({ title, courseId, position: newPosition })
+	await db.insert(schema.chapters).values({ title, courseId, position: newPosition })
 	let chapter = (
 		await db
 			.selectDistinct()

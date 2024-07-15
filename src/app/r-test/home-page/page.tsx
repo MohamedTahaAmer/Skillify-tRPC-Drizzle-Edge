@@ -2,11 +2,7 @@ import { SearchInput } from "@/components/search-input"
 
 import { CoursesList } from "@/components/courses-list"
 import { env } from "@/env"
-import type {
-	CategoriesSelect,
-	ChaptersSelect,
-	CoursesSelect,
-} from "@/server/db/schema"
+import type { CategoriesSelect, ChaptersSelect, CoursesSelect } from "@/server/db/schema"
 import uniqBy from "lodash.uniqby"
 import { Suspense } from "react"
 import { Categories } from "@/app/(root)/_components/categories"
@@ -19,9 +15,7 @@ const HomePage = async () => {
 		chapters: { id: ChaptersSelect["id"] }[]
 	})[]
 	console.log(`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`)
-	let res = await fetch(
-		`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`,
-	)
+	let res = await fetch(`${env.NEXT_PUBLIC_APP_URL}/api/trpc/get.getAllPublishedCourses`)
 	if (!res.ok) {
 		console.log("Failed to fetch courses")
 		return
