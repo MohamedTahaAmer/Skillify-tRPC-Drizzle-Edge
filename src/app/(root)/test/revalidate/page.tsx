@@ -29,7 +29,7 @@ const Page = () => {
 			}}
 			className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col"
 		>
-			<input type="text" name="name" className=" border-4" />
+			<input type="text" name="name" className="border-4" />
 			<button className="bg-red-100 p-4">revalidate - server action</button>
 			<button
 				type="button"

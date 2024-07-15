@@ -52,7 +52,7 @@ export const SidebarItem = ({
 			</div>
 			<div
 				className={cn(
-					" w-0 self-stretch justify-self-end border-2 border-sky-700 opacity-0 transition-all",
+					"w-0 self-stretch justify-self-end border-2 border-sky-700 opacity-0 transition-all",
 					isActive && "opacity-100",
 				)}
 			/>

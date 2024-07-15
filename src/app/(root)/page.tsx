@@ -57,7 +57,7 @@ const HomePage = async () => {
 	return (
 		<>
 			{/* search input */}
-			<div className="fixed left-1/2 top-2  z-20 block  w-[65%] -translate-x-1/2 px-6 md:w-1/2 ">
+			<div className="sdf fixed left-1/2 top-2 z-20 block w-[65%] -translate-x-1/2 px-6 md:w-1/2">
 				<Suspense fallback={<SearchInputSkeleton />}>
 					<SearchInput />
 				</Suspense>

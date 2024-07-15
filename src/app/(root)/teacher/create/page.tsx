@@ -1,5 +1,5 @@
 "use client"
-export const runtime = "edge"
+export const runtime1 = "edge"
 export const preferredRegion = "cle1"
 
 import * as z from "zod"

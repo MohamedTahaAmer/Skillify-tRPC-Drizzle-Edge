@@ -1,4 +1,4 @@
-// export const runtime = "edge"
+// export const runtime1 = "edge"
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch"
 import { type NextRequest } from "next/server"
 

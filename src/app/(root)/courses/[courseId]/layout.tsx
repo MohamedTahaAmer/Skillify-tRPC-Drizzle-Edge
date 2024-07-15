@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs"
+import { auth } from "@clerk/nextjs/server"
 import { Menu } from "lucide-react"
 import { redirect } from "next/navigation"
 

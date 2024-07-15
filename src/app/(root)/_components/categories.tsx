@@ -21,10 +21,10 @@ interface CategoriesProps {
 export const Categories = ({ items }: CategoriesProps) => {
 	return (
 		<div className="flex w-full items-center justify-between pb-4 xl:mx-auto xl:w-[1200px]">
-			{/* mobile Categoreis */}
+			{/* mobile Categories */}
 			<div className="xl:hidden">
 				<Sheet>
-					<SheetTrigger className="flex items-center gap-x-2 rounded-full border border-slate-200 px-3  py-2  pr-4 text-sm transition  hover:border-sky-700 hover:opacity-75 xl:hidden ">
+					<SheetTrigger className="flex items-center gap-x-2 rounded-full border border-slate-200 px-3 py-2 pr-4 text-sm transition hover:border-sky-700 hover:opacity-75 xl:hidden">
 						Categories
 						<Menu className="size-5" />
 					</SheetTrigger>
@@ -58,7 +58,7 @@ export const Categories = ({ items }: CategoriesProps) => {
 			</div>
 
 			{/* Desctop Categories */}
-			<div className="hidden items-center gap-x-2 overflow-x-auto  xl:flex">
+			<div className="hidden items-center gap-x-2 overflow-x-auto xl:flex">
 				{items.map(
 					(item) =>
 						item && (
@@ -81,7 +81,7 @@ export const Categories = ({ items }: CategoriesProps) => {
 				)}
 			</div>
 
-			<div className="flex items-center gap-2 ">
+			<div className="flex items-center gap-2">
 				<Suspense fallback={null}>
 					<ShowPurchased />
 				</Suspense>

@@ -33,7 +33,7 @@ export const CourseEnrollButton = () => {
 		<Button
 			onClick={handleClick}
 			size="sm"
-			disabled={checkout.isLoading}
+			disabled={checkout.isPending}
 			className="w-full md:w-auto"
 		>
 			Enroll for {formatPrice(coursePrice ?? 0)}

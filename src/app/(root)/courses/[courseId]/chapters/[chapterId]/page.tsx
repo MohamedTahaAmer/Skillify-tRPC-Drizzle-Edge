@@ -1,7 +1,7 @@
-export const runtime = "edge"
+export const runtime1 = "edge"
 export const preferredRegion = "cle1"
 
-import { auth } from "@clerk/nextjs"
+import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 
 import { Banner } from "@/components/banner"
@@ -25,9 +25,9 @@ const ChapterIdPage = async ({ params }: { params: { chapterId: string } }) => {
 	// 1- save us from using 'useCourse' store
 	// 2- allow better code, by server side checking before rendering certain components
 	// . but I'm leaving it this way as
-	// 1- it has no bad impact on performance, it's acutally slightly better performance
+	// 1- it has no bad impact on performance, it's actually slightly better performance
 	// not having to make the course join on the db server, and no need to pass the course over the wire
-	// 2- referance incase the layout really was fetching data that we can't get on the child pages without making a hole new query, or having to use 'fetch' to utalize next.js req momoization or deduplication
+	// 2- reference incase the layout really was fetching data that we can't get on the child pages without making a hole new query, or having to use 'fetch' to utilize next.js req memoization or deduplication
 	let chapter = await db.query.chapters.findFirst({
 		where: eq(schema.chapters.id, chapterId),
 		with: {
@@ -37,13 +37,16 @@ const ChapterIdPage = async ({ params }: { params: { chapterId: string } }) => {
 			muxData: true,
 		},
 	})
+
 	if (!chapter) {
 		return redirect("/")
 	}
 	let { muxData } = chapter
 	let userProgress = chapter.userProgress?.[0]
+	console.log("userProgress", userProgress)
 
 	let isCompleted = !userProgress?.isCompleted
+	console.log("isCompleted", isCompleted)
 	let isFreeChapter = chapter.isFree ?? false
 	logTime({ title: "ChapterIdPage", startTime })
 

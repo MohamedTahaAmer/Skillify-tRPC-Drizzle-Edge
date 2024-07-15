@@ -1,7 +1,7 @@
 {
 	"version": "5",
 	"dialect": "mysql",
-	"id": "c5812578-f07b-4ca0-8efa-fba5c41cad0c",
+	"id": "d06cc94d-feca-4fe9-ba7c-8718cdecc09d",
 	"prevId": "00000000-0000-0000-0000-000000000000",
 	"tables": {
 		"skillify_edge_dev_1_attachments": {
@@ -39,7 +39,7 @@
 					"name": "created_at",
 					"type": "timestamp",
 					"primaryKey": false,
-					"notNull": false,
+					"notNull": true,
 					"autoincrement": false,
 					"default": "CURRENT_TIMESTAMP"
 				},
@@ -66,7 +66,12 @@
 					"columns": ["id"]
 				}
 			},
-			"uniqueConstraints": {}
+			"uniqueConstraints": {
+				"skillify_edge_dev_1_attachments_course_id_unique": {
+					"name": "skillify_edge_dev_1_attachments_course_id_unique",
+					"columns": ["course_id"]
+				}
+			}
 		},
 		"skillify_edge_dev_1_categories": {
 			"name": "skillify_edge_dev_1_categories",
@@ -149,7 +154,7 @@
 					"name": "is_published",
 					"type": "boolean",
 					"primaryKey": false,
-					"notNull": false,
+					"notNull": true,
 					"autoincrement": false,
 					"default": false
 				},
@@ -172,7 +177,7 @@
 					"name": "created_at",
 					"type": "timestamp",
 					"primaryKey": false,
-					"notNull": false,
+					"notNull": true,
 					"autoincrement": false,
 					"default": "CURRENT_TIMESTAMP"
 				},
@@ -199,7 +204,12 @@
 					"columns": ["id"]
 				}
 			},
-			"uniqueConstraints": {}
+			"uniqueConstraints": {
+				"skillify_edge_dev_1_chapters_course_id_unique": {
+					"name": "skillify_edge_dev_1_chapters_course_id_unique",
+					"columns": ["course_id"]
+				}
+			}
 		},
 		"skillify_edge_dev_1_courses": {
 			"name": "skillify_edge_dev_1_courses",
@@ -258,14 +268,14 @@
 					"name": "category_id",
 					"type": "char(24)",
 					"primaryKey": false,
-					"notNull": false,
+					"notNull": true,
 					"autoincrement": false
 				},
 				"created_at": {
 					"name": "created_at",
 					"type": "timestamp",
 					"primaryKey": false,
-					"notNull": false,
+					"notNull": true,
 					"autoincrement": false,
 					"default": "CURRENT_TIMESTAMP"
 				},
@@ -297,7 +307,12 @@
 					"columns": ["id"]
 				}
 			},
-			"uniqueConstraints": {}
+			"uniqueConstraints": {
+				"skillify_edge_dev_1_courses_category_id_unique": {
+					"name": "skillify_edge_dev_1_courses_category_id_unique",
+					"columns": ["category_id"]
+				}
+			}
 		},
 		"skillify_edge_dev_1_mux_data": {
 			"name": "skillify_edge_dev_1_mux_data",
@@ -345,7 +360,12 @@
 					"columns": ["id"]
 				}
 			},
-			"uniqueConstraints": {}
+			"uniqueConstraints": {
+				"skillify_edge_dev_1_mux_data_chapter_id_unique": {
+					"name": "skillify_edge_dev_1_mux_data_chapter_id_unique",
+					"columns": ["chapter_id"]
+				}
+			}
 		},
 		"skillify_edge_dev_1_purchases": {
 			"name": "skillify_edge_dev_1_purchases",
@@ -368,7 +388,7 @@
 					"name": "created_at",
 					"type": "timestamp",
 					"primaryKey": false,
-					"notNull": false,
+					"notNull": true,
 					"autoincrement": false,
 					"default": "CURRENT_TIMESTAMP"
 				},
@@ -395,7 +415,12 @@
 					"columns": ["user_id", "course_id"]
 				}
 			},
-			"uniqueConstraints": {}
+			"uniqueConstraints": {
+				"skillify_edge_dev_1_purchases_course_id_unique": {
+					"name": "skillify_edge_dev_1_purchases_course_id_unique",
+					"columns": ["course_id"]
+				}
+			}
 		},
 		"skillify_edge_dev_1_stripe_customers": {
 			"name": "skillify_edge_dev_1_stripe_customers",
@@ -425,7 +450,7 @@
 					"name": "created_at",
 					"type": "timestamp",
 					"primaryKey": false,
-					"notNull": false,
+					"notNull": true,
 					"autoincrement": false,
 					"default": "now()"
 				},
@@ -497,7 +522,7 @@
 					"name": "created_at",
 					"type": "timestamp",
 					"primaryKey": false,
-					"notNull": false,
+					"notNull": true,
 					"autoincrement": false,
 					"default": "CURRENT_TIMESTAMP"
 				},
@@ -524,13 +549,21 @@
 					"columns": ["user_id", "chapter_id"]
 				}
 			},
-			"uniqueConstraints": {}
+			"uniqueConstraints": {
+				"skillify_edge_dev_1_user_progress_chapter_id_unique": {
+					"name": "skillify_edge_dev_1_user_progress_chapter_id_unique",
+					"columns": ["chapter_id"]
+				}
+			}
 		}
 	},
-	"schemas": {},
 	"_meta": {
 		"schemas": {},
 		"tables": {},
 		"columns": {}
+	},
+	"internal": {
+		"tables": {},
+		"indexes": {}
 	}
 }

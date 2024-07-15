@@ -22,6 +22,7 @@ export const env = createEnv({
 		UPLOADTHING_APP_ID: z.string(),
 		STRIPE_API_KEY: z.string(),
 		STRIPE_WEBHOOK_SECRET: z.string(),
+		DATABASE_PREFIX: z.string(),
 	},
 
 	/**
@@ -40,7 +41,7 @@ export const env = createEnv({
 	},
 
 	/**
-	 * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
+	 * You can't destruct `process.env` as a regular object in the Next.js edge runtime s (e.g.
 	 * middlewares) or client-side so we need to destruct manually.
 	 */
 	runtimeEnv: {
@@ -62,6 +63,7 @@ export const env = createEnv({
 		STRIPE_API_KEY: process.env.STRIPE_API_KEY,
 		STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
 		DATABASE_URL: process.env.DATABASE_URL,
+		DATABASE_PREFIX: process.env.DATABASE_PREFIX,
 		NODE_ENV: process.env.NODE_ENV,
 	},
 	/**

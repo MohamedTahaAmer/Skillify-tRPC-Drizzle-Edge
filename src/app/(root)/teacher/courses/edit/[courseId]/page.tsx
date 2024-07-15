@@ -1,6 +1,6 @@
-export const runtime = "edge"
+export const runtime1 = "edge"
 export const preferredRegion = "cle1"
-import { auth } from "@clerk/nextjs"
+import { auth } from "@clerk/nextjs/server"
 import {
 	CircleDollarSign,
 	File,

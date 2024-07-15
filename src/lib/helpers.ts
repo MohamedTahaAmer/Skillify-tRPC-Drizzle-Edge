@@ -5,7 +5,7 @@ export function logTime({
 	title: string
 	startTime: number
 }) {
-	console.log("\x1b[33m%s\x1b[0m", `⏱ - ${title}:`, Date.now() - startTime)
+	console.log("\x1b[33m%s\x1b[0m", `⏱ - ${title}: ${Date.now() - startTime}ms`)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

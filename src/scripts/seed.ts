@@ -153,3 +153,13 @@ export let openFirstVideo = async () => {
 		console.log("Error opening the first video", error)
 	}
 }
+
+export let seed = async () => {
+	await seedCategories()
+	await seedCourses()
+	await seedAttachments()
+	await seedChapters()
+	await seedMuxData()
+	await openFirstVideo()
+}
+seed()

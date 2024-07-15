@@ -13,8 +13,9 @@ import {
 	timestamp,
 	varchar,
 } from "drizzle-orm/mysql-core"
-import { dbName } from "drizzle.config"
-export const mysqlTable = mysqlTableCreator((name) => `${dbName}${name}`)
+import { env } from "@/env"
+
+const mysqlTable = mysqlTableCreator((name) => `${env.DATABASE_PREFIX}${name}`)
 export const courses = mysqlTable(
 	"courses",
 	{
@@ -27,7 +28,7 @@ export const courses = mysqlTable(
 		imageUrl: varchar("image_url", { length: 255 }),
 		price: float("price"),
 		isPublished: boolean("is_published").default(false),
-		categoryId: char("category_id", { length: 24 }),
+		categoryId: char("category_id", { length: 24 }).unique().notNull(),
 		createdAt: timestamp("created_at")
 			.default(sql`CURRENT_TIMESTAMP`)
 			.notNull(),
@@ -70,7 +71,7 @@ export const attachments = mysqlTable(
 			.$defaultFn(() => createId()),
 		name: varchar("name", { length: 255 }).notNull(),
 		url: varchar("url", { length: 255 }).notNull(),
-		courseId: char("course_id", { length: 24 }).notNull(),
+		courseId: char("course_id", { length: 24 }).notNull().unique(),
 		createdAt: timestamp("created_at")
 			.default(sql`CURRENT_TIMESTAMP`)
 			.notNull(),
@@ -98,7 +99,7 @@ export const chapters = mysqlTable(
 		position: int("position").notNull(),
 		isPublished: boolean("is_published").default(false).notNull(),
 		isFree: boolean("is_free").default(false),
-		courseId: char("course_id", { length: 24 }).notNull(),
+		courseId: char("course_id", { length: 24 }).notNull().unique(),
 		createdAt: timestamp("created_at")
 			.default(sql`CURRENT_TIMESTAMP`)
 			.notNull(),
@@ -124,7 +125,7 @@ export const muxData = mysqlTable(
 			.$defaultFn(() => createId()),
 		assetId: varchar("asset_id", { length: 255 }).notNull(),
 		playbackId: varchar("playback_id", { length: 255 }),
-		chapterId: char("chapter_id", { length: 24 }).notNull(),
+		chapterId: char("chapter_id", { length: 24 }).notNull().unique(),
 	},
 	(example) => ({
 		chapterIdIdx: index("chapter_id_idx").on(example.chapterId),
@@ -140,7 +141,7 @@ export const userProgress = mysqlTable(
 	"user_progress",
 	{
 		userId: varchar("user_id", { length: 255 }).notNull(),
-		chapterId: char("chapter_id", { length: 24 }).notNull(),
+		chapterId: char("chapter_id", { length: 24 }).notNull().unique(),
 		isCompleted: boolean("is_completed").default(false),
 		createdAt: timestamp("created_at")
 			.default(sql`CURRENT_TIMESTAMP`)
@@ -165,7 +166,7 @@ export const purchases = mysqlTable(
 	"purchases",
 	{
 		userId: varchar("user_id", { length: 255 }).notNull(),
-		courseId: char("course_id", { length: 24 }).notNull(),
+		courseId: char("course_id", { length: 24 }).notNull().unique(),
 		createdAt: timestamp("created_at")
 			.default(sql`CURRENT_TIMESTAMP`)
 			.notNull(),

@@ -28,7 +28,7 @@ const createContext = cache(() => {
 	})
 })
 // - here in T3 stack they are using a vanilla tRPC client, that should be used by
-// 1- a cleint side code in a framwork that doesn't have a tRPC official client like react has react-query integration
+// 1- a client side code in a framework that doesn't have a tRPC official client like react has react-query integration
 // 2- TS server side code that lives in another server, and will make an typesafe http request to this server
 // generally, you will provide this vanilla client with a url 'http link' for it to listen to incoming http requests on that url
 // but here we a custom link that will call our procedures directly, and we don't need to make an http request to the server

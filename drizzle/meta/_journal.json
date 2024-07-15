@@ -1,12 +1,12 @@
 {
-	"version": "5",
+	"version": "7",
 	"dialect": "mysql",
 	"entries": [
 		{
 			"idx": 0,
 			"version": "5",
-			"when": 1707068961187,
-			"tag": "0000_yummy_corsair",
+			"when": 1721018920284,
+			"tag": "0000_cooing_shaman",
 			"breakpoints": true
 		}
 	]

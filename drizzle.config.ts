@@ -1,14 +1,12 @@
-import { env } from "./src/env.js"
-import type { Config } from "drizzle-kit"
+import { env } from "@/env"
+import { defineConfig } from "drizzle-kit"
 
-export let dbName = "skillify_edge_dev_1_"
-
-export default {
+export default defineConfig({
 	schema: "./src/server/db/schema.ts",
 	out: "./drizzle",
-	driver: "mysql2",
+	dialect: "mysql",
 	dbCredentials: {
-		uri: env.DATABASE_URL,
+		url: env.DATABASE_URL,
 	},
-	tablesFilter: [`${dbName}*`],
-} satisfies Config
+	tablesFilter: [env.DATABASE_PREFIX],
+})
