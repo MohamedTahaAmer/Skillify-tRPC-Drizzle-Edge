@@ -5,9 +5,10 @@ import { createCourse, createCourseDTO } from "./create-course"
 import { deleteCourse, deleteCourseDTO, patchCourse, patchCourseDTO } from "./delete-patch-course"
 import { publishCourse, publishCourseDTO, unpublishCourse, unpublishCourseDTO } from "./un-publish"
 import updateProgress, { updateProgressDTO } from "./update-progress"
+import { z } from "zod"
 
 export const coursesRouter = createTRPCRouter({
-	checkout: protectedProcedure.input(checkoutDTO).mutation(checkout),
+	checkout: protectedProcedure.input(checkoutDTO).output(z.promise(z.string().nullable())).mutation(checkout),
 	updateProgress: protectedProcedure.input(updateProgressDTO).mutation(updateProgress),
 	publish: protectedProcedure.input(publishCourseDTO).mutation(publishCourse),
 	unpublish: protectedProcedure.input(unpublishCourseDTO).mutation(unpublishCourse),

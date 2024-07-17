@@ -11,8 +11,8 @@ const Page = () => {
 	let handletRPCRevalidation = async () => {
 		let form = formRef.current!
 		let data = new FormData(form)
-		let name = data.get("name") as string
-		await validateTRPC.mutateAsync(name)
+		let path = data.get("name") as string
+		await validateTRPC.mutateAsync({ path })
 		form.reset()
 	}
 

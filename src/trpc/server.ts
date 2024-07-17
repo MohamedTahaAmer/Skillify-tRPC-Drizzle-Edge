@@ -20,7 +20,8 @@ const createContext = cache(() => {
 	heads.set("x-trpc-source", "rsc")
 
 	return createTRPCContext({
-		headers: heads,
+		// @ts-expect-error - we don't need to pass the request
+		req: { headers: heads },
 	})
 })
 // - here in T3 stack they are using a vanilla tRPC client, that should be used by

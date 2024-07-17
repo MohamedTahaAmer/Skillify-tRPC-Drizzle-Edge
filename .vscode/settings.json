@@ -1,7 +1,8 @@
 {
 	// "editor.glyphMargin": true
-	"typescript.tsdk": "node_modules\\typescript\\lib",
+	// "typescript.tsdk": "node_modules/typescript/lib",
 	// "eslint.enable": false,
 	// 	"typescript.validate.enable": false,
-	"typescript.enablePromptUseWorkspaceTsdk": true
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"cSpell.words": ["handlet"]
 }

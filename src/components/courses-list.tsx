@@ -32,12 +32,11 @@ export const CoursesList = ({ items }: CoursesListProps) => {
 		}))
 
 	let { user } = useUser()
-	let userId = user?.id
-	if (!userId) return null
 	let { progressMap, setProgressMap } = useProgressMap()
 
 	api.get.getUserCoursesWithProgress.useQuery(undefined, {
 		refetchOnMount: false,
+		enabled: !!user?.id,
 		onSuccess: (data) => {
 			let originalProgressMap = data.reduce(
 				(acc, course) => {

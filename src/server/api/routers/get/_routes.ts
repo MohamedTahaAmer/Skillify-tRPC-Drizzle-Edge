@@ -8,8 +8,19 @@ export const getRouter = createTRPCRouter({
 	getUserCoursesWithProgress: protectedProcedure.query(getUserCoursesWithProgress),
 
 	getAllPublishedCourses: publicProcedure.query(getAllPublishedCourses),
-	validatePath: publicProcedure.input(z.string()).mutation(({ input }) => {
-		console.log(input)
-		revalidatePath(input || "/")
-	}),
+	validatePath: publicProcedure
+		.meta({
+			openapi: {
+				method: "POST",
+				path: "/auth/login",
+				tags: ["auth"],
+				summary: "Login as an existing user",
+			},
+		})
+		.input(z.object({ path: z.string() }))
+		.output(z.void())
+		.mutation(({ input }) => {
+			console.log(input)
+			revalidatePath(input.path || "/")
+		}),
 })

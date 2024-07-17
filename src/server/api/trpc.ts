@@ -12,6 +12,8 @@ import superjson from "superjson"
 import { ZodError } from "zod"
 import { db } from "../db"
 import { currentUser } from "@clerk/nextjs/server"
+import type { OpenApiMeta } from "trpc-swagger"
+import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch"
 
 /**
  * 1. CONTEXT
@@ -25,7 +27,7 @@ import { currentUser } from "@clerk/nextjs/server"
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: { headers: Headers }) => {
+export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
 	let user = await currentUser()
 
 	return {
@@ -45,18 +47,21 @@ export type ProtectedCTX = CTX & { user: NonNullable<CTX["user"]> }
  * ZodErrors so that you get typesafe on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
-const t = initTRPC.context<typeof createTRPCContext>().create({
-	transformer: superjson,
-	errorFormatter({ shape, error }) {
-		return {
-			...shape,
-			data: {
-				...shape.data,
-				zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
-			},
-		}
-	},
-})
+const t = initTRPC
+	.context<typeof createTRPCContext>()
+	.meta<OpenApiMeta>()
+	.create({
+		transformer: superjson,
+		errorFormatter({ shape, error }) {
+			return {
+				...shape,
+				data: {
+					...shape.data,
+					zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
+				},
+			}
+		},
+	})
 
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
